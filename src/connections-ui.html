@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'unsafe-inline'; img-src 'self'; connect-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Connections · Ink OS</title>
+  <style>
+    :root{color-scheme:dark;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#d8d8d8;background:#151515;font-size:13px}*{box-sizing:border-box}body{margin:0}main{max-width:680px;margin:auto;padding:34px 32px 26px}header{display:flex;gap:14px;align-items:center;margin-bottom:30px}header img{width:42px;height:42px}h1{font-size:23px;letter-spacing:-.7px;font-weight:620;margin:0 0 5px}p{color:#959595;line-height:1.55;margin:0}h2{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#a5a5a5;font-weight:550;margin:25px 0 12px}.profiles{display:grid;gap:8px}.profile{display:flex;align-items:center;gap:14px;padding:14px;border:1px solid #ffffff12;border-radius:9px;background:#1c1c1c}.profile.active{border-color:#ffffff32}.profile-info{flex:1;min-width:0}.profile strong{font-size:13px;font-weight:550;display:block;margin-bottom:5px}.profile p{font-size:11px;overflow-wrap:anywhere}.profile small{display:block;color:#777;font-size:10px;margin-top:4px}.profile-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px;max-width:150px}button,input{font:inherit}button{border:1px solid #ffffff18;border-radius:6px;background:#282828;color:#d6d6d6;padding:7px 11px;cursor:pointer}button:hover{background:#333}button:disabled{opacity:.4;cursor:default}.quiet{background:none;border-color:transparent;color:#999;font-size:11px;padding:4px 7px}.primary{background:#d4d4d4;color:#171717;border-color:#d4d4d4;font-weight:550}.primary:hover{background:#ededed}form{background:#1b1b1b;border:1px solid #ffffff12;border-radius:10px;padding:18px;display:grid;gap:15px}label{display:grid;gap:7px;color:#b5b5b5;font-size:11px}input{background:#141414;border:1px solid #ffffff1a;border-radius:6px;color:#dedede;padding:10px 11px;outline:none;min-width:0}input:focus,button:focus-visible{outline:2px solid #aaa;outline-offset:2px}input[readonly]{color:#888}.compatibility{display:flex;align-items:flex-start;gap:8px;line-height:1.45}.compatibility input{accent-color:#bbb;margin:1px 0 0}form small{font-size:10px;color:#838383;line-height:1.5}.form-actions{display:flex;justify-content:space-between;align-items:center;gap:12px}.status{min-height:36px;font-size:12px;color:#b4b4b4;line-height:1.5;margin:15px 1px 0}.status.error{color:#dedede}footer{display:flex;justify-content:flex-end;margin-top:12px}.empty{font-size:12px;color:#888;padding:12px}.visually-hidden{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}
+  </style>
+</head>
+<body>
+<main>
+  <header><img src="../assets/icon.svg" alt=""><div><h1>Connections</h1><p>Use your local Ink OS or connect to a hosted instance.</p></div></header>
+  <h2>Saved connections</h2><section id="profiles" class="profiles" aria-label="Saved connections"></section>
+  <h2 id="form-title">Connect to a host</h2>
+  <form id="connection-form" autocomplete="off">
+    <label>Label<input id="label" maxlength="80" required placeholder="My Ink OS"></label>
+    <label>Host origin<input id="origin" type="url" maxlength="2048" required placeholder="https://ink.example.com" spellcheck="false" autocapitalize="none"></label>
+    <label>Account token <span class="visually-hidden">optional</span><input id="credential" type="password" maxlength="4096" autocomplete="new-password" placeholder="Optional" spellcheck="false"></label>
+    <small>A token connects this desktop and its CLI to the same account. You can also sign in in the host window. Account keys need the computer scope.</small>
+    <label class="compatibility"><input id="legacy" type="checkbox"><span>Allow a legacy host without an instance identity. Its HTTPS origin remains the connection boundary.</span></label>
+    <div class="form-actions"><button id="cancel-edit" type="button" class="quiet" hidden>Cancel</button><span></span><button id="submit" class="primary" type="submit">Connect</button></div>
+  </form>
+  <p id="status" class="status" role="status" aria-live="polite"></p>
+  <footer><button id="done" type="button">Done</button></footer>
+</main>
+<script type="module" src="./connections-ui.mjs"></script>
+</body>
+</html>

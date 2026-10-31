@@ -21,6 +21,10 @@ const resources = join(contents, process.platform === 'darwin' ? 'Resources' : '
 const executable = join(contents, ...(process.platform === 'darwin' ? ['MacOS'] : []), 'ink-os-desktop');
 const cliPath = join(process.platform === 'darwin' ? resources : dirname(executable), 'ink-os');
 assert.equal(hash(await readFile(join(resources, 'tools', 'package-manifest.json'))), release.manifestSha256);
+const manifest = JSON.parse(await readFile(join(resources, 'tools', 'package-manifest.json')));
+for (const path of ['src/connections.mjs', 'src/connection-controller.mjs', 'src/connection-layout.mjs', 'src/connections-ui.html', 'src/connections-ui.mjs', 'src/connections-preload.cjs', 'assets/icon.svg']) assert.ok(manifest.app.some(entry => entry.path === path && /^[a-f0-9]{64}$/.test(entry.sha256)), 'Missing packaged Connections input: ' + path);
+for (const path of ['cli.mjs', 'connections.mjs', 'connection-layout.mjs', 'runtime.mjs']) { const entry = manifest.tools.find(entry => entry.path === path); assert.ok(entry, 'Missing packaged CLI input: ' + path); assert.equal(hash(await readFile(join(resources, 'tools', path))), entry.sha256); }
+assert.ok(manifest.runtime.some(entry => entry.path === 'server/process-receipt.mjs'), 'Missing bundled connection ownership support');
 assert.equal(hash(await readFile(join(resources, 'icon.png'))), release.icon.pngSha256);
 for (const name of ['ELECTRON-LICENSE', 'LICENSES.chromium.html']) assert.equal(hash(await readFile(join(resources, 'licenses', name))), release.runtimeNotices[name]);
 if (process.platform === 'darwin') {
@@ -40,10 +44,10 @@ await retain(false);
 await writeFile(join(directory, 'storage-retention.json'), JSON.stringify({ keep: { 'data': 'Active packaged instance.', 'source': 'Explicitly generated test source.', 'no-tools': 'Development-tool blockers.', 'storage-retention.json': 'Validation retention policy.' }, safe_to_remove: {} }, null, 2) + '\n');
 const noTools = join(directory, 'no-tools'); await mkdir(noTools);
 for (const name of ['node', 'git', 'cargo', 'rustc']) await writeFile(join(noTools, name), '#!/bin/sh\necho "Unexpected external development tool" >&2\nexit 87\n', { mode: 0o755 });
-const path = noTools + ':/usr/bin:/bin', data = join(directory, 'data');
+const path = noTools + ':/usr/bin:/bin', desktopData = join(directory, 'data'), data = join(desktopData, 'instances', 'default');
 const instance = new LocalInstance({ platformDirectory: join(resources, 'platform'), executable, electron: true, directory: data, port: await localPort(data), runtimeEnvironment: { ...runtimeEnvironment(resources, { directory: data }), PATH: path } });
 const env = Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^(INK_|FLY_|AWS_|S3_|BUCKET_NAME|GIT_)/.test(name)));
-Object.assign(env, { PATH: path, INK_OS_CONFIG: join(data, 'client.json') });
+Object.assign(env, { PATH: path, INK_OS_DESKTOP_DATA_DIR: desktopData });
 const cli = async (...args) => JSON.parse((await execute(cliPath, args, { env, maxBuffer: 4 * 1024 * 1024 })).stdout);
 let client;
 try {
@@ -60,7 +64,7 @@ try {
   assert.equal(restarted.url, client.url); assert.equal(restarted.instanceId, client.instanceId);
   const total = await cli('ink', 'run', deployment.appId, 'total'); assert.equal(total.valueWire, '3');
   assert.equal(total.backend, 'javascript');
-  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
+  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
   await mkdir(join(root, 'evidence'), { recursive: true });
   await writeFile(join(root, 'evidence', 'packaged-runtime.json'), JSON.stringify(proof, null, 2) + '\n');
   console.log(JSON.stringify(proof, null, 2));

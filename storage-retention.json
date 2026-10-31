@@ -1,8 +1,8 @@
 {
   "keep": {
-    "src": "Desktop host implementation.",
-    "tests": "Desktop lifecycle validation.",
-    "scripts": "Development runtime bootstrap.",
+    "src": "Desktop host and private connection implementation, including trusted Connections UI/preload and GUI/CLI selection controllers.",
+    "tests": "Desktop lifecycle, private connection boundary and actual owned local-host switching reproduction inputs; generated fixtures are removed after completion.",
+    "scripts": "Development runtime bootstrap, exact desktop packaging inclusion and package validation reproduction inputs.",
     "evidence/desktop-native.jpg": "Selected native desktop screenshot after full relaunch with persistent native Ink state.",
     "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits.",
     "platform.json": "Exact shared platform repository and commit pin.",

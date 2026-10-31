@@ -110,9 +110,10 @@ const runtimePaths = ['server', 'shared', 'generated', 'ink', 'infra', 'app-runt
 for (const name of runtimePaths) { await mkdir(dirname(join(runtime, name)), { recursive: true }); await cp(join(source, name), join(runtime, name), { recursive: true, verbatimSymlinks: true }); }
 await run(process.execPath, [join(source, 'scripts', 'audit-source.mjs'), runtime], source);
 await cp(join(root, 'src'), join(app, 'src'), { recursive: true });
+await mkdir(join(app, 'assets')); await cp(join(root, 'assets', 'icon.svg'), join(app, 'assets', 'icon.svg'));
 await cp(join(root, 'LICENSE'), join(app, 'LICENSE'));
 await writeFile(join(app, 'package.json'), JSON.stringify({ name: pkg.name, productName: pkg.productName, version: pkg.version, license: pkg.license, type: 'module', main: pkg.main }, null, 2) + '\n');
-for (const name of ['cli.mjs', 'runtime.mjs', 'native-toolchain.mjs']) await cp(join(root, 'src', name), join(tools, name));
+for (const name of ['cli.mjs', 'runtime.mjs', 'native-toolchain.mjs', 'connections.mjs', 'connection-layout.mjs']) await cp(join(root, 'src', name), join(tools, name));
 const embedded = await bundledGit(git);
 const icon = await buildIcon(join(stage, 'branding'));
 const desktopCommit = (await execute('git', ['rev-parse', 'HEAD'], { cwd: root })).stdout.trim();
