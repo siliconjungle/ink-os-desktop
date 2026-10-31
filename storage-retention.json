@@ -1,4 +1,13 @@
 {
-  "keep": { "src": "Desktop host implementation.", "tests": "Desktop lifecycle validation." },
-  "safe_to_remove": {}
+  "keep": {
+    "src": "Desktop host implementation.",
+    "tests": "Desktop lifecycle validation.",
+    "scripts": "Development runtime bootstrap.",
+    "evidence/desktop-native.jpg": "Selected native desktop screenshot after full relaunch with persistent native Ink state.",
+    "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits."
+  },
+  "safe_to_remove": {
+    ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
+    ".local/electron-startup-sample.txt": "Completed insight-only startup diagnostic; the lifecycle implementation and selected functional proof are retained."
+  }
 }

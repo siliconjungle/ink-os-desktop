@@ -1,0 +1,23 @@
+{
+  "format": "ink-os-desktop-proof-v1",
+  "platformCommit": "d70e77ee4790bd54a6e2c142f009551ac69b42cd",
+  "electron": "42.11.18",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "screenshot": "desktop-native.jpg",
+  "sha256": "b32c3d346e731a108372fa2ca6ba5eba0c0c259370f1950d0d51778adcb36f74",
+  "observed": [
+    "A fresh local desktop instance had zero apps before an explicit CLI init and deploy.",
+    "The source-defined Ink app opened in the native Electron window.",
+    "The app button changed persisted count 88 to 89.",
+    "An SDK query selected the native backend and returned 89 after a full desktop quit and relaunch.",
+    "The desktop kept the same loopback origin and instance identity across relaunch.",
+    "After fixing event-stream shutdown and reconnect admission, normal GUI quit completed without terminating the host process."
+  ],
+  "limits": [
+    "Development checkout with an installed Electron runtime, not an installer.",
+    "Native builds used an existing host Rust toolchain; managed toolchain installation remains pending.",
+    "This is functional evidence, not a performance measurement.",
+    "Remote HTTPS selection is configured through INK_OS_REMOTE_URL; a graphical instance switcher remains pending."
+  ]
+}
