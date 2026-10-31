@@ -1,0 +1,56 @@
+{
+  "format": "ink-os-packaged-pending-outbox-proof-v1",
+  "status": "passed",
+  "platformSource": {
+    "commit": "ff67610a3d334fff1da23cb76a7b3f2f5dec6087"
+  },
+  "desktopSource": {
+    "commit": "ade67866dfaffd41ab2bbb742a32f8c7c60f2c00",
+    "dirty": false
+  },
+  "packageSha256": "1a2e3e07af3577ea86aad7ab2ef0dcdc88d384c0c46f1b7bb2f074231b083b40",
+  "mechanism": {
+    "sdk": "Actual immutable public browser SDK",
+    "durableCache": "Packaged Electron IndexedDB",
+    "transport": "Authenticated SyncHub WebSocket",
+    "writeTrigger": "Explicit Queue edit button only",
+    "customQueue": false,
+    "customReplay": false,
+    "editsOnMount": false,
+    "credentialReplacement": "Official ConnectionStore.saveCredential API",
+    "sameAccountAndPartition": true,
+    "actualProcessExitAndRelaunch": true
+  },
+  "checks": {
+    "onlineBefore": true,
+    "revokedCredentialServerRejected": true,
+    "desktopSavedAndPending2Observed": true,
+    "serverAndBrowserAbsentWhileBlocked": true,
+    "originalPayloadDeliveredExactlyOnceAfterRestart": true,
+    "bothClientsOnlinePending0Observed": true,
+    "browserToDesktopEdit": true,
+    "desktopToBrowserEdit": true,
+    "threeUniqueTextAndStateValues": true,
+    "bothOwnedGuiProcessesExit0": true
+  },
+  "cleanup": {
+    "personalCatalogPreserved": true,
+    "ownedTestAppRemoved": true,
+    "ownedTestKeysRevoked": true,
+    "ownedGuiProcessesStopped": true
+  },
+  "bindings": [
+    {
+      "name": "private-acceptance-proof",
+      "sha256": "6d04c14685e67a40bbfb5b22f9c72aace740a98c2227613a64e3044b0c60baa3"
+    },
+    {
+      "name": "private-cleanup-proof",
+      "sha256": "35c29b6fc8f91ae43042039e6c5443f8a43388255d109110b176609a9f74a120"
+    }
+  ],
+  "limits": [
+    "Credential replacement exercised the supported programmatic ConnectionStore API. The secondary native window credential form is not covered.",
+    "This proves a desktop and browser share one authoritative hosted instance; independent-instance synchronization is not claimed."
+  ]
+}
