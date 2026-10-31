@@ -200,11 +200,11 @@ test('actual owned LocalInstance stays alive when the controller switches to a r
   f.cleanup.push(async () => { await instance?.stop(); });
   f.controller.startLocal = async selection => { instance ||= new LocalInstance({ platformDirectory: resolve('../ink-os-platform'), directory: selection.instanceDirectory, port: await localPort(selection.instanceDirectory) }); await instance.start(); };
   await f.controller.open('local-default'); assert.equal(instance.running, true); const local = await f.store.getClient('local-default');
-  assert.deepEqual(await (await fetch(local.url + '/api/v1/apps', { headers: { Authorization: 'Bearer ' + local.token } })).json(), []);
+  assert.deepEqual((await (await fetch(local.url + '/api/v1/apps', { headers: { Authorization: 'Bearer ' + local.token } })).json()).map(app=>JSON.parse(app.body).slug).sort(), ['finder','ink-environment','preview']);
   const environment = Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^(INK_|FLY_|AWS_|S3_|BUCKET_NAME)/.test(name)));
   Object.assign(environment, { INK_OS_DESKTOP_DATA_DIR: f.directory, INK_OS_PLATFORM_DIR: instance.platformDirectory });
   const execute = promisify(execFile), cli = new URL('../src/cli.mjs', import.meta.url);
-  const listed = await execute(process.execPath, [cli.pathname, 'apps', 'list'], { env: environment, maxBuffer: 1024 * 1024 }); assert.deepEqual(JSON.parse(listed.stdout), []);
+  const listed = await execute(process.execPath, [cli.pathname, 'apps', 'list'], { env: environment, maxBuffer: 1024 * 1024 }); assert.deepEqual(JSON.parse(listed.stdout).map(app=>JSON.parse(app.body).slug).sort(), ['finder','ink-environment','preview']);
   await f.controller.open(f.added.profile.id); assert.equal(instance.running, true); assert.equal((await fetch(local.url + '/api/health')).status, 200); assert.equal((await f.store.resolveCLI()).profileId, f.added.profile.id);
   const help = await execute(process.execPath, [cli.pathname, 'help'], { env: environment, maxBuffer: 1024 * 1024 }); assert.ok(help.stdout.includes('ink-os apps'));
 });

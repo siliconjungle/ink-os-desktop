@@ -63,7 +63,7 @@ const cli = async (...args) => JSON.parse((await execute(cliPath, args, { env, m
 let client;
 try {
   client = await instance.start();
-  assert.deepEqual(await cli('apps', 'list'), []);
+  assert.deepEqual((await cli('apps', 'list')).map(app=>JSON.parse(app.body).slug).sort(), ['finder','ink-environment','preview']);
   const native = await cli('native', 'status');
   assert.equal(native.available, false);
   assert.equal(native.buildAvailable, Boolean(native.installable));
@@ -94,7 +94,7 @@ try {
   const total = await cli('ink', 'run', deployment.appId, 'total'); assert.equal(total.valueWire, '3');
   assert.equal(total.backend, 'javascript');
   await verifyPage();
-  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'The packaged CLI imported local JavaScript Git source and served its authenticated, content-verified artifact and byte range before and after restart.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
+  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance contained exactly Finder, Preview and Ink Environment.', 'The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'The packaged CLI imported local JavaScript Git source and served its authenticated, content-verified artifact and byte range before and after restart.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
   proof.desktopSource = release.desktopSource;
   proof.verifierSha256 = hash(await readFile(fileURLToPath(import.meta.url)));
   if (ephemeralRunner) {

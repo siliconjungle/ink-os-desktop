@@ -22,7 +22,7 @@ test('desktop lifecycle owns a clean local instance and authenticates with its g
   assert.equal(instance.process.pid, pid);
   const response = await fetch(client.url + '/api/v1/apps', { headers: { authorization: 'Bearer ' + client.token } });
   assert.equal(response.status, 200);
-  assert.deepEqual(await response.json(), []);
+  assert.deepEqual((await response.json()).map(app=>JSON.parse(app.body).slug).sort(), ['finder','ink-environment','preview']);
   assert.equal((await fetch(client.url + '/api/v1/apps')).status, 401);
   assert.equal(await localPort(directory), port);
   const attached = new LocalInstance({ platformDirectory: instance.platformDirectory, directory, port: port + 1 });

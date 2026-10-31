@@ -269,7 +269,7 @@ export async function apiBootstrapAcceptance({ platformDirectory, directory, eph
     };
     stage = 'ordinary-startup-and-status';
     let api = await start(installer, 'api-host-cold-cache');
-    assert.deepEqual(await api.call('apps'), []);
+    assert.deepEqual((await api.call('apps')).map(app=>JSON.parse(app.body).slug).sort(), ['finder','ink-environment','preview']);
     const initialStatus = await api.call('native');
     assert.equal(initialStatus.available, false); assert.equal(initialStatus.installable, true); assert.equal(initialStatus.managed, true);
     assert.equal(await exists(cache), false); assert.equal(await exists(marker), false);

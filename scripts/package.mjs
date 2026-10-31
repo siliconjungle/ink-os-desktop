@@ -106,7 +106,7 @@ await run(process.execPath, [join(source, 'scripts', 'audit-source.mjs'), source
 await run(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['ci', '--ignore-scripts'], source);
 await run('npm', ['run', 'build'], source);
 await run('npm', ['prune', '--omit=dev', '--ignore-scripts'], source);
-const runtimePaths = ['server', 'shared', 'generated', 'ink', 'infra', 'app-runtime', 'sdk', 'cli', 'dist', 'node_modules', 'scripts/start.mjs', 'LICENSE', 'package.json', 'package-lock.json'];
+const runtimePaths = ['server', 'shared', 'generated', 'ink', 'default-apps', 'infra', 'app-runtime', 'sdk', 'cli', 'dist', 'node_modules', 'scripts/start.mjs', 'LICENSE', 'package.json', 'package-lock.json'];
 for (const name of runtimePaths) { await mkdir(dirname(join(runtime, name)), { recursive: true }); await cp(join(source, name), join(runtime, name), { recursive: true, verbatimSymlinks: true }); }
 await run(process.execPath, [join(source, 'scripts', 'audit-source.mjs'), runtime], source);
 await cp(join(root, 'src'), join(app, 'src'), { recursive: true });
