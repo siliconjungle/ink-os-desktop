@@ -1,29 +1,37 @@
 {
   "format": "ink-os-private-preview-publication-v1",
   "repository": "siliconjungle/ink-os-desktop",
-  "releaseId": 429681337,
-  "url": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/untagged-a4dd28cb14fcd50a6062",
-  "tag": "v0.1.0-preview.1",
-  "draft": true,
+  "releaseId": 429832980,
+  "url": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.4",
+  "tag": "v0.1.0-preview.4",
+  "draft": false,
   "prerelease": true,
+  "repositoryPrivate": true,
   "desktopSource": {
-    "commit": "92b660cf0cfdf65a0c60f6cfac73be0ec903965f",
+    "commit": "b7bd150725d700c63cbd185cdecdc657b8721886",
     "dirty": false
   },
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
+    "commit": "ff67610a3d334fff1da23cb76a7b3f2f5dec6087"
+  },
+  "signing": "ad-hoc-development",
+  "notarized": false,
+  "distributionDecision": "Development preview; Developer ID signing and notarization deferred.",
+  "freshMacVerification": {
+    "runId": "41189317990",
+    "commit": "da36ef971d9e41ee537e6d52e2bfa0403db4d829"
   },
   "assets": [
     {
       "name": "ink-os-0.1.0-darwin-arm64.dmg",
-      "size": 193781845,
-      "digest": "sha256:6269c172b7fbba01fad93d7998527fc274a794a00f38a6496adb4892d85a4708"
+      "size": 194317667,
+      "digest": "sha256:8c6426c1b6391802a082f9c3c45278798964526274add0b5f84f63979a8d763f"
     },
     {
       "name": "release.json",
       "size": 1619,
-      "digest": "sha256:df232b1885fbca5badd51167be52eb6e5ba2b6a7c3bf6540439ec12b2a2e37f4"
+      "digest": "sha256:36fffa88b7780f8c945a3c396f950d02f4190c92de471195755fe30634ca60b6"
     }
   ]
 }

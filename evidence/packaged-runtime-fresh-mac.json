@@ -1,0 +1,40 @@
+{
+  "format": "ink-os-packaged-runtime-proof-v1",
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "ff67610a3d334fff1da23cb76a7b3f2f5dec6087"
+  },
+  "artifactSha256": "8c6426c1b6391802a082f9c3c45278798964526274add0b5f84f63979a8d763f",
+  "manifestSha256": "11301c2ce5517d25236dbc45a8db5269b029d819d62271e309376c6e12d68d60",
+  "electron": "42.11.18",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "relocatedBundle": true,
+  "observed": [
+    "The packaged Electron executable ran its bundled platform independently of the source checkout.",
+    "Fresh instance had zero apps.",
+    "The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.",
+    "External node, git, cargo and rustc names were blocked on PATH.",
+    "The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.",
+    "A compatible JavaScript runtime remained usable with no native toolchain.",
+    "The packaged CLI imported local JavaScript Git source and served its authenticated, content-verified artifact and byte range before and after restart.",
+    "Saved state, instance identity and address survived host restart."
+  ],
+  "limits": [
+    "Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.",
+    "Fresh GitHub-hosted macOS runner; this is not a graphical first-launch or Gatekeeper acceptance test.",
+    "Managed native toolchains and notarized distribution remain separate work."
+  ],
+  "desktopSource": {
+    "commit": "b7bd150725d700c63cbd185cdecdc657b8721886",
+    "dirty": false
+  },
+  "verifierSha256": "fd2315ac2e22dc66eb9cb874ec4a06af7319d9ec065ead08e8f9d8db1c070b63",
+  "ci": {
+    "repository": "siliconjungle/ink-os-desktop",
+    "runId": "41189317990",
+    "commit": "da36ef971d9e41ee537e6d52e2bfa0403db4d829",
+    "runnerOS": "macOS",
+    "runnerArchitecture": "ARM64"
+  }
+}
