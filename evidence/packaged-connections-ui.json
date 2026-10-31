@@ -1,0 +1,37 @@
+{
+  "format": "ink-os-packaged-connections-ui-proof-v1",
+  "status": "passed",
+  "desktopSource": {
+    "commit": "b7bd150725d700c63cbd185cdecdc657b8721886"
+  },
+  "artifactSha256": "8c6426c1b6391802a082f9c3c45278798964526274add0b5f84f63979a8d763f",
+  "checks": {
+    "cmdCommaOpensNativeConnections": true,
+    "credentialControlStable": true,
+    "revokedKeyReplacementSavedViaActualNativeForm": true,
+    "connectionOpenedMessageObserved": true,
+    "sameAccountAndPartition": true,
+    "guiAndBundledCliAgree": true,
+    "hostedApps": 38
+  },
+  "cleanup": {
+    "testKeysRevoked": true,
+    "ownedGuiExit0": true,
+    "appsCreated": 0,
+    "personalApps": 38
+  },
+  "bindings": [
+    {
+      "name": "private-packaged-ui-proof",
+      "sha256": "c315955083c918f5f96a99d224e2198e50a1678f6c5e0acd576738d6df2b64a3"
+    },
+    {
+      "name": "private-packaged-cleanup-proof",
+      "sha256": "d19bfbf2634544673b71742447e769306bc7d4f979cd6228f5d45437f30f6fec"
+    }
+  ],
+  "limits": [
+    "Graphical acceptance ran on macOS arm64; other desktop targets are separate checks.",
+    "Native Rust bootstrap and pending-edit recovery have separate source/artifact-bound proofs."
+  ]
+}
