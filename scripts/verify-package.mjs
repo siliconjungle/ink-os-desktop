@@ -13,6 +13,14 @@ const releasePath = resolve(process.argv[2] || 'release.json'), output = dirname
 const release = JSON.parse(await readFile(releasePath));
 assert.equal(release.format, 'ink-os-desktop-package-v1');
 assert.equal(release.platform, process.platform); assert.equal(release.architecture, process.arch);
+const ephemeralRunner = process.env.INK_OS_VERIFY_EPHEMERAL_RUNNER === '1';
+if (ephemeralRunner) {
+  assert.equal(process.env.GITHUB_ACTIONS, 'true');
+  assert.equal(process.env.RUNNER_OS, 'macOS');
+  assert.equal(process.env.RUNNER_ARCH, 'ARM64');
+  assert.match(process.env.GITHUB_RUN_ID || '', /^[1-9][0-9]*$/);
+  assert.match(process.env.GITHUB_SHA || '', /^[a-f0-9]{40}$/);
+}
 const bundle = process.env.INK_OS_VERIFY_BUNDLE ? resolve(process.env.INK_OS_VERIFY_BUNDLE) : resolve(output, release.bundle), inside = relative(output, bundle);
 if (!process.env.INK_OS_VERIFY_BUNDLE) assert.ok(inside !== '..' && !inside.startsWith('..' + sep));
 assert.equal(hash(await readFile(join(output, release.artifact))), release.artifactSha256);
@@ -84,6 +92,12 @@ try {
   assert.equal(total.backend, 'javascript');
   await verifyPage();
   const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'The packaged CLI imported local JavaScript Git source and served its authenticated, content-verified artifact and byte range before and after restart.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
+  proof.desktopSource = release.desktopSource;
+  proof.verifierSha256 = hash(await readFile(fileURLToPath(import.meta.url)));
+  if (ephemeralRunner) {
+    proof.ci = { repository: process.env.GITHUB_REPOSITORY, runId: process.env.GITHUB_RUN_ID, commit: process.env.GITHUB_SHA, runnerOS: process.env.RUNNER_OS, runnerArchitecture: process.env.RUNNER_ARCH };
+    proof.limits[1] = 'Fresh GitHub-hosted macOS runner; this is not a graphical first-launch or Gatekeeper acceptance test.';
+  }
   await mkdir(join(root, 'evidence'), { recursive: true });
   await writeFile(join(root, 'evidence', 'packaged-runtime.json'), JSON.stringify(proof, null, 2) + '\n');
   console.log(JSON.stringify(proof, null, 2));

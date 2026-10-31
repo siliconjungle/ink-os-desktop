@@ -1,0 +1,105 @@
+name: Verify Mac preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseId:
+        description: Numeric ID of a release in this repository
+        required: true
+        type: string
+      manifestSha256:
+        description: Reviewed SHA-256 of the release.json asset
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  packaged-runtime:
+    runs-on: macos-15
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Download the exact private release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ inputs.releaseId }}
+          MANIFEST_SHA256: ${{ inputs.manifestSha256 }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          assert.match(process.env.RELEASE_ID, /^[1-9][0-9]{0,15}$/);
+          assert.match(process.env.MANIFEST_SHA256, /^[a-f0-9]{64}$/);
+          assert.match(process.env.GITHUB_REPOSITORY, /^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/);
+          JS
+          directory="$RUNNER_TEMP/ink-preview"
+          mkdir "$directory"
+          gh api "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" > "$directory/metadata.json"
+          node --input-type=module <<'JS'
+          import { readFile, writeFile } from 'node:fs/promises';
+          import assert from 'node:assert/strict';
+          const root = process.env.RUNNER_TEMP + '/ink-preview';
+          const release = JSON.parse(await readFile(root + '/metadata.json'));
+          assert.equal(String(release.id), process.env.RELEASE_ID);
+          const selected = {};
+          for (const name of ['release.json', 'ink-os-0.1.0-darwin-arm64.dmg']) {
+            const matches = release.assets.filter(asset => asset.name === name);
+            assert.equal(matches.length, 1);
+            const asset = matches[0];
+            assert.ok(Number.isSafeInteger(asset.id) && asset.id > 0);
+            assert.equal(asset.state, 'uploaded');
+            assert.match(asset.digest, /^sha256:[a-f0-9]{64}$/);
+            assert.ok(Number.isSafeInteger(asset.size) && asset.size > 0 && asset.size <= 536870912);
+            selected[name] = { id: asset.id, bytes: asset.size, sha256: asset.digest.slice(7) };
+          }
+          assert.equal(selected['release.json'].sha256, process.env.MANIFEST_SHA256);
+          await writeFile(root + '/selected.json', JSON.stringify(selected));
+          JS
+          for name in release.json ink-os-0.1.0-darwin-arm64.dmg; do
+            asset_id="$(node -e 'console.log(JSON.parse(require("fs").readFileSync(process.argv[1]))[process.argv[2]].id)' "$directory/selected.json" "$name")"
+            gh api -H 'Accept: application/octet-stream' "repos/$GITHUB_REPOSITORY/releases/assets/$asset_id" > "$directory/$name"
+          done
+          node --input-type=module <<'JS'
+          import { readFile } from 'node:fs/promises';
+          import { createHash } from 'node:crypto';
+          import assert from 'node:assert/strict';
+          const root = process.env.RUNNER_TEMP + '/ink-preview';
+          const selected = JSON.parse(await readFile(root + '/selected.json'));
+          for (const [name, asset] of Object.entries(selected)) {
+            const bytes = await readFile(root + '/' + name);
+            assert.equal(bytes.length, asset.bytes);
+            assert.equal(createHash('sha256').update(bytes).digest('hex'), asset.sha256);
+          }
+          const release = JSON.parse(await readFile(root + '/release.json'));
+          assert.equal(release.artifact, 'ink-os-0.1.0-darwin-arm64.dmg');
+          assert.equal(release.artifactSha256, selected[release.artifact].sha256);
+          assert.equal(release.platform, 'darwin');
+          assert.equal(release.architecture, 'arm64');
+          assert.equal(release.desktopSource.dirty, false);
+          assert.match(release.desktopSource.commit, /^[a-f0-9]{40}$/);
+          JS
+      - name: Verify a relocated app on the fresh runner
+        env:
+          INK_OS_VERIFY_EPHEMERAL_RUNNER: '1'
+        run: |
+          set -euo pipefail
+          directory="$RUNNER_TEMP/ink-preview"
+          mount="$directory/mount"
+          mkdir "$mount" "$directory/relocated"
+          hdiutil attach "$directory/ink-os-0.1.0-darwin-arm64.dmg" -readonly -nobrowse -mountpoint "$mount"
+          trap 'hdiutil detach "$mount"' EXIT
+          ditto "$mount/Ink OS.app" "$directory/relocated/Ink OS.app"
+          export INK_OS_VERIFY_BUNDLE="$directory/relocated"
+          node scripts/verify-package.mjs "$directory/release.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packaged-runtime-proof
+          path: evidence/packaged-runtime.json
+          retention-days: 7
