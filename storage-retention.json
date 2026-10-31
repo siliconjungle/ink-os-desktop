@@ -18,9 +18,10 @@
     ".local/managed-native-success": "Selected downloaded CI proof and byte-exact required Rust notices; upstream pins, installer/verifier and input hashes reproduce the proof.",
     "evidence/managed-native-api.json": "Selected real cold-cache managed native API job, persistent cross-engine state and toolchain-unavailable restart/cache acceptance with exact source and CI binding.",
     ".local/managed-native-api-success": "Selected actual API proof, byte-exact Rust notices and exact successful verifier input sources.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-7va5Am": "Active desktop package output; preserve until packaging and validation complete.",
-    "evidence/hosted-connections.json": "Selected packaged local/hosted GUI and shared CLI interoperability acceptance, with private proof digest and explicit limits."
+    "evidence/hosted-connections.json": "Selected packaged local/hosted GUI and shared CLI interoperability acceptance, with private proof digest and explicit limits.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "release/0.1.0-darwin-arm64-dN6Vza": "Active desktop package output; preserve until packaging and validation complete."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -54,6 +55,8 @@
     ".local/release-notes.txt": "Completed draft release body staging; the published private draft and immutable artifact/source proof are retained.",
     ".local/native-proof-secret-scan.json": "Completed redacted scanner diagnostic of a non-secret compatibility hash; selected public proof omits the redundant hash, and complete source/history scans are required before publication.",
     ".local/package-M6cKNu": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
-    ".local/package-proof-h8Fcol": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
+    ".local/package-proof-h8Fcol": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-OINDSI": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-Plp0on": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }

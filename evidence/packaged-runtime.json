@@ -2,10 +2,10 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "ad737fa16e8205f7a0212b4116b22bca026190a8"
+    "commit": "db681b25abc2fa6de6e2bda2e876f24c8aa1c5df"
   },
-  "artifactSha256": "eb0b914f67e75975bf1d2b3394c1d8038d2febea56163225ba742a1abf0d980c",
-  "manifestSha256": "25eec7cf5f92f663c9c820d5fb093fd4bea3af9913157471baec42d0e607bf56",
+  "artifactSha256": "7065686c259711378b4859873a2f7ca1f75686983ecf950b232828a6f2f40629",
+  "manifestSha256": "868de699f5dcecc05ee528eff5b3f7c29863d71bc09866abfdb313484c010ae5",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
@@ -17,6 +17,7 @@
     "External node, git, cargo and rustc names were blocked on PATH.",
     "The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.",
     "A compatible JavaScript runtime remained usable with no native toolchain.",
+    "The packaged CLI imported local JavaScript Git source and served its authenticated, content-verified artifact and byte range before and after restart.",
     "Saved state, instance identity and address survived host restart."
   ],
   "limits": [
