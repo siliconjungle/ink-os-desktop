@@ -2,10 +2,10 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "ff67610a3d334fff1da23cb76a7b3f2f5dec6087"
+    "commit": "d87bdeba0feb74c031a27567aec92b9c14c523cc"
   },
-  "artifactSha256": "8c6426c1b6391802a082f9c3c45278798964526274add0b5f84f63979a8d763f",
-  "manifestSha256": "11301c2ce5517d25236dbc45a8db5269b029d819d62271e309376c6e12d68d60",
+  "artifactSha256": "b8d802793dd6d095ea8cff55e9c9f1e20d94d57b54cb2f10604670e7bc74d200",
+  "manifestSha256": "a7e27960d2a8d2bf0056e2efd2989a0d02eaa4cc177e20432146158b66bceaa0",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
@@ -24,5 +24,10 @@
     "Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.",
     "This host is not a clean virtual machine.",
     "Managed native toolchains and notarized distribution remain separate work."
-  ]
+  ],
+  "desktopSource": {
+    "commit": "a55e24963b17a91c9c2bd66c51ccb8644cd8dd24",
+    "dirty": false
+  },
+  "verifierSha256": "5bf15fb85a9e889d53275b7fdead64a8bba32341c83185dda67e04ebf5b4c61f"
 }

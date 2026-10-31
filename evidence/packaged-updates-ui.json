@@ -1,0 +1,36 @@
+{
+  "format": "ink-os-packaged-updates-ui-v1",
+  "artifactSha256": "b8d802793dd6d095ea8cff55e9c9f1e20d94d57b54cb2f10604670e7bc74d200",
+  "desktopSource": {
+    "commit": "a55e24963b17a91c9c2bd66c51ccb8644cd8dd24",
+    "dirty": false
+  },
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "d87bdeba0feb74c031a27567aec92b9c14c523cc"
+  },
+  "observed": [
+    "Actual packaged GUI started a fresh zero-app local desktop.",
+    "Native update shortcut displayed the current-release dialog and custom Ink OS icon.",
+    "Native Connections form connected to the existing hosted instance and pinned its identity.",
+    "Switching back returned to the original empty local desktop.",
+    "Native quit drained its owned local host and exited with code 0."
+  ],
+  "limits": [
+    "Preview installation uses a verified manual installer; notarization is deferred."
+  ],
+  "screenshots": [
+    {
+      "path": "update-dialog.png",
+      "sha256": "86555cc4f29b9dc5dbb9fcb4c08fe19f38bd1a8af4d03ee6847aa2f7f5805a53"
+    },
+    {
+      "path": "hosted-desktop.png",
+      "sha256": "38e889d392ed140c1b2d73dff4aba24ed3396d1fee0cd8cfcbe47c0cd848db9b"
+    },
+    {
+      "path": "local-desktop.png",
+      "sha256": "0da38ca804debe00dda19e7e3217606fed16fb91c60cefec600f32c323e5a46d"
+    }
+  ]
+}

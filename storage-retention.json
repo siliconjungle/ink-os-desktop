@@ -24,7 +24,6 @@
     "release/0.1.0-darwin-arm64-Rm5HkG": "Active desktop package output; preserve until packaging and validation complete.",
     "evidence/pending-outbox.json": "Selected actual packaged desktop IndexedDB pending outbox, credential rotation, process restart and two-client convergence proof, with private proof hashes and limits.",
     "evidence/native-connections-ui.json": "Selected actual native shortcut, credential-form key rotation, zero-app local/38-app hosted switching, CLI parity and owned-host quit-drain proof, with exact source hashes and limits.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-Iyn2Ox": "Selected verified development-preview DMG, manifest and expanded bundle; exact packaged GUI/runtime acceptance and private preview4 publication depend on it.",
     "evidence/packaged-connections-ui.json": "Selected actual packaged native shortcut/credential-form key replacement and shared GUI/bundled-CLI readback with exact source/artifact bindings and private proof hashes.",
     ".github/workflows/verify-preview.yml": "Reproduction recipe for exact private release download and fresh macOS relocated packaged-runtime acceptance.",
@@ -33,7 +32,9 @@
     "src/updates.mjs": "Configured release publisher, exact manifest/asset binding, credential-safe CDN redirects and verified cancellable downloads.",
     "src/updates-config.json": "Version/build/channel and fork-configurable release source; no personal deployment identity or credentials.",
     "tests/updates.test.mjs": "Actual private API/CDN fixture verification, version/checksum/source/credential/cancellation proof inputs.",
-    ".local/updates-all-tests.log": "Required desktop full-regression update/connection/native-toolchain validation log."
+    ".local/updates-all-tests.log": "Required desktop full-regression update/connection/native-toolchain validation log.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "release/0.1.0-darwin-arm64-pC4peV": "Active desktop package output; preserve until packaging and validation complete."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -73,6 +74,8 @@
     ".local/package-1KQ8Dm": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-proof-sbQwTS": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     ".local/package-Oe2BGE": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
-    ".local/package-proof-FfBOLj": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
+    ".local/package-proof-FfBOLj": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-IAS0nP": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-mPvIo5": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }
