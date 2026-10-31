@@ -47,6 +47,20 @@ export function validateConnectionAction(input) {
   if (input.token !== undefined && (typeof input.token !== 'string' || input.token.length > 4096) || input.action === 'credential' && !input.token) fail('INVALID_INPUT', 'Invalid credential input');
   return input;
 }
+export async function dispatchConnectionAction(request, { store, open, close, changed }) {
+  const input = validateConnectionAction(request);
+  if (input.action === 'list') return store.list();
+  if (input.action === 'close') { close(); return { closed: true }; }
+  let result;
+  if (input.action === 'connect') {
+    const added = await store.addRemote({ label: input.label, url: input.url, mode: input.mode, ...(input.token ? { token: input.token } : {}) });
+    await open(added.profile.id); result = await store.list();
+  } else if (input.action === 'select') { await open(input.profileId); result = await store.list(); }
+  else if (input.action === 'credential') { await store.saveCredential(input.profileId, input.token, { expectedRevision: input.revision }); await open(input.profileId, { forceReauthenticate: true }); result = await store.list(); }
+  else if (input.action === 'upgrade') { await store.upgradeRemoteIdentity(input.profileId, { expectedRevision: input.revision }); await open(input.profileId); result = await store.list(); }
+  else if (input.action === 'remove') { await store.removeProfile(input.profileId, { expectedRevision: input.revision }); result = await store.list(); }
+  await changed(); return result;
+}
 function sessionCookie(response, origin) {
   const headers = response.headers.getSetCookie?.() || [response.headers.get('set-cookie')].filter(Boolean), candidates = headers.filter(header => /^ink_os_session=/.test(header));
   if (candidates.length !== 1 || candidates[0].length > 16384 || /[\r\n\0]/.test(candidates[0])) fail('LOGIN_COOKIE_INVALID', 'Invalid desktop session cookie');

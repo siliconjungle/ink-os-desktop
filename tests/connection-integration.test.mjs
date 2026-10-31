@@ -9,12 +9,29 @@ import { runInNewContext } from 'node:vm';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { ConnectionStore } from '../src/connections.mjs';
-import { ConnectionController, authenticateConnection, connectionNavigationGuard, safeConnectionError, trustedConnectionSender, validateConnectionAction } from '../src/connection-controller.mjs';
+import { ConnectionController, authenticateConnection, connectionNavigationGuard, safeConnectionError, trustedConnectionSender, validateConnectionAction, dispatchConnectionAction } from '../src/connection-controller.mjs';
 import { connectionLayout, connectionOwnerHelpers, canonicalProfileDirectory, canonicalProfileDirectorySync } from '../src/connection-layout.mjs';
 import { hasExplicitConnection, runDesktopCLI } from '../src/cli.mjs';
 import { LocalInstance, localPort } from '../src/local-instance.mjs';
 
 const remote = 'https://remote.invalid', remoteID = 'a'.repeat(32), credential = 'fixture-owner-token-123456789';
+test('connection reads do not notify subscribers and mutation-triggered refresh cannot feed back into itself', async () => {
+  let reads = 0, notifications = 0; const calls = [], state = { revision: 3, profiles: [] };
+  const handlers = { store: { list: async () => { reads++; return state; }, saveCredential: async (...args) => calls.push(['saved', ...args]) },
+    open: async (...args) => calls.push(['opened', ...args]), close: () => calls.push(['closed']),
+    changed: async () => { if (++notifications > 2) throw Error('Connection notification feedback loop'); calls.push(['notified']); await dispatchConnectionAction({ action: 'list' }, handlers); } };
+  assert.equal(await dispatchConnectionAction({ action: 'list' }, handlers), state); assert.equal(reads, 1); assert.equal(notifications, 0);
+  await dispatchConnectionAction({ action: 'credential', profileId: remoteID, token: credential, revision: 2 }, handlers);
+  assert.equal(notifications, 1); assert.equal(reads, 3);
+  assert.deepEqual(calls, [['saved', remoteID, credential, { expectedRevision: 2 }], ['opened', remoteID, { forceReauthenticate: true }], ['notified']]);
+  assert.deepEqual(await dispatchConnectionAction({ action: 'close' }, handlers), { closed: true }); assert.equal(notifications, 1);
+});
+test('rejected connection mutations preserve the current window and send no changed notification', async () => {
+  let changed = 0, opened = 0;
+  const handlers = { store: { saveCredential: async () => { throw Object.assign(Error('Stale selection'), { code: 'REVISION_CONFLICT' }); } }, open: async () => { opened++; }, changed: async () => { changed++; } };
+  await assert.rejects(dispatchConnectionAction({ action: 'credential', profileId: remoteID, token: credential, revision: 0 }, handlers), { code: 'REVISION_CONFLICT' });
+  await assert.rejects(dispatchConnectionAction({ action: 'unexpected' }, handlers), { code: 'INVALID_INPUT' }); assert.equal(changed, 0); assert.equal(opened, 0);
+});
 test('Electron modern/legacy navigation policy binds the main frame while allowing hosted-app iframe redirects', () => {
   // Shapes match the bundled Electron 42 Event<WebContentsWillRedirectEventParams>
   // and the documented deprecated positional signature; no renderer/host calls.

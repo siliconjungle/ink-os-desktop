@@ -23,7 +23,8 @@
     "release/0.1.0-darwin-arm64-dN6Vza": "Active desktop package output; preserve until packaging and validation complete.",
     ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-Rm5HkG": "Active desktop package output; preserve until packaging and validation complete.",
-    "evidence/pending-outbox.json": "Selected actual packaged desktop IndexedDB pending outbox, credential rotation, process restart and two-client convergence proof, with private proof hashes and limits."
+    "evidence/pending-outbox.json": "Selected actual packaged desktop IndexedDB pending outbox, credential rotation, process restart and two-client convergence proof, with private proof hashes and limits.",
+    "evidence/native-connections-ui.json": "Selected actual native shortcut, credential-form key rotation, zero-app local/38-app hosted switching, CLI parity and owned-host quit-drain proof, with exact source hashes and limits."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",

@@ -2,7 +2,7 @@ import { app, BrowserWindow, session, shell, dialog, Menu, ipcMain } from 'elect
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ConnectionStore, connectionOrigin } from './connections.mjs';
-import { ConnectionController, authenticateConnection, connectionNavigationGuard, safeConnectionError, trustedConnectionSender, validateConnectionAction } from './connection-controller.mjs';
+import { ConnectionController, authenticateConnection, connectionNavigationGuard, safeConnectionError, trustedConnectionSender, dispatchConnectionAction } from './connection-controller.mjs';
 import { canonicalProfileDirectorySync, connectionLayout, connectionOwnerHelpers } from './connection-layout.mjs';
 import { LocalInstance, localPort } from './local-instance.mjs';
 import { runtimeEnvironment } from './runtime.mjs';
@@ -24,6 +24,10 @@ async function initialize() {
       createWindow: selection => {
         const window = new BrowserWindow({ show: false, width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', icon: icon(), backgroundColor: '#101010', webPreferences: { partition: selection.partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
         window.webContents.setWindowOpenHandler(({ url }) => { try { const parsed = new URL(url); if (['https:', 'http:'].includes(parsed.protocol)) void shell.openExternal(parsed.href); } catch {} return { action: 'deny' }; });
+        window.webContents.on('before-input-event', (event, input) => {
+          const command = process.platform === 'darwin' ? input.meta : input.control;
+          if (input.type === 'keyDown' && command && !input.alt && !input.shift && input.key === ',') { event.preventDefault(); openConnections(); }
+        });
         const guardOrigin = connectionNavigationGuard(selection.url);
         window.webContents.on('will-navigate', guardOrigin); window.webContents.on('will-redirect', guardOrigin);
         return window;
@@ -56,15 +60,7 @@ async function showConnections() {
 ipcMain.handle('ink:connections', async (event, request) => {
   if (!trustedConnectionSender(event, connectionsWindow, uiURL)) return { ok: false, error: { code: 'FORBIDDEN', message: 'This request is available only in Connections.' } };
   try {
-    const input = validateConnectionAction(request); let result;
-    if (input.action === 'list') result = await store.list();
-    else if (input.action === 'connect') { const added = await store.addRemote({ label: input.label, url: input.url, mode: input.mode, ...(input.token ? { token: input.token } : {}) }); await switchConnection(added.profile.id); result = await store.list(); }
-    else if (input.action === 'select') { await switchConnection(input.profileId); result = await store.list(); }
-    else if (input.action === 'credential') { await store.saveCredential(input.profileId, input.token, { expectedRevision: input.revision }); await switchConnection(input.profileId, { forceReauthenticate: true }); result = await store.list(); }
-    else if (input.action === 'upgrade') { await store.upgradeRemoteIdentity(input.profileId, { expectedRevision: input.revision }); await switchConnection(input.profileId); result = await store.list(); }
-    else if (input.action === 'remove') { await store.removeProfile(input.profileId, { expectedRevision: input.revision }); result = await store.list(); }
-    else { connectionsWindow.close(); result = { closed: true }; }
-    if (input.action !== 'close') { await updateMenu(); notifyConnections(); }
+    const result = await dispatchConnectionAction(request, { store, open: switchConnection, close: () => connectionsWindow.close(), changed: async () => { await updateMenu(); notifyConnections(); } });
     return { ok: true, result };
   } catch (error) { return { ok: false, error: safeConnectionError(error) }; }
 });

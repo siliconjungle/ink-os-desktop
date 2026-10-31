@@ -1,0 +1,49 @@
+{
+  "format": "ink-os-native-connections-ui-proof-v1",
+  "status": "passed",
+  "scope": "Actual isolated Electron development GUI with exact source hashes; packaged refresh follows separately.",
+  "electron": "42.11.18",
+  "sources": [
+    {
+      "path": "src/main.mjs",
+      "sha256": "aad151b5d0b75d33e650d5c0d9d294950c63efbee20af384522ba0c27bf115f8"
+    },
+    {
+      "path": "src/connection-controller.mjs",
+      "sha256": "258cb71d7a88118d6e7687bf4d78287fc289bfaa2861b239297f7d3a19777fac"
+    },
+    {
+      "path": "src/connections-ui.mjs",
+      "sha256": "b4ce383d75b7e597c7d41ff337058591211134b3515030aabb8f78af6a6bff04"
+    }
+  ],
+  "checks": {
+    "cmdCommaOpensNativeConnections": true,
+    "credentialButtonOperable": true,
+    "revokedKeyReplacementSavedViaActualForm": true,
+    "sameAccountAndPartition": true,
+    "credentialVersion": 1,
+    "connectionOpenedMessageObserved": true,
+    "localSelectionViaUi": true,
+    "localCatalogApps": 0,
+    "localGuiAndCliAgree": true,
+    "remoteSelectionViaUi": true,
+    "remoteGuiAndCliAgree": true,
+    "hostedCatalogApps": 38,
+    "ownedLocalRemainsRunningWhenRemoteSelected": true,
+    "readOnlyNotificationFeedbackPrevented": true
+  },
+  "cleanup": {
+    "ownedGuiProcessesExit0": true,
+    "ownedLocalHostStoppedOnHostedQuit": true,
+    "testKeysRevoked": true,
+    "appsCreated": 0,
+    "personalApps": 38
+  },
+  "bindings": [
+    {
+      "name": "private-native-ui-proof",
+      "sha256": "b22f518a66ec23706ad0ab737fcdd2b8ebf76d0d31a34197d29aa448645ae3ec"
+    }
+  ]
+}
