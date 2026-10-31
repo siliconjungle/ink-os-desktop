@@ -1,0 +1,409 @@
+{
+  "format": "ink-os-managed-native-toolchain-proof-v1",
+  "status": "passed",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "startedAt": "2026-10-31T04:23:58.104Z",
+  "release": {
+    "supported": true,
+    "version": "1.96.0",
+    "date": "2026-05-28",
+    "manifest": "https://static.rust-lang.org/dist/channel-rust-1.96.0.toml",
+    "target": "aarch64-apple-darwin",
+    "components": [
+      {
+        "name": "rustc",
+        "sha256": "c1a23d0ac24da25eca730d87d74d7f6f771d48167fc93e45d79f0e12f486c8d9",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rustc-1.96.0-aarch64-apple-darwin.tar.gz",
+        "root": "rustc-1.96.0-aarch64-apple-darwin",
+        "component": "rustc"
+      },
+      {
+        "name": "cargo",
+        "sha256": "178581665d8b3af41f3fe21cb8a48aa7eb65ab4c567f53f3661a3a6c9b182f2e",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/cargo-1.96.0-aarch64-apple-darwin.tar.gz",
+        "root": "cargo-1.96.0-aarch64-apple-darwin",
+        "component": "cargo"
+      },
+      {
+        "name": "rust-std",
+        "sha256": "a5c160197236f68cc8627a573545fd883d4d98856fb654a6d6aa5883ff1bdcc7",
+        "url": "https://static.rust-lang.org/dist/2026-05-28/rust-std-1.96.0-aarch64-apple-darwin.tar.gz",
+        "root": "rust-std-1.96.0-aarch64-apple-darwin",
+        "component": "rust-std-aarch64-apple-darwin"
+      }
+    ],
+    "identity": "5cdac21d4c12973a0af33a35bd9b2959c3a041d180eaa39569ad5e1d30181e77",
+    "cacheKey": "rust-1.96.0-aarch64-apple-darwin-5cdac21d4c12973a"
+  },
+  "reserve": {
+    "productDefaultBytes": 2147483648,
+    "verificationDefaultBytes": 107374182400,
+    "selectedBytes": 2147483648,
+    "estimatedInstallationBytes": 5368709120,
+    "explicitEphemeralOverride": true,
+    "declaredEphemeralRunner": true
+  },
+  "inputs": {
+    "verifierSha256": "0e296d8bf2a189b0e71a4e74801aab1b92a8377b5b6e34201799224ee8df6ec6",
+    "installerSha256": "e76d4d9660748ec50389f4ccb4f84a094e7f959e6120423a8e913ab46eac2a0a",
+    "rustSourceSha256": "f364bb1bfa5dbf27a19ef74b8960f99a90ba0c835c266903ca0a71875d747bf7",
+    "cargoManifestSha256": "0fe7bf0b7211afa05eaff9e8d73ebae4ab183aa6fb5da16d333767d19952692a",
+    "cargoLockSha256": "154cf222d0d23ff038ac0678ccb9b1851e431cc12c1af4e285855c9e1150c676"
+  },
+  "commands": [
+    {
+      "role": "api-cold-cache-bootstrap",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 13401,
+      "stdoutBytes": 2268,
+      "stderrBytes": 0,
+      "stdoutSha256": "fd3a5ba5fa00679d4b72f5cfcf0ef5934785451ddc887552f2febe529a4b8299",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "installed-rustc-version",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 13,
+      "stdoutBytes": 192,
+      "stderrBytes": 0,
+      "stdoutSha256": "aea7c77c2b0d24444d07240e4d785e4ba73b6c9e786748af2ddc22bbf4c104bf",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "installed-cargo-version",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 10,
+      "stdoutBytes": 36,
+      "stderrBytes": 0,
+      "stdoutSha256": "b6ef6807dd96d18b833474ad68e7a23a29e562a29c67afa71a59fb9a73df0068",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "apple-clang-version",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 5,
+      "stdoutBytes": 206,
+      "stderrBytes": 0,
+      "stdoutSha256": "df12815703ce3452ab4bd51ecbea4cf8155246b94b5b15113a580ff6aec2befd",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "apple-sdk-version",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 410,
+      "stdoutBytes": 5,
+      "stderrBytes": 0,
+      "stdoutSha256": "521fbd942d19d4f08ee3ac22fe5e1fee54d05fb48db0d8d179461b8195d210eb",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "role": "installed-cargo-build",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 128,
+      "stdoutBytes": 0,
+      "stderrBytes": 202,
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderrSha256": "980d5316fb8b7dfe867cbf037b51be1793ef8e5dc5a2f23d544e108833ab6ebe"
+    },
+    {
+      "role": "compiled-rust-smoke",
+      "exitCode": 0,
+      "signal": null,
+      "durationMs": 3,
+      "stdoutBytes": 41,
+      "stderrBytes": 0,
+      "stdoutSha256": "36c2f46ee49d9064c09c9b3381a57eba388ad64008353ab5f22ac36c38171113",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "licenses": [
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rustc/LICENSE-APACHE",
+      "retainedFile": "0001-261202d0d0457246.txt",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "bytes": 9723
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rustc/COPYRIGHT",
+      "retainedFile": "0002-bc04e2506d9e3588.txt",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "bytes": 1571
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rustc/LICENSE-MIT",
+      "retainedFile": "0003-cfaf474e4460ef2d.txt",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "bytes": 1068
+    },
+    {
+      "distributionPath": "share/doc/rust/COPYRIGHT.html",
+      "retainedFile": "0004-1bdbc2de8f62886f.txt",
+      "sha256": "139ebc62da648fa8dfea9d11ca6919ac417e8bfaffa08795341a414097a1fe24",
+      "bytes": 15404403
+    },
+    {
+      "distributionPath": "share/doc/rust/COPYRIGHT-library.html",
+      "retainedFile": "0005-11ea8b9537e9dace.txt",
+      "sha256": "78c163fcec50e64bfd85fedb850c273595602fafa2b41f30f75d4e410b80ee83",
+      "bytes": 425651
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/Apache-2.0.txt",
+      "retainedFile": "0006-089a63bffa571916.txt",
+      "sha256": "074e6e32c86a4c0ef8b3ed25b721ca23aca83df277cd88106ef7177c354615ff",
+      "bytes": 10280
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/Unicode-3.0.txt",
+      "retainedFile": "0007-2a53ad0e81d4130f.txt",
+      "sha256": "f5062c9a188d81dfe66b56db4182dcf9e4b17c0d9b0d311a8e20b3a1b075c443",
+      "bytes": 1995
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/CC-BY-SA-4.0.txt",
+      "retainedFile": "0008-55c48a4bb9d6734d.txt",
+      "sha256": "23ee78c8bae49cf08ea2f0c84945c66b987ebe4520881fb51b3dad4fb43d07c2",
+      "bytes": 20137
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/OFL-1.1.txt",
+      "retainedFile": "0009-5a54aa1f1be1368f.txt",
+      "sha256": "8eea8287e5876b539670cadb82e99f9a7afddec6f6730811be1daf25d2e9bcfd",
+      "bytes": 4016
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/GCC-exception-3.1.txt",
+      "retainedFile": "0010-490d615658442ff5.txt",
+      "sha256": "a3966c9410ef94a1efbfa9ec04e9c1994026a70623fbf0885ce36737bfba3b54",
+      "bytes": 3320
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/NCSA.txt",
+      "retainedFile": "0011-a00a9648d8051ea8.txt",
+      "sha256": "39cb0234065c92b9e6cee3830cbb52b1aa289aa8fe9ba2e66730fec5cf05c630",
+      "bytes": 1676
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/ISC.txt",
+      "retainedFile": "0012-bfd31f6ca629385c.txt",
+      "sha256": "0ff61769b238634e042ab759dddfd104a8e69d091e3600ae3410e401a6164381",
+      "bytes": 730
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/MIT.txt",
+      "retainedFile": "0013-8bb4253e21cdf9c8.txt",
+      "sha256": "b85dcd3e453d05982552c52b5fc9e0bdd6d23c6f8e844b984a88af32570b0cc0",
+      "bytes": 1078
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/BSD-2-Clause.txt",
+      "retainedFile": "0014-babdfd12aca55f55.txt",
+      "sha256": "f32fb3b417a194167cfad068223fc975ba96c5960513a10f66a3c28720aec1df",
+      "bytes": 1267
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/LLVM-exception.txt",
+      "retainedFile": "0015-186df6ce44d0eab7.txt",
+      "sha256": "e34c58338bd89d43e709e226610d8f32b3e3c47f4ad9a99a8dc1d4ac7842488e",
+      "bytes": 919
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/GPL-3.0-or-later.txt",
+      "retainedFile": "0016-320a54866ca5fc7a.txt",
+      "sha256": "05315fce6c35f79b8a35454828995fa26336f235895ac64557abc028f4ffcea2",
+      "bytes": 34795
+    },
+    {
+      "distributionPath": "share/doc/rust/licenses/GPL-2.0-only.txt",
+      "retainedFile": "0017-7fffcabe1f9a753b.txt",
+      "sha256": "54b212ba1f97f6948fa5486239ab505dd820b02e50cbfd296b4062c8609a70af",
+      "bytes": 17642
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/cargo/LICENSE-APACHE",
+      "retainedFile": "0018-bd8165a1681aeee6.txt",
+      "sha256": "8ada45cd9f843acf64e4722ae262c622a2b3b3007c7310ef36ac1061a30f6adb",
+      "bytes": 10860
+    },
+    {
+      "distributionPath": "share/doc/cargo/LICENSE-APACHE",
+      "retainedFile": "0019-d3d9421f95ba5a2a.txt",
+      "sha256": "8ada45cd9f843acf64e4722ae262c622a2b3b3007c7310ef36ac1061a30f6adb",
+      "bytes": 10860
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/cargo/LICENSE-MIT",
+      "retainedFile": "0020-8dac44ab240a7b08.txt",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "bytes": 1023
+    },
+    {
+      "distributionPath": "share/doc/cargo/LICENSE-MIT",
+      "retainedFile": "0021-f3a05601dd061ca0.txt",
+      "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3",
+      "bytes": 1023
+    },
+    {
+      "distributionPath": "share/doc/cargo/LICENSE-THIRD-PARTY",
+      "retainedFile": "0022-e718a856491b1bb2.txt",
+      "sha256": "cbc759b1f17a2ac38fe3eb9e9563b1a08ba0f900611c49faaf68b46907b6d898",
+      "bytes": 68430
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rust-std/LICENSE-APACHE",
+      "retainedFile": "0023-ca7d034b3d9b7701.txt",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "bytes": 9723
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rust-std/COPYRIGHT",
+      "retainedFile": "0024-e24728765d9d904b.txt",
+      "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af",
+      "bytes": 1571
+    },
+    {
+      "distributionPath": "share/ink-toolchain-licenses/rust-std/LICENSE-MIT",
+      "retainedFile": "0025-31d7ede13851870b.txt",
+      "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+      "bytes": 1068
+    }
+  ],
+  "licenseArtifacts": "<proof-file>.licenses/<retainedFile>",
+  "licenseRetentionLimits": {
+    "fileBytes": 134217728,
+    "totalBytes": 536870912,
+    "files": 2000
+  },
+  "apiBootstrap": {
+    "status": "passed",
+    "hosts": [
+      {
+        "role": "api-host-cold-cache",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutBytes": 262,
+        "stderrBytes": 0,
+        "stdoutSha256": "c43c6d4c28e79b2c63d21ef4bc061baaa9c59fd1cde385e25c8807c55225ab3a",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "role": "api-host-build-toolchain-unavailable",
+        "exitCode": 0,
+        "signal": null,
+        "stdoutBytes": 262,
+        "stderrBytes": 0,
+        "stdoutSha256": "22082588bd451694bcbfd78c55bc2d82f961f6cdf537ec25e07ce3109dafc086",
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "selectedReserveBytes": 2147483648,
+    "wrapperSha256": "b512412abccb827c05a3afb07c51996f2469924340623eb47f992e4339e892fe",
+    "sourceSha256": "07c7f96a52361fd30bac16c324e846f50d2bc8a2e3568d955719cbc77b44dab8",
+    "startupAndStatusDidNotInstall": true,
+    "compilerSha256": "362852928a54fa96ea5d568d2b6d1407911856b42d32291dbd13861076b396aa",
+    "durableBootstrap": {
+      "queuedDurablyBeforeEnsure": true,
+      "artifactId": "43e1d667f36db9dcd904cd4b34d456a5a80652a946d42c73fe99095903543dc8",
+      "sourceIdentity": "8773af33074ed8c95a2173de2d7c5ea1d101f674b5bde465b4c1a9d6fcff9cea",
+      "toolchainIdentity": "5cdac21d4c12973a0af33a35bd9b2959c3a041d180eaa39569ad5e1d30181e77",
+      "status": "running",
+      "phase": "toolchain"
+    },
+    "inkParity": {
+      "status": "passed",
+      "mode": "api",
+      "sourceSha256": "07c7f96a52361fd30bac16c324e846f50d2bc8a2e3568d955719cbc77b44dab8",
+      "sourceIdentity": "8773af33074ed8c95a2173de2d7c5ea1d101f674b5bde465b4c1a9d6fcff9cea",
+      "listValueWire": "[3,9,21]",
+      "stateValues": [
+        "2",
+        "5",
+        "9"
+      ],
+      "cachedNativeValueWireAfterRestart": "9",
+      "observed": [
+        "JavaScript remained usable before installation.",
+        "Explicit API build durably recorded the job before the real managed installer ran.",
+        "Native and JavaScript list values matched.",
+        "Native and JavaScript changes shared persistent state.",
+        "Verified cached native execution survived restart with build-toolchain availability disabled."
+      ]
+    },
+    "nativeModuleSha256": "40a2390e486b79bb372e56f1dfe43e28f8da4d10a575d1283f28a9ddf0141394",
+    "nativeJobsSha256": "0869a80d44290376cfaf9bd429e0b236c8b547e21bd71f214eb17adac80bcf3e",
+    "managedAdapterSha256": "dd6d5851b1c90ad0fc096f1c869d02c731aac068b1e71448f487efe5d87ad2fe"
+  },
+  "inkParity": {
+    "status": "passed",
+    "mode": "api",
+    "sourceSha256": "07c7f96a52361fd30bac16c324e846f50d2bc8a2e3568d955719cbc77b44dab8",
+    "sourceIdentity": "8773af33074ed8c95a2173de2d7c5ea1d101f674b5bde465b4c1a9d6fcff9cea",
+    "listValueWire": "[3,9,21]",
+    "stateValues": [
+      "2",
+      "5",
+      "9"
+    ],
+    "cachedNativeValueWireAfterRestart": "9",
+    "observed": [
+      "JavaScript remained usable before installation.",
+      "Explicit API build durably recorded the job before the real managed installer ran.",
+      "Native and JavaScript list values matched.",
+      "Native and JavaScript changes shared persistent state.",
+      "Verified cached native execution survived restart with build-toolchain availability disabled."
+    ]
+  },
+  "limits": [
+    "Apple clang and the macOS SDK are preinstalled runner prerequisites; they are not installed or redistributed by this verifier.",
+    "This proof covers the observed runner architecture, not other hosts.",
+    "Rust smoke builds have no registry dependencies; optional Ink parity fetches its locked runtime crates.",
+    "The proof does not establish notarized desktop distribution or a graphical application launch."
+  ],
+  "freeBytesBefore": 46935896064,
+  "archiveIntegrityAndExtraction": "passed",
+  "receiptSha256": "7486ee55881ac639f102e07db290530040f2326ce6fecf2e02ab962e48b35c1a",
+  "rustc": {
+    "release": "1.96.0",
+    "host": "aarch64-apple-darwin",
+    "commitHash": "ac68faa20c58cbccd01ee7208bf3b6e93a7d7f96",
+    "commitDate": "2026-05-25",
+    "llvm": "22.1.2"
+  },
+  "cargo": {
+    "release": "1.96.0",
+    "commitHash": "30a34c682",
+    "commitDate": "2026-05-25"
+  },
+  "applePrerequisites": {
+    "clangVersion": "17.0.0",
+    "sdkVersion": "15.5",
+    "libSystemSha256": "4f96f1402e1950b1764ac6accd0d2b9c1ca197b7783caae5e838fd0a4b474028"
+  },
+  "rustSmoke": {
+    "status": "passed",
+    "executableSha256": "0ab4da192a754a9785772c59d389121b06d0ca53a5f1022c1d2503a56918b595",
+    "output": {
+      "ok": true,
+      "sum": 55,
+      "unicode": "Ink ✓"
+    },
+    "networkDependencies": false
+  },
+  "cacheRevalidation": "passed",
+  "freeBytesAfter": 46255984640,
+  "ownedProfileCleanup": "passed",
+  "finishedAt": "2026-10-31T04:24:13.021Z",
+  "ci": {
+    "repository": "siliconjungle/ink-os-platform",
+    "runId": 41168396556,
+    "url": "https://github.com/siliconjungle/ink-os-platform/actions/runs/41168396556",
+    "platformCommit": "bed34a9c8a0a2a227874542c116d7819f01a2bdb"
+  }
+}

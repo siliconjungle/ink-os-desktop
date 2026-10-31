@@ -16,7 +16,9 @@
     "release/0.1.0-darwin-arm64-e4KSS4/release.json": "Selected artifact hash, icon/notices hashes and clean source provenance.",
     "evidence/release-publication.json": "Verified private draft release identity and server-computed asset digests matching the selected local preview.",
     "evidence/managed-native.json": "Selected actual macOS arm64 official Rust installation, integrity, smoke execution, cached artifact and Ink cross-engine state parity proof, bound to exact source hashes and CI run.",
-    ".local/managed-native-success": "Selected downloaded CI proof and byte-exact required Rust notices; upstream pins, installer/verifier and input hashes reproduce the proof."
+    ".local/managed-native-success": "Selected downloaded CI proof and byte-exact required Rust notices; upstream pins, installer/verifier and input hashes reproduce the proof.",
+    "evidence/managed-native-api.json": "Selected real cold-cache managed native API job, persistent cross-engine state and toolchain-unavailable restart/cache acceptance with exact source and CI binding.",
+    ".local/managed-native-api-success": "Selected actual API proof, byte-exact Rust notices and exact successful verifier input sources."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
