@@ -112,7 +112,7 @@ await run(process.execPath, [join(source, 'scripts', 'audit-source.mjs'), runtim
 await cp(join(root, 'src'), join(app, 'src'), { recursive: true });
 await cp(join(root, 'LICENSE'), join(app, 'LICENSE'));
 await writeFile(join(app, 'package.json'), JSON.stringify({ name: pkg.name, productName: pkg.productName, version: pkg.version, license: pkg.license, type: 'module', main: pkg.main }, null, 2) + '\n');
-for (const name of ['cli.mjs', 'runtime.mjs']) await cp(join(root, 'src', name), join(tools, name));
+for (const name of ['cli.mjs', 'runtime.mjs', 'native-toolchain.mjs']) await cp(join(root, 'src', name), join(tools, name));
 const embedded = await bundledGit(git);
 const icon = await buildIcon(join(stage, 'branding'));
 const desktopCommit = (await execute('git', ['rev-parse', 'HEAD'], { cwd: root })).stdout.trim();

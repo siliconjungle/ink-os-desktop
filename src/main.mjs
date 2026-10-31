@@ -23,7 +23,7 @@ async function endpoint() {
   if (!instance) instance = new LocalInstance({
     platformDirectory: process.env.INK_OS_PLATFORM_DIR || (app.isPackaged ? join(process.resourcesPath, 'platform') : resolve(root, '../ink-os-platform')),
     directory, port: await localPort(directory), electron: true,
-    ...(app.isPackaged ? { runtimeEnvironment: runtimeEnvironment(process.resourcesPath) } : {}),
+    runtimeEnvironment: runtimeEnvironment(app.isPackaged ? process.resourcesPath : root, { directory, development: !app.isPackaged }),
   });
   return instance.start();
 }

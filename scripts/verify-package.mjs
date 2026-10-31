@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, mkdtemp } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, mkdtemp, access } from 'node:fs/promises';
 import { dirname, join, resolve, relative, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
@@ -41,7 +41,7 @@ await writeFile(join(directory, 'storage-retention.json'), JSON.stringify({ keep
 const noTools = join(directory, 'no-tools'); await mkdir(noTools);
 for (const name of ['node', 'git', 'cargo', 'rustc']) await writeFile(join(noTools, name), '#!/bin/sh\necho "Unexpected external development tool" >&2\nexit 87\n', { mode: 0o755 });
 const path = noTools + ':/usr/bin:/bin', data = join(directory, 'data');
-const instance = new LocalInstance({ platformDirectory: join(resources, 'platform'), executable, electron: true, directory: data, port: await localPort(data), runtimeEnvironment: { ...runtimeEnvironment(resources), PATH: path } });
+const instance = new LocalInstance({ platformDirectory: join(resources, 'platform'), executable, electron: true, directory: data, port: await localPort(data), runtimeEnvironment: { ...runtimeEnvironment(resources, { directory: data }), PATH: path } });
 const env = Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^(INK_|FLY_|AWS_|S3_|BUCKET_NAME|GIT_)/.test(name)));
 Object.assign(env, { PATH: path, INK_OS_CONFIG: join(data, 'client.json') });
 const cli = async (...args) => JSON.parse((await execute(cliPath, args, { env, maxBuffer: 4 * 1024 * 1024 })).stdout);
@@ -49,7 +49,10 @@ let client;
 try {
   client = await instance.start();
   assert.deepEqual(await cli('apps', 'list'), []);
-  assert.equal((await cli('native', 'status')).buildAvailable, false);
+  const native = await cli('native', 'status');
+  assert.equal(native.available, false);
+  assert.equal(native.buildAvailable, Boolean(native.installable));
+  await assert.rejects(access(join(data, 'native-toolchains')), { code: 'ENOENT' });
   const source = join(directory, 'source'); await cli('init', source, '--slug', 'packaged-proof', '--title', 'Packaged Ink proof');
   const deployment = await cli('deploy', source);
   assert.equal((await cli('ink', 'run', deployment.appId, 'add', '--input', '[3]', '--backend', 'javascript')).valueWire, '3');

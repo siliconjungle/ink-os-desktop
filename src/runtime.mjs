@@ -1,4 +1,4 @@
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { homedir } from 'node:os';
 
 export function profileDirectory(environment = process.env) {
@@ -8,6 +8,11 @@ export function profileDirectory(environment = process.env) {
   return join(environment.XDG_CONFIG_HOME || join(homedir(), '.config'), 'Ink OS');
 }
 
-export function runtimeEnvironment(resources) {
-  return { INK_OS_GIT_ROOT: join(resources, 'git') };
+export function runtimeEnvironment(resources, { directory = join(profileDirectory(), 'instances', 'default'), development = false } = {}) {
+  resources = resolve(resources); directory = resolve(directory);
+  return {
+    ...(development ? {} : { INK_OS_GIT_ROOT: join(resources, 'git') }),
+    INK_OS_MANAGED_NATIVE_MODULE: join(resources, development ? 'src' : 'tools', 'native-toolchain.mjs'),
+    INK_OS_MANAGED_NATIVE_DIRECTORY: join(directory, 'native-toolchains'),
+  };
 }
