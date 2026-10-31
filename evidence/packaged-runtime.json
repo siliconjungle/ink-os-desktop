@@ -2,10 +2,10 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "db681b25abc2fa6de6e2bda2e876f24c8aa1c5df"
+    "commit": "ff67610a3d334fff1da23cb76a7b3f2f5dec6087"
   },
-  "artifactSha256": "7065686c259711378b4859873a2f7ca1f75686983ecf950b232828a6f2f40629",
-  "manifestSha256": "868de699f5dcecc05ee528eff5b3f7c29863d71bc09866abfdb313484c010ae5",
+  "artifactSha256": "1a2e3e07af3577ea86aad7ab2ef0dcdc88d384c0c46f1b7bb2f074231b083b40",
+  "manifestSha256": "963ebfe20563be14ae10a6dc7b6679e377fe34edb52e6ba4c0b101494564ecf1",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
