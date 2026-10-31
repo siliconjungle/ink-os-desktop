@@ -49,6 +49,7 @@
     "release/0.1.0-darwin-arm64-p0gd5m/ink-os-0.1.0-darwin-arm64.dmg": "Completed superseded local preview; the final verified preview includes runtime notices and updated exact provenance.",
     "release/0.1.0-darwin-arm64-p0gd5m/release.json": "Completed superseded local preview; the final verified preview includes runtime notices and updated exact provenance.",
     "release/0.1.0-darwin-arm64-e4KSS4/Ink OS-darwin-arm64": "Completed generated package directory; its exact contents are retained in the verified DMG.",
-    ".local/release-notes.txt": "Completed draft release body staging; the published private draft and immutable artifact/source proof are retained."
+    ".local/release-notes.txt": "Completed draft release body staging; the published private draft and immutable artifact/source proof are retained.",
+    ".local/native-proof-secret-scan.json": "Completed redacted scanner diagnostic of a non-secret compatibility hash; selected public proof omits the redundant hash, and complete source/history scans are required before publication."
   }
 }

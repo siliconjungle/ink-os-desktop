@@ -76,6 +76,13 @@ async function fileHash(path) {
 }
 async function freeBytes(path) { const value = await statfs(path); return value.bavail * value.bsize; }
 const safeCode = error => /^[A-Z][A-Z0-9_]{0,80}$/.test(String(error?.code)) ? error.code : 'INK_VERIFY_FAILED';
+export function hostFailureDiagnostic(text) {
+  const bounded = String(text).slice(0, 16384), code = bounded.match(/\b(ERR_[A-Z0-9_]{1,60})\b/)?.[1];
+  const packageName = bounded.match(/Cannot find package ['"]([^'"]+)['"]/)?.[1];
+  const missingPackage = ['vite', 'ws', '@aws-sdk/client-s3'].includes(packageName) ? packageName : undefined;
+  const category = /\bSyntaxError\b/.test(bounded) ? 'syntax-error' : undefined;
+  return code || missingPackage || category ? { ...(code ? { code } : {}), ...(missingPackage ? { missingPackage } : {}), ...(category ? { category } : {}) } : undefined;
+}
 export function archiveFailureDiagnostic(error) {
   const component = ['rustc', 'cargo', 'rust-std'].includes(error?.archiveComponent) ? error.archiveComponent : undefined;
   const entry = typeof error?.archiveEntry === 'string' && error.archiveEntry.length <= 240 && !error.archiveEntry.startsWith('/') && !error.archiveEntry.includes('\\') && !error.archiveEntry.split('/').some(part => !part || part === '.' || part === '..') && /^[a-zA-Z0-9._+@/-]+$/.test(error.archiveEntry) ? error.archiveEntry : undefined;
@@ -205,7 +212,7 @@ function apiRequest(port, path, { token, method = 'GET', body } = {}) {
           const value = JSON.parse(Buffer.concat(chunks).toString('utf8'));
           if (response.statusCode < 200 || response.statusCode >= 300) throw Object.assign(fail('INK_VERIFY_API_RESPONSE', 'Owned API request failed.'), { httpStatus: response.statusCode, responseSha256: hash(Buffer.concat(chunks)) });
           resolve(value);
-        } catch (error) { reject(error); }
+        } catch (error) { error.httpStatus ??= response.statusCode; error.responseSha256 ??= hash(Buffer.concat(chunks)); error.code ??= 'INK_VERIFY_API_JSON'; reject(error); }
       });
     });
     request.once('error', reject); request.setTimeout(15000, () => request.destroy(fail('INK_VERIFY_HTTP_TIMEOUT', 'Owned API request timed out.'))); request.end(bytes);
@@ -241,21 +248,24 @@ export async function apiBootstrapAcceptance({ platformDirectory, directory, eph
       if (process.env.DEVELOPER_DIR) env.DEVELOPER_DIR = process.env.DEVELOPER_DIR;
       const child = spawn(process.execPath, [join(platformDirectory, 'scripts/start.mjs')], { cwd: platformDirectory, env, stdio: ['ignore', 'pipe', 'pipe'] });
       const digest = { stdout: createHash('sha256'), stderr: createHash('sha256') }, counts = { stdout: 0, stderr: 0 };
-      for (const name of ['stdout', 'stderr']) child[name].on('data', part => { counts[name] += part.length; digest[name].update(part); });
+      let diagnosticText = '', lastProbe;
+      for (const name of ['stdout', 'stderr']) child[name].on('data', part => { counts[name] += part.length; digest[name].update(part); if (name === 'stderr' && diagnosticText.length < 16384) diagnosticText += part.toString('utf8').slice(0, 16384 - diagnosticText.length); });
       let spawnError; child.once('error', error => { spawnError = error; });
-      const closed = new Promise(resolve => child.once('close', (code, signal) => { result.hosts.push({ role, exitCode: code, signal: signal || null, stdoutBytes: counts.stdout, stderrBytes: counts.stderr, stdoutSha256: digest.stdout.digest('hex'), stderrSha256: digest.stderr.digest('hex') }); resolve({ code, signal }); }));
+      const closed = new Promise(resolve => child.once('close', (code, signal) => { result.hosts.push({ role, exitCode: code, signal: signal || null, stdoutBytes: counts.stdout, stderrBytes: counts.stderr, stdoutSha256: digest.stdout.digest('hex'), stderrSha256: digest.stderr.digest('hex'), ...(hostFailureDiagnostic(diagnosticText) ? { diagnostic: hostFailureDiagnostic(diagnosticText) } : {}), ...(lastProbe ? { lastProbe } : {}) }); resolve({ code, signal }); }));
       host = { child, closed };
       const deadline = Date.now() + 30000;
       while (Date.now() < deadline) {
-        if (spawnError || child.exitCode !== null || child.signalCode !== null) throw fail('INK_VERIFY_API_HOST_START', 'Owned API host did not start.');
+        if (spawnError || child.exitCode !== null || child.signalCode !== null) throw Object.assign(fail('INK_VERIFY_API_HOST_START', 'Owned API host did not start.'), { lastProbe });
         try {
           const health = await apiRequest(port, '/api/health');
+          lastProbe = { httpStatus: 200 };
           const client = JSON.parse(await readFile(join(data, 'client.json'), 'utf8'));
           if (health.ok === true && health.instanceId === client.instanceId && client.url === origin) return { port, token: client.token, call: (path, method = 'GET', body) => apiRequest(port, '/api/v1/' + path, { token: client.token, method, body }) };
-        } catch {}
+          lastProbe.code = 'INK_VERIFY_HEALTH_IDENTITY_MISMATCH';
+        } catch (error) { lastProbe = { code: safeCode(error), ...(Number.isInteger(error.httpStatus) ? { httpStatus: error.httpStatus } : {}) }; }
         await new Promise(resolve => setTimeout(resolve, 50));
       }
-      throw fail('INK_VERIFY_API_HOST_TIMEOUT', 'Owned API host readiness timed out.');
+      throw Object.assign(fail('INK_VERIFY_API_HOST_TIMEOUT', 'Owned API host readiness timed out.'), { lastProbe });
     };
     stage = 'ordinary-startup-and-status';
     let api = await start(installer, 'api-host-cold-cache');
@@ -302,7 +312,7 @@ export async function apiBootstrapAcceptance({ platformDirectory, directory, eph
     result.nativeJobsSha256 = await fileHash(join(platformDirectory, 'server/native-jobs.mjs'));
     result.managedAdapterSha256 = await fileHash(join(platformDirectory, 'server/managed-native.mjs'));
     result.status = 'passed';
-  } catch (error) { result.failure = { stage, code: safeCode(error), ...(Number.isInteger(error.httpStatus) ? { httpStatus: error.httpStatus } : {}), ...(/^[a-f0-9]{64}$/.test(error.responseSha256 || '') ? { responseSha256: error.responseSha256 } : {}), diagnosticSha256: hash(String(error.message || error)) }; }
+  } catch (error) { result.failure = { stage, code: safeCode(error), ...(error.lastProbe ? { lastProbe: error.lastProbe } : {}), ...(Number.isInteger(error.httpStatus) ? { httpStatus: error.httpStatus } : {}), ...(/^[a-f0-9]{64}$/.test(error.responseSha256 || '') ? { responseSha256: error.responseSha256 } : {}), diagnosticSha256: hash(String(error.message || error)) }; }
   finally { try { await stop(); } catch (error) { result.status = 'failed'; result.drainFailure = { code: safeCode(error) }; } }
   return result;
 }

@@ -7,8 +7,9 @@ import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { NativeToolchain, nativeToolchainPlan, NATIVE_TOOLCHAIN_RELEASE, NATIVE_TOOLCHAIN_DEFAULT_RESERVE_BYTES, NATIVE_TOOLCHAIN_ESTIMATED_BYTES } from '../src/native-toolchain.mjs';
-import { parseVerificationArguments, verifyNativeToolchain, verificationReserveBytes, VERIFIER_DEFAULT_RESERVE_BYTES, archiveFailureDiagnostic, retainToolchainNotices, noticeFailureDiagnostic, NATIVE_NOTICE_LIMITS } from '../scripts/verify-native-toolchain.mjs';
+import { parseVerificationArguments, verifyNativeToolchain, verificationReserveBytes, VERIFIER_DEFAULT_RESERVE_BYTES, archiveFailureDiagnostic, retainToolchainNotices, noticeFailureDiagnostic, NATIVE_NOTICE_LIMITS, apiBootstrapAcceptance, hostFailureDiagnostic } from '../scripts/verify-native-toolchain.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 function tar(entries) {
@@ -271,4 +272,36 @@ test('real verifier requires an explicit ephemeral runner for every reserve over
   assert.equal(verificationReserveBytes({ ephemeralRunner: true }), 100 * 1024 ** 3);
   assert.equal(verificationReserveBytes({ ephemeralRunner: true, reserveGiB: 2 }), 2 * 1024 ** 3);
   assert.throws(() => verificationReserveBytes({ reserveGiB: 2 }), { code: 'INK_VERIFY_ARGUMENT' });
+  assert.throws(() => parseVerificationArguments(['--api-bootstrap', '--output', 'proof.json']), { code: 'INK_VERIFY_ARGUMENT' });
+  assert.equal(parseVerificationArguments(['--api-bootstrap', '--platform-dir', 'platform', '--output', 'proof.json']).apiBootstrap, true);
+  await assert.rejects(verifyNativeToolchain({ output: join(root, 'proof.json'), apiBootstrap: true }), { code: 'INK_VERIFY_ARGUMENT' });
+});
+
+test('API acceptance uses real HTTP/queue/state/cache paths with fixture compiler tools and no toolchain download', { skip: process.platform === 'win32', timeout: 60000 }, async t => {
+  const root = await mkdtemp(join(tmpdir(), 'ink-api-bootstrap-fixture-')); t.after(() => rm(root, { recursive: true, force: true }));
+  const platformDirectory = fileURLToPath(new URL('../../ink-os-platform/', import.meta.url)), directory = join(root, 'profile'); await mkdir(directory);
+  // The fixture Cargo materializes a tiny Node executable using the real generated JS
+  // checkpoint engine. This tests HTTP/bootstrap orchestration, not native Rust parity.
+  const program = `#!${process.execPath}\nconst fs=require('node:fs/promises');const path=require('node:path');(async()=>{let input='';for await(const bytes of process.stdin)input+=bytes;const request=JSON.parse(input);const record=JSON.parse(await fs.readFile(path.join(__dirname,'artifact.json'),'utf8'));const compiler=await import(${JSON.stringify(pathToFileURL(join(platformDirectory, 'server/ink-compiler.mjs')).href)});const artifact=await compiler.compileInk(record.source);const program=await import('data:text/javascript;base64,'+Buffer.from(artifact.javascript).toString('base64'));let output,snapshot=null;if(request.kind==='function')output=program.callOwned(request.entry,request.args);else{const state=program.createState();if(request.snapshot)await state.restore(new Uint8Array(request.snapshot));output=state.invoke(request.entry,request.args);if(output.committed)snapshot=Array.from(await state.checkpoint());}console.log(JSON.stringify({output,snapshot},(_key,value)=>typeof value==='bigint'?Number(value):value));})().catch(error=>{console.log(JSON.stringify({error:error.message}));process.exitCode=1;});\n`;
+  const cargo = `#!${process.execPath}\nconst fs=require('node:fs/promises');const path=require('node:path');(async()=>{if(process.argv[2]!=='build')throw Error('Fixture Cargo only supports build');const target=path.join(process.env.CARGO_TARGET_DIR,'release');await fs.mkdir(target,{recursive:true});await fs.writeFile(path.join(target,'ink-native-app'),${JSON.stringify(program)},{mode:0o700});})().catch(()=>{process.exitCode=1;});\n`;
+  const installerModulePath = join(root, 'fixture-installer.mjs'), plan = nativeToolchainPlan('darwin', 'arm64');
+  await writeFile(installerModulePath, `import {mkdir,writeFile,access} from 'node:fs/promises';import {join} from 'node:path';export const nativeToolchainPlan=()=>(${JSON.stringify(plan)});export class NativeToolchain{constructor({directory,reserveBytes}){this.directory=directory;this.reserveBytes=reserveBytes;this.estimatedBytes=5*1024**3;}async inspect(){try{await access(join(this.directory,'installed'));return {available:true};}catch{return {available:false,installable:true};}}async ensure(){await mkdir(join(this.directory,'bin'),{recursive:true,mode:0o700});const cargo=join(this.directory,'bin/cargo'),rustc=join(this.directory,'bin/rustc');await writeFile(cargo,${JSON.stringify(cargo)},{mode:0o700});await writeFile(rustc,'fixture only');await writeFile(join(this.directory,'installed'),'fixture installed');return {cargo,rustc,runtimeEnvironment:{CARGO_HOME:join(this.directory,'cargo-home')}};}}\n`);
+  const result = await apiBootstrapAcceptance({ platformDirectory, directory, installerModulePath, ephemeralRunner: true, reserveGiB: 2, timeoutMs: 30000 });
+  assert.equal(result.status, 'passed', JSON.stringify(result));
+  assert.equal(result.startupAndStatusDidNotInstall, true); assert.equal(result.durableBootstrap.queuedDurablyBeforeEnsure, true);
+  assert.equal(result.durableBootstrap.phase, 'toolchain'); assert.equal(result.durableBootstrap.toolchainIdentity, plan.identity);
+  assert.deepEqual(result.inkParity.stateValues, ['2', '5', '9']); assert.equal(result.inkParity.cachedNativeValueWireAfterRestart, '9');
+  assert.equal(result.hosts.length, 2); assert.ok(result.hosts.every(host => host.exitCode === 0));
+  assert.ok(!JSON.stringify(result).includes(root)); assert.ok(!JSON.stringify(result).includes('token'));
+});
+
+test('a fresh CI host missing dependencies fails immediately with sanitized module diagnostics', { timeout: 10000 }, async t => {
+  const root = await mkdtemp(join(tmpdir(), 'ink-api-startup-failure-')); t.after(() => rm(root, { recursive: true, force: true }));
+  const platformDirectory = join(root, 'platform'), directory = join(root, 'profile'); await mkdir(join(platformDirectory, 'scripts'), { recursive: true }); await mkdir(directory);
+  await writeFile(join(platformDirectory, 'scripts/start.mjs'), `console.error("Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'vite' imported from /private/owner/project/server/index.mjs; secret-key-must-not-escape");process.exitCode=1;\n`);
+  const result = await apiBootstrapAcceptance({ platformDirectory, directory, ephemeralRunner: true, reserveGiB: 2 });
+  assert.equal(result.status, 'failed'); assert.equal(result.failure.code, 'INK_VERIFY_API_HOST_START');
+  assert.deepEqual(result.hosts[0].diagnostic, { code: 'ERR_MODULE_NOT_FOUND', missingPackage: 'vite' });
+  assert.equal(result.hosts[0].exitCode, 1); assert.ok(!JSON.stringify(result).includes('/private/owner')); assert.ok(!JSON.stringify(result).includes('secret-key'));
+  assert.deepEqual(hostFailureDiagnostic("Cannot find package 'private-secret-name' from /secret/path; code: 'ERR_MODULE_NOT_FOUND'"), { code: 'ERR_MODULE_NOT_FOUND' });
 });
