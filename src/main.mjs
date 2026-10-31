@@ -35,7 +35,9 @@ async function createWindow() {
     const cookie = response.headers.get('set-cookie').split(';')[0], index = cookie.indexOf('=');
     await session.fromPartition(partition).cookies.set({ url: client.url, name: cookie.slice(0, index), value: cookie.slice(index + 1), httpOnly: true, sameSite: 'lax' });
   }
-  const current = new BrowserWindow({ width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', backgroundColor: '#101010', webPreferences: { partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
+  const icon = app.isPackaged ? join(process.resourcesPath, 'icon.png') : join(root, 'assets', 'icon.png');
+  const current = new BrowserWindow({ width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', icon, backgroundColor: '#101010', webPreferences: { partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
+  if (app.dock) app.dock.setIcon(icon);
   window = current;
   current.once('closed', () => { if (window === current) window = null; });
   current.webContents.setWindowOpenHandler(({ url }) => {

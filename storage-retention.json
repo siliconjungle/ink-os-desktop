@@ -5,9 +5,12 @@
     "scripts": "Development runtime bootstrap.",
     "evidence/desktop-native.jpg": "Selected native desktop screenshot after full relaunch with persistent native Ink state.",
     "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "platform.json": "Exact shared platform repository and commit pin.",
-    "upstream-sources.json": "Exact corresponding Git source/build recipe URLs, full revisions and archive integrity hashes."
+    "upstream-sources.json": "Exact corresponding Git source/build recipe URLs, full revisions and archive integrity hashes.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "assets": "Ink OS vector branding and selected generated PNG for native development and packaged windows.",
+    "evidence/packaged-runtime.json": "Selected packaged CLI/host proof including immutable artifact and manifest hashes.",
+    "evidence/packaged-desktop.jpg": "Selected packaged GUI screenshot after restart; proof metadata records limits."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -23,6 +26,12 @@
     "release/0.1.0-darwin-arm64-Agxfnd": "Completed runtime validation found ad hoc signatures incompatible with hardened library validation. Corrected development signing is required; no usable artifact or selected proof depends on this attempt.",
     ".local/package-SoZcAd": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-proof-PIhfZi": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
-    "release/0.1.0-darwin-arm64-RMUDX0": "Completed development signing diagnostic; library options were corrected and executable Node 24.19.0 startup passed. A clean-source build now replaces this candidate; its source and locks are retained."
+    "release/0.1.0-darwin-arm64-RMUDX0": "Completed development signing diagnostic; library options were corrected and executable Node 24.19.0 startup passed. A clean-source build now replaces this candidate; its source and locks are retained.",
+    ".local/package-Hdan4P": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-rbFif2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-proof-4E9tZF": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/packaged-gui": "Completed package validation; the owned window/host exited and the read-only image was detached. The next package will revalidate the corrected idle connection shutdown.",
+    ".local/mounted-package": "Completed package validation; the owned window/host exited and the read-only image was detached. The next package will revalidate the corrected idle connection shutdown.",
+    "release/0.1.0-darwin-arm64-jh25OA": "Completed first functional package baseline; the selected next build adds native Ink branding and fixes idle frontend connection shutdown. Exact builder/source is retained in Git."
   }
 }

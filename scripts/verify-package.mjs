@@ -13,15 +13,20 @@ const releasePath = resolve(process.argv[2] || 'release.json'), output = dirname
 const release = JSON.parse(await readFile(releasePath));
 assert.equal(release.format, 'ink-os-desktop-package-v1');
 assert.equal(release.platform, process.platform); assert.equal(release.architecture, process.arch);
-const bundle = resolve(output, release.bundle), inside = relative(output, bundle);
-assert.ok(inside !== '..' && !inside.startsWith('..' + sep));
+const bundle = process.env.INK_OS_VERIFY_BUNDLE ? resolve(process.env.INK_OS_VERIFY_BUNDLE) : resolve(output, release.bundle), inside = relative(output, bundle);
+if (!process.env.INK_OS_VERIFY_BUNDLE) assert.ok(inside !== '..' && !inside.startsWith('..' + sep));
 assert.equal(hash(await readFile(join(output, release.artifact))), release.artifactSha256);
 const contents = process.platform === 'darwin' ? join(bundle, 'Ink OS.app', 'Contents') : bundle;
 const resources = join(contents, process.platform === 'darwin' ? 'Resources' : 'resources');
 const executable = join(contents, ...(process.platform === 'darwin' ? ['MacOS'] : []), 'ink-os-desktop');
 const cliPath = join(process.platform === 'darwin' ? resources : dirname(executable), 'ink-os');
 assert.equal(hash(await readFile(join(resources, 'tools', 'package-manifest.json'))), release.manifestSha256);
-if (process.platform === 'darwin') await execute('codesign', ['--verify', '--deep', '--strict', join(bundle, 'Ink OS.app')]);
+assert.equal(hash(await readFile(join(resources, 'icon.png'))), release.icon.pngSha256);
+if (process.platform === 'darwin') {
+  await execute('codesign', ['--verify', '--deep', '--strict', join(bundle, 'Ink OS.app')]);
+  const iconName = (await execute('plutil', ['-extract', 'CFBundleIconFile', 'raw', '-o', '-', join(contents, 'Info.plist')])).stdout.trim();
+  assert.equal(hash(await readFile(join(resources, iconName))), release.icon.icnsSha256);
+}
 const root = fileURLToPath(new URL('..', import.meta.url)), directory = await mkdtemp(join(root, '.local', 'package-proof-'));
 const retentionPath = join(root, 'storage-retention.json');
 async function retain(completed) {
@@ -51,7 +56,7 @@ try {
   assert.equal(restarted.url, client.url); assert.equal(restarted.instanceId, client.instanceId);
   const total = await cli('ink', 'run', deployment.appId, 'total'); assert.equal(total.valueWire, '3');
   assert.equal(total.backend, 'javascript');
-  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
+  const proof = { format: 'ink-os-packaged-runtime-proof-v1', platformSource: release.platformSource, artifactSha256: release.artifactSha256, manifestSha256: release.manifestSha256, electron: release.electron, platform: process.platform, architecture: process.arch, relocatedBundle: !!process.env.INK_OS_VERIFY_BUNDLE, observed: ['The packaged Electron executable ran its bundled platform independently of the source checkout.', 'Fresh instance had zero apps.', 'External node, git, cargo and rustc names were blocked on PATH.', 'The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.', 'A compatible JavaScript runtime remained usable with no native toolchain.', 'Saved state, instance identity and address survived host restart.'], limits: ['Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.', 'This host is not a clean virtual machine.', 'Managed native toolchains and notarized distribution remain separate work.'] };
   await mkdir(join(root, 'evidence'), { recursive: true });
   await writeFile(join(root, 'evidence', 'packaged-runtime.json'), JSON.stringify(proof, null, 2) + '\n');
   console.log(JSON.stringify(proof, null, 2));
