@@ -2,17 +2,17 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "ae8953cd369f0357781c6060574cba4f272680cc"
+    "commit": "5848c2830d5187cb8351e3f6c7a0f3efce3a4d8a"
   },
-  "artifactSha256": "1144b6b7778dfa50b803232b076ab4c78773608f84a0ca21d446cf6cb16984af",
-  "manifestSha256": "649f8a2340927a562de6f178cf120f68576b43161f40fc5d378a222841d8fedb",
+  "artifactSha256": "74837813406bef58ca5319152a38af668c117b1e6d38d9c246995e5c1fe64abc",
+  "manifestSha256": "61c4eb67805b58824ecfd8d7a6ca1d59925eeed746e8dabc48ade108c698622a",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
   "relocatedBundle": true,
   "observed": [
     "The packaged Electron executable ran its bundled platform independently of the source checkout.",
-    "Fresh instance had zero apps.",
+    "Fresh instance contained exactly Finder, Preview and Ink Environment.",
     "The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.",
     "External node, git, cargo and rustc names were blocked on PATH.",
     "The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.",
@@ -26,13 +26,15 @@
     "Managed native toolchains and notarized distribution remain separate work."
   ],
   "desktopSource": {
-    "commit": "77c92e29f9bf58ad6fb39f3578f414318c33d513",
+    "commit": "5e656a2199bea7f04312300069e36d2f253c3046",
     "dirty": false
   },
-  "verifierSha256": "5bf15fb85a9e889d53275b7fdead64a8bba32341c83185dda67e04ebf5b4c61f",
+  "verifierSha256": "aac25d80a70205daa2d305fccaafad1ac1ae55a9e10896e5b396a8f659281d30",
   "ci": {
-    "runId": "41200397005",
-    "commit": "77c92e29f9bf58ad6fb39f3578f414318c33d513",
-    "url": "https://github.com/siliconjungle/ink-os-desktop/actions/runs/41200397005"
+    "repository": "siliconjungle/ink-os-desktop",
+    "runId": "41242234013",
+    "commit": "5e656a2199bea7f04312300069e36d2f253c3046",
+    "runnerOS": "macOS",
+    "runnerArchitecture": "ARM64"
   }
 }
