@@ -29,7 +29,11 @@
     "evidence/packaged-connections-ui.json": "Selected actual packaged native shortcut/credential-form key replacement and shared GUI/bundled-CLI readback with exact source/artifact bindings and private proof hashes.",
     ".github/workflows/verify-preview.yml": "Reproduction recipe for exact private release download and fresh macOS relocated packaged-runtime acceptance.",
     "evidence/packaged-runtime-fresh-mac.json": "Selected successful fresh macOS runner proof of the exact preview4 DMG after relocation; full CI/artifact/verifier binding and limits.",
-    ".local/fresh-mac-41189317990/packaged-runtime.json": "Original downloaded successful CI proof; public selected evidence is byte-identical."
+    ".local/fresh-mac-41189317990/packaged-runtime.json": "Original downloaded successful CI proof; public selected evidence is byte-identical.",
+    "src/updates.mjs": "Configured release publisher, exact manifest/asset binding, credential-safe CDN redirects and verified cancellable downloads.",
+    "src/updates-config.json": "Version/build/channel and fork-configurable release source; no personal deployment identity or credentials.",
+    "tests/updates.test.mjs": "Actual private API/CDN fixture verification, version/checksum/source/credential/cancellation proof inputs.",
+    ".local/updates-all-tests.log": "Required desktop full-regression update/connection/native-toolchain validation log."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",

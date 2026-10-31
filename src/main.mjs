@@ -6,9 +6,10 @@ import { ConnectionController, authenticateConnection, connectionNavigationGuard
 import { canonicalProfileDirectorySync, connectionLayout, connectionOwnerHelpers } from './connection-layout.mjs';
 import { LocalInstance, localPort } from './local-instance.mjs';
 import { runtimeEnvironment } from './runtime.mjs';
+import { DesktopUpdates,updateConfiguration } from './updates.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), uiURL = new URL('./connections-ui.html', import.meta.url).href, uiFile = fileURLToPath(new URL('./connections-ui.html', import.meta.url)), preload = fileURLToPath(new URL('./connections-preload.cjs', import.meta.url));
-let instance, store, controller, layout, connectionsWindow, opening, initializing, quitting = false;
+let instance, store, controller, layout, connectionsWindow, opening, initializing, updater,checkingUpdate,pendingInstaller,quitting = false,quitReady=false;
 app.setName('Ink OS');
 const dataDirectory = canonicalProfileDirectorySync(process.env, process.env.INK_OS_DESKTOP_DATA_DIR || app.getPath('userData'));
 app.setPath('userData', dataDirectory); app.setPath('sessionData', dataDirectory);
@@ -39,13 +40,30 @@ async function initialize() {
 function notifyConnections() { if (connectionsWindow && !connectionsWindow.isDestroyed()) connectionsWindow.webContents.send('ink:connections-changed'); }
 function showFailure(error) { const safe = safeConnectionError(error); dialog.showErrorBox('Ink OS connection', safe.message); }
 function openConnections() { void showConnections().catch(showFailure); }
+function checkForUpdates(){
+  if(quitting||checkingUpdate)return;
+  checkingUpdate=(async()=>{
+    updater ||= new DesktopUpdates({...await updateConfiguration(),token:process.env.INK_OS_UPDATE_TOKEN});
+    let candidate;
+    try{candidate=await updater.check();}
+    catch{const result=await dialog.showMessageBox({type:'info',title:'Ink OS updates',message:'The release feed is unavailable.',detail:'Private preview releases require repository access. You can open the release page in your browser, or supply INK_OS_UPDATE_TOKEN for verified in-app downloads.',buttons:['Open releases','Close'],cancelId:1});if(result.response===0)await shell.openExternal(updater.releaseURL);return;}
+    if(!candidate.available){await dialog.showMessageBox({type:'info',title:'Ink OS updates',message:'Ink OS is up to date.',buttons:['OK']});return;}
+    const choice=await dialog.showMessageBox({type:'info',title:'Ink OS updates',message:'Ink OS '+candidate.tag+' is available.',detail:'Download a verified installer for this Mac. Your local data and saved connections stay in your Ink OS profile.',buttons:['Download','View release','Later'],cancelId:2});
+    if(choice.response===1){await shell.openExternal(candidate.releaseURL);return;}if(choice.response!==0)return;
+    let downloaded;
+    try{downloaded=await updater.download(candidate,{directory:join(dataDirectory,'updates'),progress:value=>controller?.currentWindow?.setProgressBar(value)});}finally{controller?.currentWindow?.setProgressBar(-1);}
+    if(quitting)return;
+    const install=await dialog.showMessageBox({type:'info',title:'Ink OS update ready',message:'The installer is downloaded and verified.',detail:'Ink OS will finish local work before quitting. Then replace the application using the installer. This development preview is not notarized.',buttons:['Quit and open installer','Later'],cancelId:1});
+    if(install.response===0){pendingInstaller=downloaded;app.quit();}
+  })().catch(()=>dialog.showErrorBox('Ink OS updates','The update could not be verified or downloaded. The installed application has not been changed.')).finally(()=>checkingUpdate=null);
+}
 async function switchConnection(id, options) { await initialize(); const result = await controller.open(id, options); notifyConnections(); return result; }
 async function updateMenu() {
   const saved = await store.list();
   const connectItems = saved.profiles.map(profile => ({ label: profile.label.replaceAll('&', '&&'), type: 'radio', checked: profile.id === saved.activeProfileId, click: () => void switchConnection(profile.id).catch(showFailure) }));
   const template = [
     ...(process.platform === 'darwin' ? [{ role: 'appMenu', submenu: [{ role: 'about' }, { type: 'separator' }, { label: 'Connections…', accelerator: 'CmdOrCtrl+,', click: openConnections }, { type: 'separator' }, { role: 'services' }, { type: 'separator' }, { role: 'hide' }, { role: 'hideOthers' }, { role: 'unhide' }, { type: 'separator' }, { role: 'quit' }] }] : []),
-    { label: 'File', submenu: [{ label: 'Open Ink OS', accelerator: 'CmdOrCtrl+N', click: () => void open() }, { label: 'Connections…', accelerator: process.platform === 'darwin' ? undefined : 'CmdOrCtrl+,', click: openConnections }, { type: 'separator' }, { role: process.platform === 'darwin' ? 'close' : 'quit' }] },
+    { label: 'File', submenu: [{ label: 'Open Ink OS', accelerator: 'CmdOrCtrl+N', click: () => void open() }, { label: 'Connections…', accelerator: process.platform === 'darwin' ? undefined : 'CmdOrCtrl+,', click: openConnections }, { label:'Check for updates…',accelerator:'CmdOrCtrl+Shift+U',click:checkForUpdates }, { type: 'separator' }, { role: process.platform === 'darwin' ? 'close' : 'quit' }] },
     { role: 'editMenu' }, { role: 'viewMenu' }, { label: 'Connections', submenu: [...connectItems, { type: 'separator' }, { label: 'Connect to a host…', click: openConnections }, { label: 'Manage connections…', click: openConnections }] }, { role: 'windowMenu' }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
@@ -81,6 +99,6 @@ if (!app.requestSingleInstanceLock()) app.quit();
 else {
   app.on('second-instance', () => void open()); app.on('activate', () => void open());
   app.on('window-all-closed', () => { if (process.platform !== 'darwin') app.quit(); });
-  app.on('before-quit', event => { if (quitting) return; quitting = true; if (!instance?.running && !instance?.starting) return; event.preventDefault(); controller?.currentWindow?.hide(); connectionsWindow?.hide(); void Promise.resolve(instance.starting).catch(() => {}).then(() => instance.stop()).finally(() => app.quit()); });
+  app.on('before-quit', event => {if(quitReady)return;event.preventDefault();if(quitting)return;quitting=true;controller?.currentWindow?.hide();connectionsWindow?.hide();void(async()=>{await updater?.cancel();await Promise.resolve(instance?.starting).catch(()=>{});if(instance?.running)await instance.stop();if(pendingInstaller){await updater.verify(pendingInstaller.path,pendingInstaller);const failure=await shell.openPath(pendingInstaller.path);if(failure)throw Error('Installer could not be opened.');}quitReady=true;app.quit();})().catch(error=>{quitting=false;showFailure(error);controller?.currentWindow?.show();});});
   void app.whenReady().then(open);
 }

@@ -8,6 +8,7 @@ export function hasExplicitConnection(args, environment) {
   return ['INK_OS_CONFIG', 'INK_OS_URL', 'INK_OS_TOKEN'].some(key => Object.hasOwn(environment, key)) || args.some(argument => argument === '--url' || argument.startsWith('--url='));
 }
 export async function runDesktopCLI({ args = process.argv.slice(2), environment = process.env, resources = fileURLToPath(new URL('..', import.meta.url)), layout, storeFactory = options => new ConnectionStore(options), ownerHelpers = connectionOwnerHelpers, platformMain } = {}) {
+  if(args[0]==='desktop'&&args[1]==='update')return(await import('./updates.mjs')).desktopUpdateCLI({args:args.slice(2),environment,directory:await canonicalProfileDirectory(environment)});
   layout ||= await connectionLayout({ applicationRoot: resources, resources, environment });
   if (layout.packaged && !environment.INK_OS_GIT_ROOT) environment.INK_OS_GIT_ROOT = join(layout.resources, 'git');
   if (!hasExplicitConnection(args, environment)) {

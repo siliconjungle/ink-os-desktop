@@ -1,0 +1,64 @@
+{
+  "format": "ink-os-desktop-updates-proof-v1",
+  "inputs": [
+    {
+      "path": "platform.json",
+      "sha256": "41a856dd10510df751654764fca4fa6103f234efc16e8573eb449c4293438123"
+    },
+    {
+      "path": "src/updates.mjs",
+      "sha256": "a0d3c8f503dd097d4c4f9d1ea6ff735e15423b5c24ad20145d0ccae2de95d9ee"
+    },
+    {
+      "path": "src/updates-config.json",
+      "sha256": "7644d79d7a768f9e3b1f96e3becd9fce761549d59d2146cd18701e91cb8953a1"
+    },
+    {
+      "path": "src/main.mjs",
+      "sha256": "4bf12c57e73b4f24c9bda362457c20188f14c37d9bcba4554d4a93e641d9db80"
+    },
+    {
+      "path": "src/cli.mjs",
+      "sha256": "270ebd111492ee2093a51cbf2e8f56414ac9afc1af957fef81949479f99e7b25"
+    },
+    {
+      "path": "scripts/package.mjs",
+      "sha256": "8a6e9b2d9da2a5edbb04b5d5735130c9ef3f1266f7e93e54c176a08dff0575c7"
+    },
+    {
+      "path": "scripts/verify-package.mjs",
+      "sha256": "5bf15fb85a9e889d53275b7fdead64a8bba32341c83185dda67e04ebf5b4c61f"
+    },
+    {
+      "path": "tests/updates.test.mjs",
+      "sha256": "ce44b2c07b17326ed14fb7053ad12c64204dbd50ab2ec48d374471a88851320b"
+    }
+  ],
+  "regression": {
+    "tests": 65,
+    "passed": 65,
+    "failed": 0,
+    "logSha256": "4c055ccba6e7c741defbf2c07e429a0f6d14283d43756d528f83e4bee76e577b"
+  },
+  "observed": [
+    "Authenticated private release lookup using the actual published development preview.",
+    "Downloaded and SHA-256 verified the actual 194317667-byte published preview artifact through the credential-stripping CDN path.",
+    "An exclusive source GUI profile opened the native up-to-date dialog through its keyboard shortcut, then quit cleanly.",
+    "Controlled HTTP tests verify authorization stripping, changed/corrupt release refusal, stable and preview version selection, cancellation and private cache publication."
+  ],
+  "platformSource": "d87bdeba0feb74c031a27567aec92b9c14c523cc",
+  "platformCI": [
+    {
+      "run": 41196902613,
+      "conclusion": "success"
+    },
+    {
+      "run": 41196902847,
+      "conclusion": "success"
+    }
+  ],
+  "limits": [
+    "The refreshed packaged build is verified separately.",
+    "Development preview installation opens a verified installer after draining local work; Developer ID signing and notarization are deferred."
+  ]
+}
