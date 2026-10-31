@@ -4,8 +4,8 @@
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
     "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
   },
-  "artifactSha256": "147fe86a717b0a55bce11dab9fb1a782f331590c3c840f6f64cdbcd6a60f9118",
-  "manifestSha256": "b3e39212db924af3f28e7fd9a9f28f953a96d6e1473a1f0eb62fd2eadcc6ad4a",
+  "artifactSha256": "6269c172b7fbba01fad93d7998527fc274a794a00f38a6496adb4892d85a4708",
+  "manifestSha256": "8ade35deadcae9a9fed2f912f48a4a3a82dab10bc4f4bbff8dbf3063030ccace",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
