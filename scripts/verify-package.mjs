@@ -40,7 +40,9 @@ if (process.platform === 'darwin') {
   const iconName = (await execute('plutil', ['-extract', 'CFBundleIconFile', 'raw', '-o', '-', join(contents, 'Info.plist')])).stdout.trim();
   assert.equal(hash(await readFile(join(resources, iconName))), release.icon.icnsSha256);
 }
-const root = fileURLToPath(new URL('..', import.meta.url)), directory = await mkdtemp(join(root, '.local', 'package-proof-'));
+const root = fileURLToPath(new URL('..', import.meta.url));
+await mkdir(join(root, '.local'), { recursive: true });
+const directory = await mkdtemp(join(root, '.local', 'package-proof-'));
 const retentionPath = join(root, 'storage-retention.json');
 async function retain(completed) {
   const saved = JSON.parse(await readFile(retentionPath)), key = relative(root, directory);
