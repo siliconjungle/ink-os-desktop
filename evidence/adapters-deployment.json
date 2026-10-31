@@ -1,0 +1,33 @@
+{
+  "format": "ink-os-adapter-deployment-v1",
+  "platformCommit": "7878eccd1fa65f2ceaa410e899c6c52fb5165010",
+  "desktopCommit": "d1c4264e3468e12f0743cc8c693cc1e296b19534",
+  "desktopBuild": 8,
+  "installedDesktopSignatureVerified": true,
+  "desktopArtifactSha256": "90264cae33917aac62620a30d5075080897941de4399ac85a6a82214a480ba27",
+  "platformCI": "https://github.com/siliconjungle/ink-os-platform/actions/runs/41253384183",
+  "freshMacCI": "https://github.com/siliconjungle/ink-os-desktop/actions/runs/41253707518",
+  "desktopRelease": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.8",
+  "hostedUpgradeGeneration": 8,
+  "hostedRuntimeCanaryPassed": true,
+  "checks": {
+    "hosted": {
+      "configured": true,
+      "realTranscriptionCompleted": true,
+      "originalAudioUnchanged": true,
+      "linkedProvenanceVerified": true,
+      "existingAppsPreserved": true
+    },
+    "local": {
+      "configured": true,
+      "realTranscriptionCompleted": true,
+      "originalAudioUnchanged": true,
+      "linkedProvenanceVerified": true
+    }
+  },
+  "oldFlyHost": {
+    "machines": 0,
+    "unattachedRecoveryVolumeGB": 1
+  },
+  "inputSha256": "918bcb85ca79d1579fe239da882cbf905f873a5852d2b6d27bd30ef3a52e67f6"
+}
