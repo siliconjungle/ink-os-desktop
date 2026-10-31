@@ -1,0 +1,4 @@
+{
+  "keep": { "src": "Desktop host implementation.", "tests": "Desktop lifecycle validation." },
+  "safe_to_remove": {}
+}
