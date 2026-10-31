@@ -1,0 +1,22 @@
+{
+  "format": "ink-os-packaged-final-ui-v1",
+  "artifactSha256": "1144b6b7778dfa50b803232b076ab4c78773608f84a0ca21d446cf6cb16984af",
+  "desktopSource": {
+    "commit": "77c92e29f9bf58ad6fb39f3578f414318c33d513",
+    "dirty": false
+  },
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "ae8953cd369f0357781c6060574cba4f272680cc"
+  },
+  "observed": [
+    "Exact final package opened a new local zero-app desktop.",
+    "Native updater shortcut displayed the up-to-date dialog with the custom Ink OS icon.",
+    "Owned application quit gracefully with code0."
+  ],
+  "screenshotSha256": "86555cc4f29b9dc5dbb9fcb4c08fe19f38bd1a8af4d03ee6847aa2f7f5805a53",
+  "connectionCompatibility": "Connections implementation bytes unchanged from the earlier actual packaged local/hosted UI and queued-edit convergence proofs.",
+  "limits": [
+    "Ad-hoc development preview; Developer ID/notarization deferred."
+  ]
+}

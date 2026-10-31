@@ -1,38 +1,38 @@
 {
   "format": "ink-os-private-preview-publication-v1",
   "repository": "siliconjungle/ink-os-desktop",
-  "releaseId": 429897608,
-  "url": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.5",
-  "tag": "v0.1.0-preview.5",
+  "releaseId": 429916062,
+  "url": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.6",
+  "tag": "v0.1.0-preview.6",
   "draft": false,
   "prerelease": true,
   "repositoryPrivate": true,
   "desktopSource": {
-    "commit": "a55e24963b17a91c9c2bd66c51ccb8644cd8dd24",
+    "commit": "77c92e29f9bf58ad6fb39f3578f414318c33d513",
     "dirty": false
   },
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "d87bdeba0feb74c031a27567aec92b9c14c523cc"
+    "commit": "ae8953cd369f0357781c6060574cba4f272680cc"
   },
   "signing": "ad-hoc-development",
   "notarized": false,
   "distributionDecision": "Development preview; Developer ID signing and notarization deferred.",
   "freshMacVerification": {
-    "runId": "41197613960",
-    "commit": "a55e24963b17a91c9c2bd66c51ccb8644cd8dd24",
-    "url": "https://github.com/siliconjungle/ink-os-desktop/actions/runs/41197613960"
+    "runId": "41200397005",
+    "commit": "77c92e29f9bf58ad6fb39f3578f414318c33d513",
+    "url": "https://github.com/siliconjungle/ink-os-desktop/actions/runs/41200397005"
   },
   "assets": [
     {
       "name": "ink-os-0.1.0-darwin-arm64.dmg",
-      "size": 196583614,
-      "digest": "sha256:b8d802793dd6d095ea8cff55e9c9f1e20d94d57b54cb2f10604670e7bc74d200"
+      "size": 194787604,
+      "digest": "sha256:1144b6b7778dfa50b803232b076ab4c78773608f84a0ca21d446cf6cb16984af"
     },
     {
       "name": "release.json",
       "size": 1633,
-      "digest": "sha256:2d2c2a12b7880a66aadfca142b6516a26522b5ebca6e47215c04adf5c7926ce0"
+      "digest": "sha256:e0d3adbdebec0623168bed173914b274eacabec76fb218cbed1ed7270919f377"
     }
   ]
 }
