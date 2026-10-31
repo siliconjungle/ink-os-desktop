@@ -1,0 +1,29 @@
+{
+  "format": "ink-os-private-preview-publication-v1",
+  "repository": "siliconjungle/ink-os-desktop",
+  "releaseId": 429681337,
+  "url": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/untagged-a4dd28cb14fcd50a6062",
+  "tag": "v0.1.0-preview.1",
+  "draft": true,
+  "prerelease": true,
+  "desktopSource": {
+    "commit": "92b660cf0cfdf65a0c60f6cfac73be0ec903965f",
+    "dirty": false
+  },
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
+  },
+  "assets": [
+    {
+      "name": "ink-os-0.1.0-darwin-arm64.dmg",
+      "size": 193781845,
+      "digest": "sha256:6269c172b7fbba01fad93d7998527fc274a794a00f38a6496adb4892d85a4708"
+    },
+    {
+      "name": "release.json",
+      "size": 1619,
+      "digest": "sha256:df232b1885fbca5badd51167be52eb6e5ba2b6a7c3bf6540439ec12b2a2e37f4"
+    }
+  ]
+}

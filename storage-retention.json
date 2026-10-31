@@ -13,7 +13,8 @@
     "evidence/packaged-desktop.json": "Selected graphical DMG proof binding source, icon, screenshot and artifact hashes with observed behavior and limits.",
     ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-e4KSS4/ink-os-0.1.0-darwin-arm64.dmg": "Selected final verified macOS arm64 local preview, including native branding and runtime notices.",
-    "release/0.1.0-darwin-arm64-e4KSS4/release.json": "Selected artifact hash, icon/notices hashes and clean source provenance."
+    "release/0.1.0-darwin-arm64-e4KSS4/release.json": "Selected artifact hash, icon/notices hashes and clean source provenance.",
+    "evidence/release-publication.json": "Verified private draft release identity and server-computed asset digests matching the selected local preview."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -43,6 +44,7 @@
     ".local/package-proof-NmnqqH": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     "release/0.1.0-darwin-arm64-p0gd5m/ink-os-0.1.0-darwin-arm64.dmg": "Completed superseded local preview; the final verified preview includes runtime notices and updated exact provenance.",
     "release/0.1.0-darwin-arm64-p0gd5m/release.json": "Completed superseded local preview; the final verified preview includes runtime notices and updated exact provenance.",
-    "release/0.1.0-darwin-arm64-e4KSS4/Ink OS-darwin-arm64": "Completed generated package directory; its exact contents are retained in the verified DMG."
+    "release/0.1.0-darwin-arm64-e4KSS4/Ink OS-darwin-arm64": "Completed generated package directory; its exact contents are retained in the verified DMG.",
+    ".local/release-notes.txt": "Completed draft release body staging; the published private draft and immutable artifact/source proof are retained."
   }
 }
