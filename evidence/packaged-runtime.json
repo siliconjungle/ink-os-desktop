@@ -2,10 +2,10 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "5848c2830d5187cb8351e3f6c7a0f3efce3a4d8a"
+    "commit": "7878eccd1fa65f2ceaa410e899c6c52fb5165010"
   },
-  "artifactSha256": "74837813406bef58ca5319152a38af668c117b1e6d38d9c246995e5c1fe64abc",
-  "manifestSha256": "61c4eb67805b58824ecfd8d7a6ca1d59925eeed746e8dabc48ade108c698622a",
+  "artifactSha256": "90264cae33917aac62620a30d5075080897941de4399ac85a6a82214a480ba27",
+  "manifestSha256": "8f115bd065488669e9397d14c3a6843e6633e45f1c21e10308e52a14d9b3a3fe",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
@@ -26,7 +26,7 @@
     "Managed native toolchains and notarized distribution remain separate work."
   ],
   "desktopSource": {
-    "commit": "5e656a2199bea7f04312300069e36d2f253c3046",
+    "commit": "d1c4264e3468e12f0743cc8c693cc1e296b19534",
     "dirty": false
   },
   "verifierSha256": "aac25d80a70205daa2d305fccaafad1ac1ae55a9e10896e5b396a8f659281d30"
