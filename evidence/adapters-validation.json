@@ -1,0 +1,23 @@
+{
+  "format": "ink-os-adapter-validation-v1",
+  "checks": {
+    "nativeElectronGUI": true,
+    "realProviderTranscription": true,
+    "sourceRevisionPreserved": true,
+    "separateLinkedResult": true,
+    "provenance": true,
+    "localRunnerWithoutDocker": true
+  },
+  "sourceId": "6ae3263b080e0eff916791a5a4cee3dd",
+  "outputId": "47af55273d4e5dfd2272f1545531bf82",
+  "runId": "440d7f720a6687c7fe9c12aaf82cc50f",
+  "adapterId": "594d3df41e3f59bb992ae81f63df7021",
+  "releaseId": "009ecbbe24eed58fb76ce144a5216998",
+  "screenshots": {
+    "adapters-open-with.png": "b89cd19d3733c4a1e43439149be44621eca2a8f2f135b51230491cfd665a0cda",
+    "adapters-transcript.png": "e101bb6782b9a4eb8f205b75109aa9e5f5316f9d55dd3ef61a45bebbcccf799d"
+  },
+  "limits": [
+    "Development Electron host with the modified shared platform; existing packaged installers and production hosts were not replaced."
+  ]
+}

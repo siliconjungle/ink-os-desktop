@@ -36,7 +36,11 @@
     "release/0.1.0-darwin-arm64-pC4peV": "Active desktop package output; preserve until packaging and validation complete.",
     "release/0.1.0-darwin-arm64-Vhx3HX": "Active desktop package output; preserve until packaging and validation complete.",
     ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
-    "release/0.1.0-darwin-arm64-Of8hBG": "Active desktop package output; preserve until packaging and validation complete."
+    "release/0.1.0-darwin-arm64-Of8hBG": "Active desktop package output; preserve until packaging and validation complete.",
+    "evidence/adapters-open-with.png": "Selected native adapter chooser proof.",
+    "evidence/adapters-transcript.png": "Selected actual provider output in native Text Editor.",
+    "evidence/adapters-validation.json": "Sanitized native GUI/provider proof and its scope.",
+    ".local/adapters-desktop-profile": "Active isolated native host profile and encrypted validation data; retain while its host is live."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -83,6 +87,8 @@
     ".local/package-proof-7IksIz": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     ".local/package-18QqBY": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-proof-P3me7o": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
-    "release/0.1.0-darwin-arm64-Of8hBG/Ink OS-darwin-arm64": "Completed expanded package validation output. The exact DMG, release manifest, source pins and local/fresh-Mac proofs are retained."
+    "release/0.1.0-darwin-arm64-Of8hBG/Ink OS-darwin-arm64": "Completed expanded package validation output. The exact DMG, release manifest, source pins and local/fresh-Mac proofs are retained.",
+    ".local/adapters-lifecycle-tests.txt": "Completed 22 passing lifecycle/connection checks; selected proof summary retained.",
+    ".local/adapters-desktop.txt": "Owned native host log; retire only after that host exits."
   }
 }
