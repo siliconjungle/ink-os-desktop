@@ -16,13 +16,14 @@ permissions:
   contents: read
 
 jobs:
-  packaged-runtime:
-    runs-on: macos-15
-    timeout-minutes: 15
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    # GitHub requires push access to read unpublished draft releases.
+    # No downloaded application code runs in this job.
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -85,11 +86,44 @@ jobs:
           assert.equal(release.desktopSource.dirty, false);
           assert.match(release.desktopSource.commit, /^[a-f0-9]{40}$/);
           JS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-preview-input
+          path: |
+            ${{ runner.temp }}/ink-preview/release.json
+            ${{ runner.temp }}/ink-preview/ink-os-0.1.0-darwin-arm64.dmg
+          retention-days: 1
+          compression-level: 0
+  packaged-runtime:
+    needs: download
+    runs-on: macos-15
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-preview-input
+          path: ${{ runner.temp }}/ink-preview
       - name: Verify a relocated app on the fresh runner
         env:
           INK_OS_VERIFY_EPHEMERAL_RUNNER: '1'
+          MANIFEST_SHA256: ${{ inputs.manifestSha256 }}
         run: |
           set -euo pipefail
+          node --input-type=module <<'JS'
+          import { readFile } from 'node:fs/promises';
+          import { createHash } from 'node:crypto';
+          import assert from 'node:assert/strict';
+          const bytes = await readFile(process.env.RUNNER_TEMP + '/ink-preview/release.json');
+          assert.equal(createHash('sha256').update(bytes).digest('hex'), process.env.MANIFEST_SHA256);
+          JS
           directory="$RUNNER_TEMP/ink-preview"
           mount="$directory/mount"
           mkdir "$mount" "$directory/relocated"
