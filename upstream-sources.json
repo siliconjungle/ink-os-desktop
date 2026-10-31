@@ -1,0 +1,14 @@
+[
+  {
+    "name": "git",
+    "commit": "a018953688f1b10bddf91bff8747068f5f4746a4",
+    "url": "https://codeload.github.com/git/git/tar.gz/a018953688f1b10bddf91bff8747068f5f4746a4",
+    "sha256": "898ecd505bcec4390b3b7b2c1882509af3f11f3b62c56147d19f01e2a4e81355"
+  },
+  {
+    "name": "dugite-native",
+    "commit": "a44aeca2f8593510c8080d8b7767468fa210a02c",
+    "url": "https://codeload.github.com/desktop/dugite-native/tar.gz/a44aeca2f8593510c8080d8b7767468fa210a02c",
+    "sha256": "4bce3003d1c988a5cd6f32a9ac82d4f4e8f8d109175f317e41b9c5e3850f75c3"
+  }
+]

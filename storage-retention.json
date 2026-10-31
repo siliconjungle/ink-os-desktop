@@ -4,10 +4,25 @@
     "tests": "Desktop lifecycle validation.",
     "scripts": "Development runtime bootstrap.",
     "evidence/desktop-native.jpg": "Selected native desktop screenshot after full relaunch with persistent native Ink state.",
-    "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits."
+    "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "platform.json": "Exact shared platform repository and commit pin.",
+    "upstream-sources.json": "Exact corresponding Git source/build recipe URLs, full revisions and archive integrity hashes."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
-    ".local/electron-startup-sample.txt": "Completed insight-only startup diagnostic; the lifecycle implementation and selected functional proof are retained."
+    ".local/electron-startup-sample.txt": "Completed insight-only startup diagnostic; the lifecycle implementation and selected functional proof are retained.",
+    ".local/package-BcDNso": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    "release/0.1.0-darwin-arm64-ly7n0F": "Completed first packaging attempt with unsuccessful top-level signing; corrected signing is now required before validation or publication. No selected proof depends on this generated artifact.",
+    ".local/package-OI5QBJ": "Completed failed signing validation; the corrected builder moves its CLI script into sealed resources. No unique required inputs or proofs.",
+    "release/0.1.0-darwin-arm64-EeNyjt": "Completed failed packaging output before a distributable was created; no selected artifact depends on it.",
+    ".local/package-ho9pUo": "Completed failed validation of generated symlink layout; corrected builder preserves relative links and rejects dangling links before signing. Pinned original source and reproduction builder remain.",
+    "release/0.1.0-darwin-arm64-3TL8Ro": "Completed failed validation of generated symlink layout; corrected builder preserves relative links and rejects dangling links before signing. Pinned original source and reproduction builder remain.",
+    ".local/package-217uQY": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-fuaOQ2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    "release/0.1.0-darwin-arm64-Agxfnd": "Completed runtime validation found ad hoc signatures incompatible with hardened library validation. Corrected development signing is required; no usable artifact or selected proof depends on this attempt.",
+    ".local/package-SoZcAd": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-PIhfZi": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    "release/0.1.0-darwin-arm64-RMUDX0": "Completed development signing diagnostic; library options were corrected and executable Node 24.19.0 startup passed. A clean-source build now replaces this candidate; its source and locks are retained."
   }
 }

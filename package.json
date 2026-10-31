@@ -8,10 +8,20 @@
   "main": "src/main.mjs",
   "scripts": {
     "start": "node scripts/start.mjs",
-    "check": "node --check src/main.mjs && node --check src/local-instance.mjs && node --check scripts/start.mjs",
-    "test": "node --test tests/*.test.mjs"
+    "check": "node --check src/main.mjs && node --check src/local-instance.mjs && node --check src/runtime.mjs && node --check src/cli.mjs && node --check scripts/start.mjs && node --check scripts/package.mjs && node --check scripts/verify-package.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "package": "node scripts/package.mjs",
+    "verify:package": "node scripts/verify-package.mjs"
   },
   "devDependencies": {
+    "@electron/packager": "20.3.0",
+    "dugite": "3.3.2",
     "electron": "42.11.18"
+  },
+  "overrides": {
+    "@electron/asar": {
+      "glob": "14.0.3",
+      "minimatch": "11.0.3"
+    }
   }
 }

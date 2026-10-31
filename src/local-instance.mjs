@@ -18,8 +18,8 @@ export async function localPort(directory) {
 const processAlive = pid => { if (!Number.isInteger(pid) || pid < 1) return false; try { process.kill(pid, 0); return true; } catch (error) { return error.code === 'EPERM'; } };
 
 export class LocalInstance {
-  constructor({ platformDirectory, directory, port, executable = process.execPath, electron = false }) {
-    Object.assign(this, { platformDirectory: resolve(platformDirectory), directory: resolve(directory), port, executable, electron });
+  constructor({ platformDirectory, directory, port, executable = process.execPath, electron = false, runtimeEnvironment = {} }) {
+    Object.assign(this, { platformDirectory: resolve(platformDirectory), directory: resolve(directory), port, executable, electron, runtimeEnvironment });
   }
   get running() { return this.attached || Number.isInteger(this.process?.pid) && this.process.exitCode === null && this.process.signalCode === null; }
   start() {
@@ -34,7 +34,7 @@ export class LocalInstance {
     const existing = await this.attachExisting();
     if (existing) return existing;
     const env = Object.fromEntries(Object.entries(process.env).filter(([name]) => !/^(INK_|FLY_|AWS_|S3_|BUCKET_NAME)/.test(name)));
-    Object.assign(env, { NODE_ENV: 'production', PORT: String(this.port), INK_OS_DATA_DIR: this.directory, INK_OS_HOSTING: 'local', ...(this.electron ? { ELECTRON_RUN_AS_NODE: '1' } : {}) });
+    Object.assign(env, this.runtimeEnvironment, { NODE_ENV: 'production', PORT: String(this.port), INK_OS_DATA_DIR: this.directory, INK_OS_HOSTING: 'local', ...(this.electron ? { ELECTRON_RUN_AS_NODE: '1' } : {}) });
     this.process = spawn(this.executable, [join(this.platformDirectory, 'scripts/start.mjs')], { cwd: this.platformDirectory, env, stdio: ['ignore', 'pipe', 'pipe'] });
     this.output = '';
     this.process.stdout.on('data', bytes => this.output = (this.output + bytes).slice(-8192));

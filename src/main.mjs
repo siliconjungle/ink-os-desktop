@@ -4,9 +4,11 @@ import { createHash } from 'node:crypto';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { LocalInstance, localPort } from './local-instance.mjs';
+import { runtimeEnvironment } from './runtime.mjs';
 
 let instance, window, opening, quitting = false;
 const root = fileURLToPath(new URL('..', import.meta.url));
+app.setName('Ink OS');
 if (process.env.INK_OS_DESKTOP_DATA_DIR) {
   const directory = resolve(process.env.INK_OS_DESKTOP_DATA_DIR);
   await mkdir(directory, { recursive: true, mode: 0o700 }); app.setPath('userData', directory);
@@ -21,6 +23,7 @@ async function endpoint() {
   if (!instance) instance = new LocalInstance({
     platformDirectory: process.env.INK_OS_PLATFORM_DIR || (app.isPackaged ? join(process.resourcesPath, 'platform') : resolve(root, '../ink-os-platform')),
     directory, port: await localPort(directory), electron: true,
+    ...(app.isPackaged ? { runtimeEnvironment: runtimeEnvironment(process.resourcesPath) } : {}),
   });
   return instance.start();
 }
