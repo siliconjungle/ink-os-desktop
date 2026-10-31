@@ -22,6 +22,7 @@ const executable = join(contents, ...(process.platform === 'darwin' ? ['MacOS'] 
 const cliPath = join(process.platform === 'darwin' ? resources : dirname(executable), 'ink-os');
 assert.equal(hash(await readFile(join(resources, 'tools', 'package-manifest.json'))), release.manifestSha256);
 assert.equal(hash(await readFile(join(resources, 'icon.png'))), release.icon.pngSha256);
+for (const name of ['ELECTRON-LICENSE', 'LICENSES.chromium.html']) assert.equal(hash(await readFile(join(resources, 'licenses', name))), release.runtimeNotices[name]);
 if (process.platform === 'darwin') {
   await execute('codesign', ['--verify', '--deep', '--strict', join(bundle, 'Ink OS.app')]);
   const iconName = (await execute('plutil', ['-extract', 'CFBundleIconFile', 'raw', '-o', '-', join(contents, 'Info.plist')])).stdout.trim();

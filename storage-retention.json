@@ -7,10 +7,13 @@
     "evidence/desktop-native.json": "Screenshot hash, exact platform revision, observations and limits.",
     "platform.json": "Exact shared platform repository and commit pin.",
     "upstream-sources.json": "Exact corresponding Git source/build recipe URLs, full revisions and archive integrity hashes.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "assets": "Ink OS vector branding and selected generated PNG for native development and packaged windows.",
     "evidence/packaged-runtime.json": "Selected packaged CLI/host proof including immutable artifact and manifest hashes.",
-    "evidence/packaged-desktop.jpg": "Selected packaged GUI screenshot after restart; proof metadata records limits."
+    "evidence/packaged-desktop.jpg": "Selected packaged GUI screenshot after restart; proof metadata records limits.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "evidence/packaged-desktop.json": "Selected graphical DMG proof binding source, icon, screenshot and artifact hashes with observed behavior and limits.",
+    "release/0.1.0-darwin-arm64-p0gd5m/ink-os-0.1.0-darwin-arm64.dmg": "Selected verified macOS arm64 local preview DMG, including pinned runtime, compiler, Git, corresponding source and native branding.",
+    "release/0.1.0-darwin-arm64-p0gd5m/release.json": "Selected preview artifact hash and exact clean-source provenance."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -30,8 +33,11 @@
     ".local/package-Hdan4P": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-proof-rbFif2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     ".local/package-proof-4E9tZF": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
-    ".local/packaged-gui": "Completed package validation; the owned window/host exited and the read-only image was detached. The next package will revalidate the corrected idle connection shutdown.",
-    ".local/mounted-package": "Completed package validation; the owned window/host exited and the read-only image was detached. The next package will revalidate the corrected idle connection shutdown.",
-    "release/0.1.0-darwin-arm64-jh25OA": "Completed first functional package baseline; the selected next build adds native Ink branding and fixes idle frontend connection shutdown. Exact builder/source is retained in Git."
+    ".local/packaged-gui": "Completed validation: both graphical hosts exited normally and the disk image was detached; selected screenshot/metadata and exact templates are retained.",
+    ".local/mounted-package": "Completed validation: both graphical hosts exited normally and the disk image was detached; selected screenshot/metadata and exact templates are retained.",
+    "release/0.1.0-darwin-arm64-jh25OA": "Completed first functional package baseline; the selected next build adds native Ink branding and fixes idle frontend connection shutdown. Exact builder/source is retained in Git.",
+    ".local/package-tZBg2G": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-Wn99oa": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    "release/0.1.0-darwin-arm64-p0gd5m/Ink OS-darwin-arm64": "Completed generated package directory; the verified read-only DMG contains its exact distributable contents."
   }
 }

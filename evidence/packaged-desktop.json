@@ -1,0 +1,35 @@
+{
+  "format": "ink-os-packaged-desktop-proof-v1",
+  "desktopSource": {
+    "commit": "de164a0ceba9c76e95d390a1a96fac8a8d3aa862",
+    "dirty": false
+  },
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
+  },
+  "artifactSha256": "147fe86a717b0a55bce11dab9fb1a782f331590c3c840f6f64cdbcd6a60f9118",
+  "manifestSha256": "b3e39212db924af3f28e7fd9a9f28f953a96d6e1473a1f0eb62fd2eadcc6ad4a",
+  "icon": {
+    "sourceSha256": "44ca41cdb85f119cf1c51b259e22a704a74a32a17f74b01474e857388e4ea368",
+    "pngSha256": "8ee03a19a9dcb86085cc9b7f694295429fee447c0260a36bdfc999a50c5ab127",
+    "icnsSha256": "d2dbb2d045a34e9e5bd3c0af9a28cc3d917a2943abf22c942ebb49ac4abed432"
+  },
+  "screenshot": "packaged-desktop.jpg",
+  "screenshotSha256": "2d572a2da266a2f6b35fd99c177e207c3948d9867457c762d4f04b0f15334e5b",
+  "observed": [
+    "Launched the packaged app directly from its read-only mounted DMG.",
+    "A fresh graphical instance started with zero apps.",
+    "The bundled CLI explicitly initialized/deployed Ink source and changed state to 7.",
+    "The app opened in the shared desktop and its button changed 7 to 8.",
+    "Normal quit exited both the window and owned host.",
+    "Relaunch kept the desktop origin and displayed saved state 8.",
+    "A second normal quit completed and the recorded host process was confirmed absent.",
+    "Native PNG and ICNS hashes matched the package manifest."
+  ],
+  "limits": [
+    "macOS arm64 development build with an ad hoc signature; not notarized.",
+    "This is a real local-host proof, not a clean virtual-machine installation test.",
+    "Managed native toolchains and application updates remain unfinished."
+  ]
+}

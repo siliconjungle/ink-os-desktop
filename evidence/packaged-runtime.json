@@ -1,0 +1,26 @@
+{
+  "format": "ink-os-packaged-runtime-proof-v1",
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
+  },
+  "artifactSha256": "147fe86a717b0a55bce11dab9fb1a782f331590c3c840f6f64cdbcd6a60f9118",
+  "manifestSha256": "b3e39212db924af3f28e7fd9a9f28f953a96d6e1473a1f0eb62fd2eadcc6ad4a",
+  "electron": "42.11.18",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "relocatedBundle": true,
+  "observed": [
+    "The packaged Electron executable ran its bundled platform independently of the source checkout.",
+    "Fresh instance had zero apps.",
+    "External node, git, cargo and rustc names were blocked on PATH.",
+    "The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.",
+    "A compatible JavaScript runtime remained usable with no native toolchain.",
+    "Saved state, instance identity and address survived host restart."
+  ],
+  "limits": [
+    "Host-runtime and CLI proof; graphical packaged-window testing is recorded separately.",
+    "This host is not a clean virtual machine.",
+    "Managed native toolchains and notarized distribution remain separate work."
+  ]
+}
