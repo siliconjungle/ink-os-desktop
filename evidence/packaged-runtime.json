@@ -2,17 +2,18 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "6a2e12af2c7b43e38d4bd8dcd0b400cde171c87f"
+    "commit": "ad737fa16e8205f7a0212b4116b22bca026190a8"
   },
-  "artifactSha256": "6269c172b7fbba01fad93d7998527fc274a794a00f38a6496adb4892d85a4708",
-  "manifestSha256": "8ade35deadcae9a9fed2f912f48a4a3a82dab10bc4f4bbff8dbf3063030ccace",
+  "artifactSha256": "eb0b914f67e75975bf1d2b3394c1d8038d2febea56163225ba742a1abf0d980c",
+  "manifestSha256": "25eec7cf5f92f663c9c820d5fb093fd4bea3af9913157471baec42d0e607bf56",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
-  "relocatedBundle": true,
+  "relocatedBundle": false,
   "observed": [
     "The packaged Electron executable ran its bundled platform independently of the source checkout.",
     "Fresh instance had zero apps.",
+    "The packaged CLI captured the default desktop Local selection without an explicit CLI configuration.",
     "External node, git, cargo and rustc names were blocked on PATH.",
     "The packaged CLI initialized local Git source, compiled and deployed an Ink app, and changed its state to 3.",
     "A compatible JavaScript runtime remained usable with no native toolchain.",

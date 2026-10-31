@@ -1,0 +1,29 @@
+{
+  "format": "ink-os-hosted-desktop-acceptance-v1",
+  "observedAt": "2026-10-31T06:18:41.159Z",
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "ad737fa16e8205f7a0212b4116b22bca026190a8"
+  },
+  "artifactSha256": "eb0b914f67e75975bf1d2b3394c1d8038d2febea56163225ba742a1abf0d980c",
+  "manifestSha256": "25eec7cf5f92f663c9c820d5fb093fd4bea3af9913157471baec42d0e607bf56",
+  "privateGUIProofSha256": "f96d16e7bcb7eb4ecdeb817b6e15900dfe2b2a2901f69b77da781dd038e69e6c",
+  "privateReadParitySha256": "4dc01b82efe1cc87a4fde4aa171fdb8e92368ab35994b1797122b1b5f047af81",
+  "observed": [
+    "Packaged GUI signs into a pre-existing hosted Ink OS account and loads its installed Workflows app at its isolated app origin.",
+    "Selected hosted apps, files, workflows and command query responses match direct SDK and desktop CLI reads.",
+    "Switching to the independent local instance shows zero apps; the packaged CLI selects that same local instance.",
+    "Switching back restores the hosted catalog and packaged CLI target while the local instance remains healthy with the same identity."
+  ],
+  "checks": {
+    "desktopTests": 59,
+    "cliConnectionTests": 18
+  },
+  "limits": [
+    "Historical acceptance, not a current live audit.",
+    "Existing host uses explicitly selected origin compatibility; new hosts use instance identity pins.",
+    "No workflow/model command execution or cross-client edit convergence is claimed.",
+    "Same-account credential rotation preserves partition/window in regression tests; actual pending outbox payload acceptance remains separate.",
+    "Preview is ad-hoc signed and not notarized."
+  ]
+}

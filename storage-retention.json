@@ -11,14 +11,16 @@
     "evidence/packaged-runtime.json": "Selected packaged CLI/host proof including immutable artifact and manifest hashes.",
     "evidence/packaged-desktop.jpg": "Selected packaged GUI screenshot after restart; proof metadata records limits.",
     "evidence/packaged-desktop.json": "Selected graphical DMG proof binding source, icon, screenshot and artifact hashes with observed behavior and limits.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-e4KSS4/ink-os-0.1.0-darwin-arm64.dmg": "Selected final verified macOS arm64 local preview, including native branding and runtime notices.",
     "release/0.1.0-darwin-arm64-e4KSS4/release.json": "Selected artifact hash, icon/notices hashes and clean source provenance.",
     "evidence/release-publication.json": "Verified private draft release identity and server-computed asset digests matching the selected local preview.",
     "evidence/managed-native.json": "Selected actual macOS arm64 official Rust installation, integrity, smoke execution, cached artifact and Ink cross-engine state parity proof, bound to exact source hashes and CI run.",
     ".local/managed-native-success": "Selected downloaded CI proof and byte-exact required Rust notices; upstream pins, installer/verifier and input hashes reproduce the proof.",
     "evidence/managed-native-api.json": "Selected real cold-cache managed native API job, persistent cross-engine state and toolchain-unavailable restart/cache acceptance with exact source and CI binding.",
-    ".local/managed-native-api-success": "Selected actual API proof, byte-exact Rust notices and exact successful verifier input sources."
+    ".local/managed-native-api-success": "Selected actual API proof, byte-exact Rust notices and exact successful verifier input sources.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "release/0.1.0-darwin-arm64-7va5Am": "Active desktop package output; preserve until packaging and validation complete.",
+    "evidence/hosted-connections.json": "Selected packaged local/hosted GUI and shared CLI interoperability acceptance, with private proof digest and explicit limits."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -50,6 +52,8 @@
     "release/0.1.0-darwin-arm64-p0gd5m/release.json": "Completed superseded local preview; the final verified preview includes runtime notices and updated exact provenance.",
     "release/0.1.0-darwin-arm64-e4KSS4/Ink OS-darwin-arm64": "Completed generated package directory; its exact contents are retained in the verified DMG.",
     ".local/release-notes.txt": "Completed draft release body staging; the published private draft and immutable artifact/source proof are retained.",
-    ".local/native-proof-secret-scan.json": "Completed redacted scanner diagnostic of a non-secret compatibility hash; selected public proof omits the redundant hash, and complete source/history scans are required before publication."
+    ".local/native-proof-secret-scan.json": "Completed redacted scanner diagnostic of a non-secret compatibility hash; selected public proof omits the redundant hash, and complete source/history scans are required before publication.",
+    ".local/package-M6cKNu": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-h8Fcol": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }
