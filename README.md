@@ -53,3 +53,5 @@ Preview build 7 bundles Finder, Preview and Ink Environment from the pinned publ
 Preview build 8 adds independently published adapters, defaults and linked representations to Open with. The installed local host can execute adapter modules without Docker; hosted connections use the same UI and protocol. No adapters are bundled. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.8) · [Deployment acceptance](evidence/adapters-deployment.json).
 
 Preview build 9 fixes dragging apps and saved files from Search and Finder onto the desktop, including fast cross-frame gestures, and adds shared file-type glyphs. Hosted and Local modes use the same platform changes. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.9) · [Verification](evidence/file-interactions.json).
+
+Preview build 10 also supports dragging standard Open app commands and saved-file query results from toolbar/command Search. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.10) · [Verification](evidence/file-interactions.json).

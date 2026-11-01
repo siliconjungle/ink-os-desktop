@@ -43,12 +43,17 @@
     "release/0.1.0-darwin-arm64-B078AI": "Active desktop package output; preserve until packaging and validation complete.",
     "evidence/adapters-deployment.json": "Selected merged/deployed/installed adapter acceptance and exact source/artifact bindings.",
     ".local/adapters-fresh-mac-proof/packaged-runtime-proof/packaged-runtime.json": "Exact fresh Mac acceptance proof for preview 8.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
-    "release/0.1.0-darwin-arm64-rjuutA": "Active desktop package output; preserve until packaging and validation complete.",
     "evidence/file-interactions.json": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
     ".local/file-interactions-tests.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
     ".local/file-interactions-package.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
-    ".local/file-interactions-package-verification.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input."
+    ".local/file-interactions-package-verification.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "release/0.1.0-darwin-arm64-TQPvOh": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-rjuutA/release.json": "Selected published preview 9 metadata and exact rollback binding.",
+    "release/0.1.0-darwin-arm64-rjuutA/ink-os-0.1.0-darwin-arm64.dmg": "Exact published preview 9 rollback artifact; duplicate unpacked copy is retired.",
+    ".local/command-search-tests.log": "Selected final command-search and packaged preview 10 acceptance evidence.",
+    ".local/command-search-package.log": "Selected final command-search and packaged preview 10 acceptance evidence.",
+    ".local/command-search-package-verification.log": "Selected final command-search and packaged preview 10 acceptance evidence."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -102,6 +107,9 @@
     ".local/package-proof-QflEKM": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     ".local/adapters-fresh-mac-proof/verified-preview-input": "Completed duplicate downloaded installer/manifest; selected original release artifact and exact acceptance proof are retained.",
     ".local/package-UkOADL": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
-    ".local/package-proof-d5PtLh": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
+    ".local/package-proof-d5PtLh": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-JuDkg2": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-UOozsE": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    "release/0.1.0-darwin-arm64-rjuutA/Ink OS-darwin-arm64": "Completed preview 9 unpacked duplicate; matching published DMG, manifest, Git history and proof are retained."
   }
 }

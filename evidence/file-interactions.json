@@ -1,24 +1,26 @@
 {
   "format": "ink-os-desktop-file-interactions-proof-v1",
-  "platformSource": "5e789239140b23712a88aec0f2f231153a3fd8b9",
+  "platformSource": "a1d3b117a845e4d26b6c4a879c048af06d79961e",
   "finderSource": "0a3caf948d1ae730b9b4c8c1bf86c0e335c7899d",
-  "desktopRelease": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.9",
-  "desktopBuild": 9,
+  "desktopRelease": "https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.10",
+  "desktopBuild": 10,
   "observed": [
     "Real Mac app: drag an app from the Applications grid onto the desktop.",
     "Real Mac app: drag an app and an image file from filtered Search onto the desktop.",
     "Real Mac app: drag a file across the Finder iframe boundary onto the desktop.",
     "Packaged preview 9: drag Finder from Search, then drag an image from Finder; relative placement persisted.",
     "Shared MIME/filename glyphs rendered in Finder, Search and on the desktop.",
-    "Hosted generation 9 maintenance upgrade and complete upgraded-host canary passed.",
     "Only Finder selected release changed; all other hosted app releases and the catalog were preserved.",
-    "Installed preview 9 reopened the existing hosted connection; Desktop shortcut points to the installed bundle."
+    "Toolbar/command Search: Open app result dragged onto the desktop without running its command.",
+    "File-query command results displayed typed glyphs and supported dragging a PNG onto the desktop.",
+    "Hosted generation 10 maintenance upgrade and complete scoped backend/edge canary cleanup passed.",
+    "Installed preview 10 reopened the existing hosted connection; the Desktop shortcut uses the installed bundle."
   ],
   "validation": {
     "interactionRegressions": "passed",
     "defaultApps": "passed",
     "desktopTests": 65,
-    "platformCI": "https://github.com/siliconjungle/ink-os-platform/actions/runs/41265186914",
+    "platformCI": "https://github.com/siliconjungle/ink-os-platform/actions/runs/41266220196",
     "packagedRuntime": "passed"
   },
   "limits": [
