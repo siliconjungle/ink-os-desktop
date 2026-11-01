@@ -40,10 +40,15 @@
     "evidence/adapters-transcript.png": "Selected actual provider output in native Text Editor.",
     "evidence/adapters-validation.json": "Sanitized native GUI/provider proof and its scope.",
     ".local/adapters-desktop-profile": "Active isolated native host profile and encrypted validation data; retain while its host is live.",
-    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
     "release/0.1.0-darwin-arm64-B078AI": "Active desktop package output; preserve until packaging and validation complete.",
     "evidence/adapters-deployment.json": "Selected merged/deployed/installed adapter acceptance and exact source/artifact bindings.",
-    ".local/adapters-fresh-mac-proof/packaged-runtime-proof/packaged-runtime.json": "Exact fresh Mac acceptance proof for preview 8."
+    ".local/adapters-fresh-mac-proof/packaged-runtime-proof/packaged-runtime.json": "Exact fresh Mac acceptance proof for preview 8.",
+    ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
+    "release/0.1.0-darwin-arm64-rjuutA": "Active desktop package output; preserve until packaging and validation complete.",
+    "evidence/file-interactions.json": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
+    ".local/file-interactions-tests.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
+    ".local/file-interactions-package.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input.",
+    ".local/file-interactions-package-verification.log": "Selected file-drag, file-glyph and packaged/hosted acceptance evidence or required reproduction input."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -95,6 +100,8 @@
     ".local/adapters-desktop.txt": "Owned native host log; retire only after that host exits.",
     ".local/package-MmwkYK": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-proof-QflEKM": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
-    ".local/adapters-fresh-mac-proof/verified-preview-input": "Completed duplicate downloaded installer/manifest; selected original release artifact and exact acceptance proof are retained."
+    ".local/adapters-fresh-mac-proof/verified-preview-input": "Completed duplicate downloaded installer/manifest; selected original release artifact and exact acceptance proof are retained.",
+    ".local/package-UkOADL": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-d5PtLh": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }
