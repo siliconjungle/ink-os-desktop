@@ -281,8 +281,42 @@ test('API acceptance uses real HTTP/queue/state/cache paths with fixture compile
   const root = await mkdtemp(join(tmpdir(), 'ink-api-bootstrap-fixture-')); t.after(() => rm(root, { recursive: true, force: true }));
   const platformDirectory = fileURLToPath(new URL('../../ink-os-platform/', import.meta.url)), directory = join(root, 'profile'); await mkdir(directory);
   // The fixture Cargo materializes a tiny Node executable using the real generated JS
-  // checkpoint engine. This tests HTTP/bootstrap orchestration, not native Rust parity.
-  const program = `#!${process.execPath}\nconst fs=require('node:fs/promises');const path=require('node:path');(async()=>{let input='';for await(const bytes of process.stdin)input+=bytes;const request=JSON.parse(input);const record=JSON.parse(await fs.readFile(path.join(__dirname,'artifact.json'),'utf8'));const compiler=await import(${JSON.stringify(pathToFileURL(join(platformDirectory, 'server/ink-compiler.mjs')).href)});const artifact=await compiler.compileInk(record.source);const program=await import('data:text/javascript;base64,'+Buffer.from(artifact.javascript).toString('base64'));let output,snapshot=null;if(request.kind==='function')output=program.callOwned(request.entry,request.args);else{const state=program.createState();if(request.snapshot)await state.restore(new Uint8Array(request.snapshot));output=state.invoke(request.entry,request.args);if(output.committed)snapshot=Array.from(await state.checkpoint());}console.log(JSON.stringify({output,snapshot},(_key,value)=>typeof value==='bigint'?Number(value):value));})().catch(error=>{console.log(JSON.stringify({error:error.message}));process.exitCode=1;});\n`;
+  // checkpoint engine and both one-shot/resident protocols. This tests HTTP/bootstrap
+  // orchestration, not native Rust parity.
+  const program = `#!${process.execPath}\nconst fs=require('node:fs/promises');const path=require('node:path');
+(async()=>{
+ const record=JSON.parse(await fs.readFile(path.join(__dirname,'artifact.json'),'utf8'));
+ const compiler=await import(${JSON.stringify(pathToFileURL(join(platformDirectory, 'server/ink-compiler.mjs')).href)});
+ const artifact=await compiler.compileInk(record.source);
+ const program=await import('data:text/javascript;base64,'+Buffer.from(artifact.javascript).toString('base64'));
+ program.setParallelism?.(1);
+ let state=program.createState();
+ const emit=value=>console.log(JSON.stringify(value,(_key,value)=>typeof value==='bigint'?Number(value):value));
+ if(process.argv.includes('--resident')){
+  const lines=require('node:readline').createInterface({input:process.stdin});
+  for await(const line of lines){
+   try{
+    const request=JSON.parse(line);let value;
+    if(request.op==='load'){
+     state=program.createState();
+     if(request.snapshotHex)await state.restore(new Uint8Array(Buffer.from(request.snapshotHex,'hex')));
+     value=true;
+    }else if(request.op==='checkpoint')value={snapshotHex:Buffer.from(await state.checkpoint()).toString('hex')};
+    else if(request.op==='call'){
+     const args=JSON.parse(request.input);
+     value={output:request.kind==='function'?program.callOwned(request.entry,args):state.invoke(request.entry,args)};
+    }else throw Error('Unknown fixture resident operation');
+    emit({value});
+   }catch(error){emit({error:error.message});}
+  }
+ }else{
+  let input='';for await(const bytes of process.stdin)input+=bytes;
+  const request=JSON.parse(input);let output,snapshot=null;
+  if(request.kind==='function')output=program.callOwned(request.entry,request.args);
+  else{if(request.snapshot)await state.restore(new Uint8Array(request.snapshot));output=state.invoke(request.entry,request.args);if(output.committed)snapshot=Array.from(await state.checkpoint());}
+  emit({output,snapshot});
+ }
+})().catch(error=>{console.log(JSON.stringify({error:error.message}));process.exitCode=1;});\n`;
   const cargo = `#!${process.execPath}\nconst fs=require('node:fs/promises');const path=require('node:path');(async()=>{if(process.argv[2]!=='build')throw Error('Fixture Cargo only supports build');const target=path.join(process.env.CARGO_TARGET_DIR,'release');await fs.mkdir(target,{recursive:true});await fs.writeFile(path.join(target,'ink-native-app'),${JSON.stringify(program)},{mode:0o700});})().catch(()=>{process.exitCode=1;});\n`;
   const installerModulePath = join(root, 'fixture-installer.mjs'), plan = nativeToolchainPlan('darwin', 'arm64');
   await writeFile(installerModulePath, `import {mkdir,writeFile,access} from 'node:fs/promises';import {join} from 'node:path';export const nativeToolchainPlan=()=>(${JSON.stringify(plan)});export class NativeToolchain{constructor({directory,reserveBytes}){this.directory=directory;this.reserveBytes=reserveBytes;this.estimatedBytes=5*1024**3;}async inspect(){try{await access(join(this.directory,'installed'));return {available:true};}catch{return {available:false,installable:true};}}async ensure(){await mkdir(join(this.directory,'bin'),{recursive:true,mode:0o700});const cargo=join(this.directory,'bin/cargo'),rustc=join(this.directory,'bin/rustc');await writeFile(cargo,${JSON.stringify(cargo)},{mode:0o700});await writeFile(rustc,'fixture only');await writeFile(join(this.directory,'installed'),'fixture installed');return {cargo,rustc,runtimeEnvironment:{CARGO_HOME:join(this.directory,'cargo-home')}};}}\n`);
