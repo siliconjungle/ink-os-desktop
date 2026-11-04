@@ -1,0 +1,152 @@
+{
+  "format": "ink-os-quick-look-verification-v1",
+  "artifactSha256": "b8049d46a6c6bcbb9ee6c250ec9900024219b24198b976ca94f93350ca5f3c06",
+  "build": 11,
+  "desktopSource": {
+    "commit": "9733054bd6a247b6a17c4c752c78bc1f34fa13cf",
+    "dirty": false
+  },
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "9683db0f752bccfe74650bb881824503ba775586"
+  },
+  "tests": {
+    "platform": {
+      "passed": 355,
+      "skipped": 5,
+      "failed": 0
+    },
+    "desktop": {
+      "passed": 65,
+      "failed": 0
+    },
+    "apps": [
+      {
+        "app": "ink-app-music",
+        "passed": true,
+        "checks": 4
+      },
+      {
+        "app": "ink-app-spreadsheet",
+        "passed": true,
+        "checks": 6
+      },
+      {
+        "app": "ink-app-moodboard",
+        "passed": true,
+        "checks": 2
+      },
+      {
+        "app": "ink-app-level-editor",
+        "passed": true,
+        "checks": 3
+      },
+      {
+        "app": "ink-app-finder",
+        "passed": true,
+        "checks": 4
+      },
+      {
+        "app": "ink-app-video-call",
+        "passed": true,
+        "checks": 2
+      },
+      {
+        "app": "ink-app-color-picker",
+        "passed": true,
+        "checks": 3
+      },
+      {
+        "app": "ink-app-chat-room",
+        "passed": true,
+        "checks": 2
+      },
+      {
+        "app": "ink-app-sprite-splitter",
+        "passed": true,
+        "checks": 5
+      },
+      {
+        "app": "ink-app-text-editor",
+        "passed": true,
+        "checks": 3
+      },
+      {
+        "app": "ink-app-polls",
+        "passed": true,
+        "checks": 6
+      },
+      {
+        "app": "ink-app-curves",
+        "passed": true,
+        "checks": 7
+      },
+      {
+        "app": "ink-app-image-converter",
+        "passed": true,
+        "checks": 5
+      },
+      {
+        "app": "ink-app-workflows",
+        "passed": true,
+        "checks": 3
+      },
+      {
+        "app": "ink-app-links",
+        "passed": true,
+        "checks": 3
+      },
+      {
+        "app": "ink-app-tables",
+        "passed": true,
+        "checks": 6
+      },
+      {
+        "app": "ink-app-palette-analysis",
+        "passed": true,
+        "checks": 7
+      },
+      {
+        "app": "ink-app-preview",
+        "passed": true,
+        "checks": 4
+      },
+      {
+        "app": "ink-app-ink-environment",
+        "passed": true,
+        "checks": 4
+      },
+      {
+        "app": "ink-app-depth-light",
+        "passed": true,
+        "checks": 5
+      },
+      {
+        "app": "ink-app-flip-rotate",
+        "passed": true,
+        "checks": 5
+      },
+      {
+        "app": "ink-app-pixelate",
+        "passed": true,
+        "checks": 6
+      }
+    ]
+  },
+  "previewProviders": 14,
+  "installedAppsUpdated": 10,
+  "observed": [
+    "Installed native desktop: Space opened a selected existing image through its declared provider; Escape restored the original selection and focus.",
+    "Desktop and Finder previews opened without adding normal windows or dock entries.",
+    "Space dismissed a preview; arrow keys browsed text and image files across providers.",
+    "Changing the preview default preserved the Open with editor choice; typing Space in the editor still inserted a space.",
+    "Command query results previewed with Space and returned to the same result on Escape.",
+    "Workbook previews displayed formula results; poll previews displayed counts without voting controls.",
+    "Table rows, shared typed tables, interpolated curves and linked palette reports rendered without starting their editing workflows.",
+    "Quitting/reopening the updated native desktop retained the existing catalog and desktop files."
+  ],
+  "limits": [
+    "Development preview, ad-hoc signed and not notarized.",
+    "Graphical checks ran on this Mac and an isolated local browser instance, not a clean virtual machine."
+  ]
+}
