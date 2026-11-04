@@ -12,7 +12,7 @@ export async function buildScrollPhase(output) {
   const headers = process.env.INK_OS_NODE_HEADERS || resolve(dirname(process.execPath), '../include/node');
   await access(resolve(headers, 'node_api.h'));
   await mkdir(dirname(output), {recursive:true});
-  await execute('xcrun', ['clang++', '-std=c++17', '-fblocks', '-fobjc-arc', '-shared', '-fPIC', '-undefined', 'dynamic_lookup',
+  await execute('xcrun', ['clang++', '-std=c++17', '-fblocks', '-fobjc-arc', '-mmacosx-version-min=12.0', '-shared', '-fPIC', '-undefined', 'dynamic_lookup',
     '-DNAPI_VERSION=8', '-DNODE_GYP_MODULE_NAME=ink_scroll_phase', '-I'+headers,
     '-framework', 'AppKit', source, '-o', output]);
 }
