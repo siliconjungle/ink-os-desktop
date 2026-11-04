@@ -54,8 +54,12 @@
     ".local/command-search-package.log": "Selected final command-search and packaged preview 10 acceptance evidence.",
     ".local/command-search-package-verification.log": "Selected final command-search and packaged preview 10 acceptance evidence.",
     "release/0.1.0-darwin-arm64-YknPmH": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-xvAjwQ": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-6fi3WS": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-5mbfh6": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-NUMdmp": "Active desktop package output; preserve until packaging and validation complete.",
     ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
-    "release/0.1.0-darwin-arm64-xvAjwQ": "Active desktop package output; preserve until packaging and validation complete."
+    "release/0.1.0-darwin-arm64-XMo68y": "Active desktop package output; preserve until packaging and validation complete."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -115,6 +119,13 @@
     "release/0.1.0-darwin-arm64-rjuutA/Ink OS-darwin-arm64": "Completed preview 9 unpacked duplicate; matching published DMG, manifest, Git history and proof are retained.",
     ".local/package-R38Vhf": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-IETjnk": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
-    ".local/package-proof-kPDik5": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
+    ".local/package-proof-kPDik5": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-w2Arsu": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-4FwhFO": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-2e6Dte": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-5QIRmd": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-KsIePZ": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-WfREh5": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-APp3e2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }
