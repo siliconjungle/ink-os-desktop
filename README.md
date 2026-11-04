@@ -55,3 +55,5 @@ Preview build 8 adds independently published adapters, defaults and linked repre
 Preview build 9 fixes dragging apps and saved files from Search and Finder onto the desktop, including fast cross-frame gestures, and adds shared file-type glyphs. Hosted and Local modes use the same platform changes. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.9) · [Verification](evidence/file-interactions.json).
 
 Preview build 10 also supports dragging standard Open app commands and saved-file query results from toolbar/command Search. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.10) · [Verification](evidence/file-interactions.json).
+
+Preview build 13 combines the merged platform and app rollout: scoped Space previews, independent Preview with defaults, and spatial desktop arrow selection. It pins the merged platform `main` revision, including its current Ink runtime and recovery changes.
