@@ -1,0 +1,86 @@
+{
+  "format": "ink-os-desktop-navigation-verification-v1",
+  "build": 12,
+  "artifactSha256": "a8f43e46d57130aba3128fe56308a34143653e5d352b5e6ef4195e03d16e4e1f",
+  "platformSource": {
+    "repository": "https://github.com/siliconjungle/ink-os-platform.git",
+    "commit": "360b53b6a71bf40c3b0a4d563d0ce2066dee81f6"
+  },
+  "desktopSource": {
+    "commit": "673fb0e856dd3d69cc6836724991fe2abf3afd8a",
+    "dirty": false
+  },
+  "platformTests": {
+    "passed": 361,
+    "skipped": 5,
+    "failed": 0
+  },
+  "appChecks": {
+    "repositories": 22,
+    "failed": 0
+  },
+  "installedAppSourcesVerified": [
+    {
+      "slug": "preview",
+      "commit": "0c58f95e1a9d68160d56a2d3ce659cbf27b10215",
+      "releaseId": "7dd9fb3991bc9a8deab4baa23726e035"
+    },
+    {
+      "slug": "finder",
+      "commit": "3716cd62b09c27b6043c2b190ed386634aa1df14",
+      "releaseId": "5d48e545535000c82dfaacad16f8254e"
+    },
+    {
+      "slug": "palette-analysis",
+      "commit": "50758e369378c0c9b9b1c74fff26d23b96ccbb8c",
+      "releaseId": "1dc5958dcd96d85a901c8592f5e47a33"
+    },
+    {
+      "slug": "flip-rotate",
+      "commit": "ed4d704550fbee79da5b56046c35d1403c56269a",
+      "releaseId": "ed40ca4379e1cbd18adb6a7b925599fe"
+    },
+    {
+      "slug": "image-converter",
+      "commit": "76e0d8155159f86c99776fb89877a6ad2abaa747",
+      "releaseId": "204f70c31e7d97a164bbdcc2f39c30a7"
+    },
+    {
+      "slug": "pixelate",
+      "commit": "7da129f0188f3391e6307b54882840d2db512d5c",
+      "releaseId": "3b836ba8696cfe090c5631a14b123f88"
+    },
+    {
+      "slug": "text-editor",
+      "commit": "6f5c68bbd68e5925746667594df41dce9caa6ee2",
+      "releaseId": "4a10107789c9191d307e924b78b59778"
+    },
+    {
+      "slug": "depth-light",
+      "commit": "212575c94468aaf5423f7f048df94e97a26da2a6",
+      "releaseId": "1bd0036fdb8c3194700d4f8aa62be8af"
+    },
+    {
+      "slug": "color-picker",
+      "commit": "ab76b8da0976a3c266b6b9270da4cb618e7790d0",
+      "releaseId": "93d7e678e7d394e6a725928a82f5d1cf"
+    },
+    {
+      "slug": "ink-environment",
+      "commit": "7b0a93f13aef60248bd048c9a28ebd152a0bd813",
+      "releaseId": "b088a59f3f8aa02b6576d1c0779f7268"
+    }
+  ],
+  "observed": [
+    "Up, Down, Left and Right followed the actual icon layout rather than catalog order.",
+    "Shift-Down added the icon below; Shift-Up retracted that addition.",
+    "Up at the top and Left at the slightly misaligned left column retained the current selection.",
+    "Quick Look followed all four directions across file and application icons without opening normal windows.",
+    "Closing Quick Look restored focus to the newly selected desktop item.",
+    "The verified signed bundle is installed in Applications; the existing catalog and files remain available."
+  ],
+  "limits": [
+    "macOS development preview with an ad-hoc signature; not notarized.",
+    "Native GUI verification ran on this Mac, not a clean virtual machine."
+  ]
+}
