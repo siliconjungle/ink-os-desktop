@@ -10,7 +10,9 @@ import {DesktopGestureSettings, sendDesktopSwipe, bindDesktopSwipes} from '../sr
 function fixture() {
   const window = new EventEmitter(), sent = [];
   let url = 'https://ink.example/', focused = true, destroyed = false, children = [];
-  Object.assign(window, {webContents:{getURL:() => url, send:(...args) => sent.push(args)}, isFocused:() => focused, isDestroyed:() => destroyed, getChildWindows:() => children});
+  const contents = new EventEmitter();
+  Object.assign(contents, {getURL:() => url, send:(...args) => sent.push(args), mainFrame:{framesInSubtree:[]}});
+  Object.assign(window, {webContents:contents, isFocused:() => focused, isDestroyed:() => destroyed, getChildWindows:() => children});
   return {window, sent, url:value => url=value, focused:value => focused=value, destroyed:value => destroyed=value, children:value => children=value};
 }
 test('native horizontal swipes reach only a focused desktop on the selected origin', () => {
@@ -46,5 +48,25 @@ test('sandboxed preload exposes a direction-only subscription and can unsubscrib
   const received = [], unsubscribe = api.onSwipe(value => received.push(value));
   ipc.emit('ink:desktop-swipe', {}, 'left'); ipc.emit('ink:desktop-swipe', {}, 'up'); ipc.emit('ink:desktop-swipe', {}, {direction:'right'});
   unsubscribe(); ipc.emit('ink:desktop-swipe', {}, 'right');
-  assert.deepEqual(received, ['left']); assert.deepEqual(Object.keys(api), ['onSwipe']);
+  assert.deepEqual(received, ['left']); assert.deepEqual(Object.keys(api), ['isActive','onGestureStart','onSwipe']);
+  assert.equal(api.isActive(),false);
+  ipc.emit('ink:desktop-active', {}, true); assert.equal(api.isActive(),true);
+  ipc.emit('ink:desktop-active', {}, false); assert.equal(api.isActive(),false);
+  let starts=0; const stop=api.onGestureStart(()=>starts++);
+  ipc.emit('ink:desktop-gesture-start', {}); stop(); ipc.emit('ink:desktop-gesture-start', {});
+  assert.equal(starts,1);
+});
+
+test('foreground state follows the native window and gesture starts are independent of internal app selection', () => {
+  const f=fixture();
+  bindDesktopSwipes(f.window,{origin:'https://ink.example',enabled:()=>false});
+  f.window.webContents.emit('did-finish-load');
+  f.window.webContents.emit('input-event',{}, {type:'gestureScrollBegin'});
+  f.focused(false); f.window.emit('blur');
+  f.window.webContents.emit('input-event',{}, {type:'gestureScrollBegin'});
+  f.focused(true); f.window.emit('focus');
+  f.window.webContents.emit('input-event',{}, {type:'gestureScrollBegin'});
+  assert.deepEqual(f.sent,[['ink:desktop-active',true],['ink:desktop-gesture-start'],['ink:desktop-active',false],['ink:desktop-active',true],['ink:desktop-gesture-start']]);
+  f.window.emit('closed');
+  assert.equal(f.window.webContents.listenerCount('input-event'),0);
 });

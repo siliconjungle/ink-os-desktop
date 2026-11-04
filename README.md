@@ -68,8 +68,8 @@ Preview build 13 combines the merged platform and app rollout: scoped Space prev
 
 ## Desktop gestures
 
-Two-finger horizontal swipes over the desktop background, switcher and window title bars work in both the web interface and the native app. Each swipe moves one desktop and stops at either end; ordinary app scrolling is preserved.
+Two-finger horizontal swipes switch desktops anywhere in the active Ink window, including unselected app frames. Each new physical gesture moves one desktop and stops at either end. Vertical scrolling and pinch gestures remain available in apps. Switching restores desktop focus, so the next gesture needs no click.
 
 On macOS, the Desktops menu includes a persistent **Three-finger desktop switching** option (off by default) and gesture help. Native left/right swipes switch Ink desktops even when an app frame has focus. macOS must pass the gesture to Ink: configure switching full-screen apps to use four fingers, and page swiping to allow three fingers, in System Settings → Trackpad → More Gestures. System-reserved gestures take priority.
 
-The native bridge only forwards validated left/right directions to the selected desktop's main frame. App frames receive no native IPC capabilities. Dialogs, quick previews and active drags block switching. Ctrl Alt Left/Right and the Desktops menu remain available without trackpad configuration.
+The native bridge forwards foreground-window state, physical gesture starts and validated swipe directions to the selected desktop. App frames forward bounded wheel data through ordinary DOM messages, including nested frames; the wrapper installs this compatibility bridge for existing apps. App frames receive no Node access or native IPC capabilities. Dialogs, quick previews and active drags block switching. Ctrl Alt Left/Right and the Desktops menu remain available without trackpad configuration.

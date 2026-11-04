@@ -1,3 +1,4 @@
+import {bindFrameWheelBridge} from './frame-wheel-bridge.mjs';
 import {readFile, writeFile, rename} from 'node:fs/promises';
 import {join} from 'node:path';
 
@@ -32,6 +33,20 @@ export function sendDesktopSwipe(window, direction, origin) {
 }
 
 export function bindDesktopSwipes(window, {origin, enabled = () => true, now = () => performance.now()} = {}) {
+  const contents = window.webContents;
+  const disposeFrames = bindFrameWheelBridge(contents, origin);
+  const publishActivity = () => {
+    try {
+      if (!window.isDestroyed() && new URL(contents.getURL()).origin === new URL(origin).origin) contents.send('ink:desktop-active', window.isFocused());
+    } catch {}
+  };
+  const gestureStart = (_event, input) => {
+    if (input.type === 'gestureScrollBegin' && window.isFocused()) contents.send('ink:desktop-gesture-start');
+  };
+  window.on('focus', publishActivity);
+  window.on('blur', publishActivity);
+  contents.on('did-finish-load', publishActivity);
+  contents.on('input-event', gestureStart);
   let last = -Infinity;
   const swipe = (_event, direction) => {
     if (!enabled() || !['left', 'right'].includes(direction)) return;
@@ -39,7 +54,12 @@ export function bindDesktopSwipes(window, {origin, enabled = () => true, now = (
     if (time - last < 400) return;
     if (sendDesktopSwipe(window, direction, origin)) last = time;
   };
-  const dispose = () => {window.removeListener('swipe', swipe); window.removeListener('closed', dispose);};
+  const dispose = () => {
+    window.removeListener('swipe', swipe); window.removeListener('closed', dispose);
+    window.removeListener('focus', publishActivity); window.removeListener('blur', publishActivity);
+    contents.removeListener('did-finish-load', publishActivity); contents.removeListener('input-event', gestureStart);
+    disposeFrames();
+  };
   window.on('swipe', swipe);
   window.once('closed', dispose);
   return dispose;
