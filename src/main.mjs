@@ -24,6 +24,8 @@ async function initialize() {
     layout = await connectionLayout({ applicationRoot: root, resources: app.isPackaged ? process.resourcesPath : root, packaged: app.isPackaged });
     store = await new ConnectionStore({ directory, ...await connectionOwnerHelpers(layout) }).open();
     gestureSettings = await new DesktopGestureSettings(directory).open();
+    const build = await updateConfiguration();
+    app.setAboutPanelOptions({applicationName:'Ink OS', applicationVersion:build.version, version:'Build '+build.build});
     controller = new ConnectionController({ store, isQuitting: () => quitting,
       startLocal: async selection => { if (!instance) instance = new LocalInstance({ platformDirectory: layout.platformDirectory, directory: selection.instanceDirectory, port: await localPort(selection.instanceDirectory), electron: true, runtimeEnvironment: runtimeEnvironment(layout.resources, { directory: selection.instanceDirectory, development: layout.development }) }); await instance.start(); },
       authenticate: client => authenticateConnection(client, session.fromPartition(client.selection.partition).cookies),
@@ -78,7 +80,7 @@ async function updateMenu() {
       ...(process.platform === 'darwin' ? [
         {type:'separator'},
         {label:'Three-finger desktop switching', type:'checkbox', checked:gestureSettings.enabled, click:item => void gestureSettings.setEnabled(item.checked).catch(error => {showFailure(error); void updateMenu();})},
-        {label:'About desktop gestures…', click:() => void dialog.showMessageBox({type:'info', title:'Desktop gestures', message:'Swipe to switch Ink desktops', detail:'Swipe horizontally with two fingers over the desktop switcher in the web or desktop app. On macOS, three-finger swipes also work over app windows when the system passes them to Ink. In System Settings → Trackpad → More Gestures, use four fingers for switching full-screen apps and enable three-finger page swipes. macOS-reserved gestures take priority. Ctrl Alt Left/Right also switches desktops.', buttons:['OK']})},
+        {label:'About desktop gestures…', click:() => void dialog.showMessageBox({type:'info', title:'Desktop gestures', message:'Swipe to switch Ink desktops', detail:'Swipe horizontally with two fingers over the Ink desktop background, desktop switcher or a window title bar in the web or desktop app. Scrolling inside app content stays with the app. On macOS, three-finger swipes also work over app windows when the system passes them to Ink. In System Settings → Trackpad → More Gestures, use four fingers for switching full-screen apps and enable three-finger page swipes. macOS-reserved gestures take priority. Ctrl Alt Left/Right also switches desktops.', buttons:['OK']})},
       ] : []),
     ]}, { label: 'Connections', submenu: [...connectItems, { type: 'separator' }, { label: 'Connect to a host…', click: openConnections }, { label: 'Manage connections…', click: openConnections }] }, { role: 'windowMenu' }
   ];

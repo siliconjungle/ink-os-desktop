@@ -39,6 +39,7 @@ assert.equal(hash(await readFile(join(resources, 'icon.png'))), release.icon.png
 for (const name of ['ELECTRON-LICENSE', 'LICENSES.chromium.html']) assert.equal(hash(await readFile(join(resources, 'licenses', name))), release.runtimeNotices[name]);
 if (process.platform === 'darwin') {
   await execute('codesign', ['--verify', '--deep', '--strict', join(bundle, 'Ink OS.app')]);
+  if(release.build>=15) assert.equal((await execute('plutil',['-extract','CFBundleVersion','raw','-o','-',join(contents,'Info.plist')])).stdout.trim(), String(release.build));
   const iconName = (await execute('plutil', ['-extract', 'CFBundleIconFile', 'raw', '-o', '-', join(contents, 'Info.plist')])).stdout.trim();
   assert.equal(hash(await readFile(join(resources, iconName))), release.icon.icnsSha256);
 }

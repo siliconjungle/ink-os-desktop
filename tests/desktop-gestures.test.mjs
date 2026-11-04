@@ -34,7 +34,7 @@ test('swipe listeners honor the setting, debounce duplicate events and clean up'
 });
 test('desktop gesture preferences survive restart with private file permissions', async t => {
   const directory = await mkdtemp(join(tmpdir(),'ink-gestures-')); t.after(() => rm(directory,{recursive:true,force:true}));
-  const settings = await new DesktopGestureSettings(directory).open(); assert.equal(settings.enabled, true);
+  const settings = await new DesktopGestureSettings(directory).open(); assert.equal(settings.enabled, false);
   await Promise.all([settings.setEnabled(false), settings.setEnabled(true), settings.setEnabled(false)]);
   assert.equal((await new DesktopGestureSettings(directory).open()).enabled, false);
   assert.equal((await stat(settings.file)).mode & 0o777, 0o600);

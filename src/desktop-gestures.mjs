@@ -2,9 +2,9 @@ import {readFile, writeFile, rename} from 'node:fs/promises';
 import {join} from 'node:path';
 
 export class DesktopGestureSettings {
-  constructor(directory) {this.file = join(directory, 'desktop-gestures.json'); this.enabled = true; this.saving = Promise.resolve();}
+  constructor(directory) {this.file = join(directory, 'desktop-gestures.json'); this.enabled = false; this.saving = Promise.resolve();}
   async open() {
-    try {this.enabled = JSON.parse(await readFile(this.file, 'utf8')).enabled !== false;}
+    try {this.enabled = JSON.parse(await readFile(this.file, 'utf8')).enabled === true;}
     catch (error) {if (error.code !== 'ENOENT') throw error;}
     return this;
   }
