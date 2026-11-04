@@ -6,7 +6,7 @@ The File menu includes **Check for updates…**. Published releases are checked 
 
 The bundled CLI provides `ink-os desktop update check` and `ink-os desktop update download`. `--repository OWNER/REPO` selects a fork's publisher; `--channel preview|stable` selects its release channel; download accepts an owned private `--directory`. The default publisher and build live in `src/updates-config.json`. Private preview repositories require a Contents-read GitHub token in `INK_OS_UPDATE_TOKEN`; it is kept in memory and sent only to the GitHub API. Without access, the native dialog offers the release page for browser-based installation. Credentials are removed before following [release-asset redirects](https://docs.github.com/en/rest/releases/assets#get-a-release-asset).
 
-For development, place the platform checkout next to this repository, install its dependencies, and build it. Then:
+For development, place the platform checkout next to this repository, install its dependencies, and build it. On macOS, Apple Command Line Tools and the active Node installation’s headers are needed to build the scroll-phase addon; set `INK_OS_NODE_HEADERS` if the headers are elsewhere. `npm start` and `npm run package` compile it automatically. Then:
 
 ```sh
 npm ci
@@ -68,7 +68,7 @@ Preview build 13 combines the merged platform and app rollout: scoped Space prev
 
 ## Desktop gestures
 
-Two-finger horizontal swipes switch desktops anywhere in the active Ink window, including unselected app frames. Each new physical gesture moves one desktop and stops at either end. Vertical scrolling and pinch gestures remain available in apps. Switching restores desktop focus, so the next gesture needs no click.
+Two-finger horizontal swipes switch desktops anywhere in the active Ink window, including unselected app frames. Each new physical gesture moves one desktop and stops at either end. Vertical scrolling and pinch gestures remain available in apps. On macOS, an app-local AppKit scroll monitor distinguishes each physical swipe from its momentum, including rapid consecutive swipes. It does not change macOS gesture settings or request global input access.
 
 On macOS, the Desktops menu includes a persistent **Three-finger desktop switching** option (off by default) and gesture help. Native left/right swipes switch Ink desktops even when an app frame has focus. macOS must pass the gesture to Ink: configure switching full-screen apps to use four fingers, and page swiping to allow three fingers, in System Settings → Trackpad → More Gestures. System-reserved gestures take priority.
 

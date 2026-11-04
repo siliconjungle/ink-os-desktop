@@ -70,3 +70,22 @@ test('foreground state follows the native window and gesture starts are independ
   f.window.emit('closed');
   assert.equal(f.window.webContents.listenerCount('input-event'),0);
 });
+
+test('physical Mac scroll starts rearm rapid swipes without clicks or synthetic gesture events', () => {
+  const f=fixture(); let generation=0;
+  bindDesktopSwipes(f.window,{origin:'https://ink.example',enabled:()=>false,scrollGeneration:()=>generation});
+  const wheel=()=>f.window.webContents.emit('input-event',{}, {type:'mouseWheel'});
+  generation++; wheel(); // First physical swipe.
+  wheel(); wheel(); // Movement and momentum do not rearm it.
+  generation++; wheel(); // Another swipe while the old momentum is still arriving.
+  wheel();
+  generation++; wheel(); // Same direction also starts a new gesture.
+  f.window.webContents.emit('input-event',{}, {type:'gestureScrollBegin'}); // No double reset.
+  assert.deepEqual(f.sent,Array.from({length:3},()=>['ink:desktop-gesture-start']));
+  f.focused(false); generation++; wheel();
+  f.focused(true); f.url('https://other.example/'); generation++; wheel();
+  f.url('https://ink.example/'); f.children([{isVisible:()=>true}]); generation++; wheel();
+  assert.equal(f.sent.length,3);
+  f.window.emit('closed'); generation++; wheel();
+  assert.equal(f.sent.length,3);
+});

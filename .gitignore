@@ -9,3 +9,4 @@ target/
 !.env.example
 *.log
 *.tgz
+src/native-scroll.node

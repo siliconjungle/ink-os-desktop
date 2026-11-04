@@ -8,9 +8,11 @@ import { LocalInstance, localPort } from './local-instance.mjs';
 import { runtimeEnvironment } from './runtime.mjs';
 import { DesktopUpdates,updateConfiguration } from './updates.mjs';
 import {DesktopGestureSettings, bindDesktopSwipes, sendDesktopSwipe} from './desktop-gestures.mjs';
+import {nativeScrollGeneration} from './scroll-phase.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), uiURL = new URL('./connections-ui.html', import.meta.url).href, uiFile = fileURLToPath(new URL('./connections-ui.html', import.meta.url)), preload = fileURLToPath(new URL('./connections-preload.cjs', import.meta.url));
 let gestureSettings;
+let scrollGeneration;
 const desktopOrigins = new WeakMap();
 const desktopPreload = fileURLToPath(new URL('./desktop-preload.cjs', import.meta.url));
 let instance, store, controller, layout, connectionsWindow, opening, initializing, updater,checkingUpdate,pendingInstaller,quitting = false,quitReady=false;
@@ -24,6 +26,7 @@ async function initialize() {
     layout = await connectionLayout({ applicationRoot: root, resources: app.isPackaged ? process.resourcesPath : root, packaged: app.isPackaged });
     store = await new ConnectionStore({ directory, ...await connectionOwnerHelpers(layout) }).open();
     gestureSettings = await new DesktopGestureSettings(directory).open();
+    scrollGeneration ||= nativeScrollGeneration();
     const build = await updateConfiguration();
     app.setAboutPanelOptions({applicationName:'Ink OS', applicationVersion:build.version, version:'Build '+build.build});
     controller = new ConnectionController({ store, isQuitting: () => quitting,
@@ -32,7 +35,7 @@ async function initialize() {
       createWindow: selection => {
         const window = new BrowserWindow({ show: false, width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', icon: icon(), backgroundColor: '#101010', webPreferences: { preload:desktopPreload, partition: selection.partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
         desktopOrigins.set(window, selection.url);
-        bindDesktopSwipes(window, {origin:selection.url, enabled:() => gestureSettings.enabled});
+        bindDesktopSwipes(window, {origin:selection.url, enabled:() => gestureSettings.enabled, scrollGeneration});
         window.webContents.setWindowOpenHandler(({ url }) => { try { const parsed = new URL(url); if (['https:', 'http:'].includes(parsed.protocol)) void shell.openExternal(parsed.href); } catch {} return { action: 'deny' }; });
         window.webContents.on('before-input-event', (event, input) => {
           const command = process.platform === 'darwin' ? input.meta : input.control;

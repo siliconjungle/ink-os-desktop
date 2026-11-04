@@ -32,7 +32,7 @@ export function sendDesktopSwipe(window, direction, origin) {
   return true;
 }
 
-export function bindDesktopSwipes(window, {origin, enabled = () => true, now = () => performance.now()} = {}) {
+export function bindDesktopSwipes(window, {origin, enabled = () => true, now = () => performance.now(), scrollGeneration} = {}) {
   const contents = window.webContents;
   const disposeFrames = bindFrameWheelBridge(contents, origin);
   const publishActivity = () => {
@@ -40,8 +40,17 @@ export function bindDesktopSwipes(window, {origin, enabled = () => true, now = (
       if (!window.isDestroyed() && new URL(contents.getURL()).origin === new URL(origin).origin) contents.send('ink:desktop-active', window.isFocused());
     } catch {}
   };
+  let generation = scrollGeneration?.();
   const gestureStart = (_event, input) => {
-    if (input.type === 'gestureScrollBegin' && window.isFocused()) contents.send('ink:desktop-gesture-start');
+    let began = input.type === 'gestureScrollBegin' && !scrollGeneration;
+    if (input.type === 'mouseWheel' && scrollGeneration) {
+      const next = scrollGeneration();
+      began = next !== generation;
+      generation = next;
+    }
+    if (began && window.isFocused() && !window.getChildWindows().some(child => child.isVisible())) {
+      try {if (new URL(contents.getURL()).origin === new URL(origin).origin) contents.send('ink:desktop-gesture-start');} catch {}
+    }
   };
   window.on('focus', publishActivity);
   window.on('blur', publishActivity);

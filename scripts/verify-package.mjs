@@ -39,6 +39,12 @@ assert.ok(manifest.runtime.some(entry => entry.path === 'server/process-receipt.
 assert.equal(hash(await readFile(join(resources, 'icon.png'))), release.icon.pngSha256);
 for (const name of ['ELECTRON-LICENSE', 'LICENSES.chromium.html']) assert.equal(hash(await readFile(join(resources, 'licenses', name))), release.runtimeNotices[name]);
 if (process.platform === 'darwin') {
+  if (release.build >= 18) {
+    for (const path of ['src/scroll-phase.mjs','src/native-scroll.node']) assert.ok(manifest.app.some(entry=>entry.path===path), 'Missing physical scroll phase input: '+path);
+    const addon = join(resources, 'app.asar.unpacked', 'src', 'native-scroll.node');
+    const loaded = await execute(executable, ['-e', 'console.log(require(process.argv[1]).generation())', addon], {env:{...process.env,ELECTRON_RUN_AS_NODE:'1'}});
+    assert.equal(loaded.stdout.trim(),'0', 'The packaged native scroll monitor must load with the bundled Electron runtime');
+  }
   await execute('codesign', ['--verify', '--deep', '--strict', join(bundle, 'Ink OS.app')]);
   if(release.build>=15) assert.equal((await execute('plutil',['-extract','CFBundleVersion','raw','-o','-',join(contents,'Info.plist')])).stdout.trim(), String(release.build));
   const iconName = (await execute('plutil', ['-extract', 'CFBundleIconFile', 'raw', '-o', '-', join(contents, 'Info.plist')])).stdout.trim();

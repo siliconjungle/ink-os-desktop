@@ -1,6 +1,8 @@
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import { access } from 'node:fs/promises';
+import {buildScrollPhase} from './build-scroll-phase.mjs';
+import {fileURLToPath} from 'node:url';
 
 const require = createRequire(import.meta.url);
 function run(executable, args) {
@@ -19,5 +21,6 @@ catch {
   delete require.cache[require.resolve('electron')];
   executable = require('electron'); await access(executable);
 }
+await buildScrollPhase(fileURLToPath(new URL('../src/native-scroll.node', import.meta.url)));
 const result = await run(executable, ['.', ...process.argv.slice(2)]);
 process.exitCode = result.code ?? 1;
