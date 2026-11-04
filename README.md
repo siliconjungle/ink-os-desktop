@@ -68,7 +68,7 @@ Preview build 13 combines the merged platform and app rollout: scoped Space prev
 
 ## Desktop gestures
 
-Two-finger horizontal swipes switch desktops anywhere in the active Ink window, including unselected app frames. Each new physical gesture moves one desktop and stops at either end. Vertical scrolling and pinch gestures remain available in apps. On macOS, an app-local AppKit scroll monitor distinguishes each physical swipe from its momentum, including rapid consecutive swipes. It does not change macOS gesture settings or request global input access.
+Two-finger horizontal swipes switch desktops anywhere in the active Ink window, including unselected app frames. Each new physical gesture moves one desktop and stops at either end. Switches slide left or right in desktop order over 320 ms, with the toolbar and Dock stationary. Reduced-motion preferences use an immediate switch. Vertical scrolling and pinch gestures remain available in apps. On macOS, an app-local AppKit scroll monitor distinguishes each physical swipe from its momentum, including rapid consecutive swipes. It does not change macOS gesture settings or request global input access.
 
 On macOS, the Desktops menu includes a persistent **Three-finger desktop switching** option (off by default) and gesture help. Native left/right swipes switch Ink desktops even when an app frame has focus. macOS must pass the gesture to Ink: configure switching full-screen apps to use four fingers, and page swiping to allow three fingers, in System Settings → Trackpad → More Gestures. System-reserved gestures take priority.
 
