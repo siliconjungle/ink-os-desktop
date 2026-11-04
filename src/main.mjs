@@ -7,8 +7,12 @@ import { canonicalProfileDirectorySync, connectionLayout, connectionOwnerHelpers
 import { LocalInstance, localPort } from './local-instance.mjs';
 import { runtimeEnvironment } from './runtime.mjs';
 import { DesktopUpdates,updateConfiguration } from './updates.mjs';
+import {DesktopGestureSettings, bindDesktopSwipes, sendDesktopSwipe} from './desktop-gestures.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url)), uiURL = new URL('./connections-ui.html', import.meta.url).href, uiFile = fileURLToPath(new URL('./connections-ui.html', import.meta.url)), preload = fileURLToPath(new URL('./connections-preload.cjs', import.meta.url));
+let gestureSettings;
+const desktopOrigins = new WeakMap();
+const desktopPreload = fileURLToPath(new URL('./desktop-preload.cjs', import.meta.url));
 let instance, store, controller, layout, connectionsWindow, opening, initializing, updater,checkingUpdate,pendingInstaller,quitting = false,quitReady=false;
 app.setName('Ink OS');
 const dataDirectory = canonicalProfileDirectorySync(process.env, process.env.INK_OS_DESKTOP_DATA_DIR || app.getPath('userData'));
@@ -19,11 +23,14 @@ async function initialize() {
     const directory = dataDirectory;
     layout = await connectionLayout({ applicationRoot: root, resources: app.isPackaged ? process.resourcesPath : root, packaged: app.isPackaged });
     store = await new ConnectionStore({ directory, ...await connectionOwnerHelpers(layout) }).open();
+    gestureSettings = await new DesktopGestureSettings(directory).open();
     controller = new ConnectionController({ store, isQuitting: () => quitting,
       startLocal: async selection => { if (!instance) instance = new LocalInstance({ platformDirectory: layout.platformDirectory, directory: selection.instanceDirectory, port: await localPort(selection.instanceDirectory), electron: true, runtimeEnvironment: runtimeEnvironment(layout.resources, { directory: selection.instanceDirectory, development: layout.development }) }); await instance.start(); },
       authenticate: client => authenticateConnection(client, session.fromPartition(client.selection.partition).cookies),
       createWindow: selection => {
-        const window = new BrowserWindow({ show: false, width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', icon: icon(), backgroundColor: '#101010', webPreferences: { partition: selection.partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
+        const window = new BrowserWindow({ show: false, width: 1440, height: 960, minWidth: 800, minHeight: 560, title: 'Ink OS', icon: icon(), backgroundColor: '#101010', webPreferences: { preload:desktopPreload, partition: selection.partition, nodeIntegration: false, contextIsolation: true, sandbox: true } });
+        desktopOrigins.set(window, selection.url);
+        bindDesktopSwipes(window, {origin:selection.url, enabled:() => gestureSettings.enabled});
         window.webContents.setWindowOpenHandler(({ url }) => { try { const parsed = new URL(url); if (['https:', 'http:'].includes(parsed.protocol)) void shell.openExternal(parsed.href); } catch {} return { action: 'deny' }; });
         window.webContents.on('before-input-event', (event, input) => {
           const command = process.platform === 'darwin' ? input.meta : input.control;
@@ -64,9 +71,23 @@ async function updateMenu() {
   const template = [
     ...(process.platform === 'darwin' ? [{ role: 'appMenu', submenu: [{ role: 'about' }, { type: 'separator' }, { label: 'Connections…', accelerator: 'CmdOrCtrl+,', click: openConnections }, { type: 'separator' }, { role: 'services' }, { type: 'separator' }, { role: 'hide' }, { role: 'hideOthers' }, { role: 'unhide' }, { type: 'separator' }, { role: 'quit' }] }] : []),
     { label: 'File', submenu: [{ label: 'Open Ink OS', accelerator: 'CmdOrCtrl+N', click: () => void open() }, { label: 'Connections…', accelerator: process.platform === 'darwin' ? undefined : 'CmdOrCtrl+,', click: openConnections }, { label:'Check for updates…',accelerator:'CmdOrCtrl+Shift+U',click:checkForUpdates }, { type: 'separator' }, { role: process.platform === 'darwin' ? 'close' : 'quit' }] },
-    { role: 'editMenu' }, { role: 'viewMenu' }, { label: 'Connections', submenu: [...connectItems, { type: 'separator' }, { label: 'Connect to a host…', click: openConnections }, { label: 'Manage connections…', click: openConnections }] }, { role: 'windowMenu' }
+    { role: 'editMenu' }, { role: 'viewMenu' },
+    {label:'Desktops', submenu:[
+      {label:'Previous desktop', click:() => desktopSwipe('right')},
+      {label:'Next desktop', click:() => desktopSwipe('left')},
+      ...(process.platform === 'darwin' ? [
+        {type:'separator'},
+        {label:'Three-finger desktop switching', type:'checkbox', checked:gestureSettings.enabled, click:item => void gestureSettings.setEnabled(item.checked).catch(error => {showFailure(error); void updateMenu();})},
+        {label:'About desktop gestures…', click:() => void dialog.showMessageBox({type:'info', title:'Desktop gestures', message:'Swipe to switch Ink desktops', detail:'Swipe horizontally with two fingers over the desktop switcher in the web or desktop app. On macOS, three-finger swipes also work over app windows when the system passes them to Ink. In System Settings → Trackpad → More Gestures, use four fingers for switching full-screen apps and enable three-finger page swipes. macOS-reserved gestures take priority. Ctrl Alt Left/Right also switches desktops.', buttons:['OK']})},
+      ] : []),
+    ]}, { label: 'Connections', submenu: [...connectItems, { type: 'separator' }, { label: 'Connect to a host…', click: openConnections }, { label: 'Manage connections…', click: openConnections }] }, { role: 'windowMenu' }
   ];
   Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+}
+function desktopSwipe(direction) {
+  const window = controller?.currentWindow;
+  const origin = window && desktopOrigins.get(window);
+  if (origin) sendDesktopSwipe(window, direction, origin);
 }
 async function showConnections() {
   await initialize(); if (connectionsWindow && !connectionsWindow.isDestroyed()) { connectionsWindow.show(); connectionsWindow.focus(); return; }

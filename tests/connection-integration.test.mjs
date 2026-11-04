@@ -168,7 +168,7 @@ test('packaged/dev helper paths and canonical data roots use bundled process rec
   let imported; const capture = () => {}, check = () => {}; const helpers = await connectionOwnerHelpers(packaged, async url => { imported = url; return { captureCurrentProcessReceipt: capture, checkProcessReceipt: check }; }); assert.equal(imported, packaged.processReceipts); assert.equal(helpers.captureOwner, capture); assert.equal(helpers.checkOwner, check);
   assert.equal(await canonicalProfileDirectory({}, f.directory), f.directory);
   assert.equal(canonicalProfileDirectorySync({}, f.directory), f.directory);
-  const source = await readFile(new URL('../src/main.mjs', import.meta.url), 'utf8'); const content = source.slice(source.indexOf('createWindow: selection'), source.indexOf('onCommit:')); assert.ok(!content.includes('preload')); assert.ok(content.includes('nodeIntegration: false')); assert.ok(content.includes('sandbox: true')); assert.ok(source.includes("role: 'editMenu'"));
+  const source = await readFile(new URL('../src/main.mjs', import.meta.url), 'utf8'); const content = source.slice(source.indexOf('createWindow: selection'), source.indexOf('onCommit:')); assert.ok(content.includes('preload:desktopPreload')); assert.ok(!content.includes('preload, nodeIntegration'));  assert.ok(content.includes('nodeIntegration: false')); assert.ok(content.includes('sandbox: true')); assert.ok(source.includes("role: 'editMenu'"));
   const html = await readFile(new URL('../src/connections-ui.html', import.meta.url), 'utf8'); assert.ok(html.includes("connect-src 'none'")); assert.ok(html.includes('type="password"')); assert.ok(html.includes('../assets/icon.svg'));
   assert.ok(source.includes("on('will-redirect', guardOrigin)"));
 });

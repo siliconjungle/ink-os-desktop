@@ -65,3 +65,11 @@ Preview build 9 fixes dragging apps and saved files from Search and Finder onto 
 Preview build 10 also supports dragging standard Open app commands and saved-file query results from toolbar/command Search. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.10) · [Verification](evidence/file-interactions.json).
 
 Preview build 13 combines the merged platform and app rollout: scoped Space previews, independent Preview with defaults, and spatial desktop arrow selection. It pins the merged platform `main` revision, including its current Ink runtime and recovery changes. [Release](https://github.com/siliconjungle/ink-os-desktop/releases/tag/v0.1.0-preview.13) · [Fresh Mac runtime verification](https://github.com/siliconjungle/ink-os-desktop/actions/runs/41765206998).
+
+## Desktop gestures
+
+Two-finger horizontal swipes over the desktop switcher work in both the web interface and the native app. Each swipe moves one desktop and stops at either end; ordinary app scrolling is preserved.
+
+On macOS, the Desktops menu includes a persistent **Three-finger desktop switching** option and gesture help. Native left/right swipes switch Ink desktops even when an app frame has focus. macOS must pass the gesture to Ink: configure switching full-screen apps to use four fingers, and page swiping to allow three fingers, in System Settings → Trackpad → More Gestures. System-reserved gestures take priority.
+
+The native bridge only forwards validated left/right directions to the selected desktop's main frame. App frames receive no native IPC capabilities. Dialogs, quick previews and active drags block switching. Ctrl Alt Left/Right and the Desktops menu remain available without trackpad configuration.
