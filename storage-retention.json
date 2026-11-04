@@ -13,7 +13,7 @@
     "evidence/packaged-desktop.json": "Selected graphical DMG proof binding source, icon, screenshot and artifact hashes with observed behavior and limits.",
     "release/0.1.0-darwin-arm64-e4KSS4/ink-os-0.1.0-darwin-arm64.dmg": "Selected final verified macOS arm64 local preview, including native branding and runtime notices.",
     "release/0.1.0-darwin-arm64-e4KSS4/release.json": "Selected artifact hash, icon/notices hashes and clean source provenance.",
-    "evidence/release-publication.json": "Verified private draft release identity and server-computed asset digests matching the selected local preview.",
+    "evidence/release-publication.json": "Published preview 13 release and server asset digests, bound to clean merged-main source revisions and fresh Mac verification.",
     "evidence/managed-native.json": "Selected actual macOS arm64 official Rust installation, integrity, smoke execution, cached artifact and Ink cross-engine state parity proof, bound to exact source hashes and CI run.",
     ".local/managed-native-success": "Selected downloaded CI proof and byte-exact required Rust notices; upstream pins, installer/verifier and input hashes reproduce the proof.",
     "evidence/managed-native-api.json": "Selected real cold-cache managed native API job, persistent cross-engine state and toolchain-unavailable restart/cache acceptance with exact source and CI binding.",
@@ -27,7 +27,7 @@
     "release/0.1.0-darwin-arm64-Iyn2Ox": "Selected verified development-preview DMG, manifest and expanded bundle; exact packaged GUI/runtime acceptance and private preview4 publication depend on it.",
     "evidence/packaged-connections-ui.json": "Selected actual packaged native shortcut/credential-form key replacement and shared GUI/bundled-CLI readback with exact source/artifact bindings and private proof hashes.",
     ".github/workflows/verify-preview.yml": "Reproduction recipe for exact private release download and fresh macOS relocated packaged-runtime acceptance.",
-    "evidence/packaged-runtime-fresh-mac.json": "Selected successful fresh macOS runner proof of the exact preview4 DMG after relocation; full CI/artifact/verifier binding and limits.",
+    "evidence/packaged-runtime-fresh-mac.json": "Exact successful preview 13 relocated packaged-runtime verification on a fresh GitHub-hosted macOS runner.",
     ".local/fresh-mac-41189317990/packaged-runtime.json": "Original downloaded successful CI proof; public selected evidence is byte-identical.",
     "src/updates.mjs": "Configured release publisher, exact manifest/asset binding, credential-safe CDN redirects and verified cancellable downloads.",
     "src/updates-config.json": "Version/build/channel and fork-configurable release source; no personal deployment identity or credentials.",
@@ -58,8 +58,9 @@
     "release/0.1.0-darwin-arm64-6fi3WS": "Active desktop package output; preserve until packaging and validation complete.",
     "release/0.1.0-darwin-arm64-5mbfh6": "Active desktop package output; preserve until packaging and validation complete.",
     "release/0.1.0-darwin-arm64-NUMdmp": "Active desktop package output; preserve until packaging and validation complete.",
+    "release/0.1.0-darwin-arm64-XMo68y": "Active desktop package output; preserve until packaging and validation complete.",
     ".local/upstream-sources": "Pinned corresponding Git source and build recipe archives used by the active packaging implementation.",
-    "release/0.1.0-darwin-arm64-XMo68y": "Active desktop package output; preserve until packaging and validation complete."
+    "release/0.1.0-darwin-arm64-dUNKuI": "Selected preview 13 installer, expanded bundle and clean source/hash manifest from merged main; local and fresh Mac release verification depend on these exact bytes."
   },
   "safe_to_remove": {
     ".local/ui-proof": "Completed disposable GUI validation profile and generated source checkout, after the native window and owned host have exited. Required reproduction templates, tests and selected proof are retained.",
@@ -126,6 +127,8 @@
     ".local/package-proof-5QIRmd": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
     ".local/package-KsIePZ": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
     ".local/package-WfREh5": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
-    ".local/package-proof-APp3e2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
+    ".local/package-proof-APp3e2": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained.",
+    ".local/package-krPWem": "Completed generated desktop build inputs and image staging; pinned source, dependency locks, builder and selected artifact manifest are retained.",
+    ".local/package-proof-GpfHCl": "Completed generated packaged-runtime proof instance, source and tool blockers; selected result and exact builder/pins are retained."
   }
 }

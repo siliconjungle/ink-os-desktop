@@ -2,10 +2,10 @@
   "format": "ink-os-packaged-runtime-proof-v1",
   "platformSource": {
     "repository": "https://github.com/siliconjungle/ink-os-platform.git",
-    "commit": "5848c2830d5187cb8351e3f6c7a0f3efce3a4d8a"
+    "commit": "82c7fe95a5ff3e501486e5643d9fea4007841022"
   },
-  "artifactSha256": "74837813406bef58ca5319152a38af668c117b1e6d38d9c246995e5c1fe64abc",
-  "manifestSha256": "61c4eb67805b58824ecfd8d7a6ca1d59925eeed746e8dabc48ade108c698622a",
+  "artifactSha256": "234b6753fc5a3fa5a9a18b4c6be58e93d2d7efb4c01077249145a9833b039c78",
+  "manifestSha256": "7fc6bd2a381b8db7f78f3d94a9ea74faabc9463465c03ca72c33ef339918ce5f",
   "electron": "42.11.18",
   "platform": "darwin",
   "architecture": "arm64",
@@ -26,14 +26,14 @@
     "Managed native toolchains and notarized distribution remain separate work."
   ],
   "desktopSource": {
-    "commit": "5e656a2199bea7f04312300069e36d2f253c3046",
+    "commit": "e11331a602a01c8d51f1eb331463a2c4de5bd479",
     "dirty": false
   },
   "verifierSha256": "aac25d80a70205daa2d305fccaafad1ac1ae55a9e10896e5b396a8f659281d30",
   "ci": {
     "repository": "siliconjungle/ink-os-desktop",
-    "runId": "41242234013",
-    "commit": "5e656a2199bea7f04312300069e36d2f253c3046",
+    "runId": "41765206998",
+    "commit": "e11331a602a01c8d51f1eb331463a2c4de5bd479",
     "runnerOS": "macOS",
     "runnerArchitecture": "ARM64"
   }
