@@ -18,4 +18,16 @@ contextBridge.exposeInMainWorld('inkDesktopGestures', Object.freeze({
     ipcRenderer.on('ink:desktop-swipe', listener);
     return () => ipcRenderer.removeListener('ink:desktop-swipe', listener);
   },
+  onGestureEnd(callback) {
+    if(typeof callback!=='function')throw new TypeError('A gesture listener is required');
+    const listener=(_event,cancelled)=>callback(cancelled===true);
+    ipcRenderer.on('ink:desktop-gesture-end',listener);
+    return ()=>ipcRenderer.removeListener('ink:desktop-gesture-end',listener);
+  },
+  onGestureMove(callback) {
+    if(typeof callback!=='function')throw new TypeError('A gesture listener is required');
+    const listener=(_event,value)=>{if(value&&[value.x,value.y].every(Number.isFinite))callback({x:value.x,y:value.y});};
+    ipcRenderer.on('ink:desktop-gesture-move',listener);
+    return ()=>ipcRenderer.removeListener('ink:desktop-gesture-move',listener);
+  },
 }));

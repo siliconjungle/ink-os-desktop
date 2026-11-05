@@ -48,13 +48,17 @@ test('sandboxed preload exposes a direction-only subscription and can unsubscrib
   const received = [], unsubscribe = api.onSwipe(value => received.push(value));
   ipc.emit('ink:desktop-swipe', {}, 'left'); ipc.emit('ink:desktop-swipe', {}, 'up'); ipc.emit('ink:desktop-swipe', {}, {direction:'right'});
   unsubscribe(); ipc.emit('ink:desktop-swipe', {}, 'right');
-  assert.deepEqual(received, ['left']); assert.deepEqual(Object.keys(api), ['isActive','onGestureStart','onSwipe']);
+  assert.deepEqual(received, ['left']); assert.deepEqual(Object.keys(api), ['isActive','onGestureStart','onSwipe','onGestureEnd','onGestureMove']);
   assert.equal(api.isActive(),false);
   ipc.emit('ink:desktop-active', {}, true); assert.equal(api.isActive(),true);
   ipc.emit('ink:desktop-active', {}, false); assert.equal(api.isActive(),false);
   let starts=0; const stop=api.onGestureStart(()=>starts++);
   ipc.emit('ink:desktop-gesture-start', {}); stop(); ipc.emit('ink:desktop-gesture-start', {});
   assert.equal(starts,1);
+  const phases=[],stopEnd=api.onGestureEnd(value=>phases.push(value)),stopMove=api.onGestureMove(value=>phases.push([value.x,value.y]));
+  ipc.emit('ink:desktop-gesture-move',{}, {x:12,y:-30});ipc.emit('ink:desktop-gesture-move',{}, {x:Infinity,y:1});
+  ipc.emit('ink:desktop-gesture-end',{}, true);stopEnd();stopMove();ipc.emit('ink:desktop-gesture-end',{}, false);
+  assert.deepEqual(phases,[[12,-30],true]);
 });
 
 test('foreground state follows the native window and gesture starts are independent of internal app selection', () => {
@@ -88,4 +92,24 @@ test('physical Mac scroll starts rearm rapid swipes without clicks or synthetic 
   assert.equal(f.sent.length,3);
   f.window.emit('closed'); generation++; wheel();
   assert.equal(f.sent.length,3);
+});
+
+
+test('physical movement and release continue through paused fingers and consumed renderer wheel events',()=>{
+  const f=fixture(),queue=new Set();let state={generation:0,ended:0,cancelled:false,x:0,y:0};
+  const generation=()=>state.generation;generation.state=()=>state;
+  bindDesktopSwipes(f.window,{origin:'https://ink.example',scrollGeneration:generation,schedule:callback=>{queue.add(callback);return callback;},unschedule:callback=>queue.delete(callback)});
+  const tick=()=>{const callback=queue.values().next().value;queue.delete(callback);callback?.();};
+  state={generation:1,ended:0,cancelled:false,x:40,y:0};
+  f.window.webContents.emit('input-event',{}, {type:'mouseWheel'});tick();
+  for(let i=0;i<100;i++)tick();
+  assert.deepEqual(f.sent,[['ink:desktop-gesture-start'],['ink:desktop-gesture-move',{x:40,y:0}]],'A held trackpad must not be treated as release');
+  // Native state advances even if the old app frame has been parked by a preview.
+  state.x=100;tick();state.ended=1;tick();
+  assert.deepEqual(f.sent.slice(-2),[['ink:desktop-gesture-move',{x:100,y:0}],['ink:desktop-gesture-end',false]]);
+  assert.equal(queue.size,0);
+  state={generation:2,ended:1,cancelled:false,x:-50,y:0};f.window.webContents.emit('input-event',{}, {type:'mouseWheel'});tick();
+  state.ended=2;state.cancelled=true;tick();
+  assert.deepEqual(f.sent.slice(-1),[['ink:desktop-gesture-end',true]]);
+  f.window.emit('closed');assert.equal(queue.size,0);
 });

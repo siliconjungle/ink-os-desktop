@@ -5,5 +5,7 @@ import {createRequire} from 'node:module';
 export function nativeScrollGeneration() {
   if (process.platform !== 'darwin') return undefined;
   const native = createRequire(import.meta.url)('./native-scroll.node');
-  return () => native.generation();
+  const generation=()=>native.generation();
+  generation.state=()=>native.state();
+  return generation;
 }
